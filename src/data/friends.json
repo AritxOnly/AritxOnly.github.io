@@ -68,5 +68,18 @@
         },
         "since": "2022-09-15",
         "note": "橘子真的很好吃😋"
+    },
+    {
+        "name": "Zhiwen Wu",
+        "avatar": "/friends/wzw.jpg",
+        "bio": "BUAA SoA，本科；飞行学员。",
+        "tags": ["Aviation", "Pilot Student"],
+        "social": {
+          "github": "https://github.com/DEMK07",
+          "bilibili": "https://space.bilibili.com/522524076?spm_id_from=333.1007.0.0",
+          "email": "dmkev@foxmail.com"
+        },
+        "since": "2024-01-05",
+        "note": ""
     }
 ]
