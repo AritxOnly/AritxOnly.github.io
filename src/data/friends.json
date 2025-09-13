@@ -56,7 +56,7 @@
         },
         "since": "2023-07-05",
         "reciprocal": true,
-        "note": "?"
+        "note": "Friend"
     },
     {
         "name": "Boyuan Yu",
@@ -93,7 +93,45 @@
           "bilibili": "https://b23.tv/4MJnfNB"
         },
         "since": "2018-09-01",
-        "note": "老同学+老朋友",
-        "priority": 80
+        "note": "老同学+老朋友"
+    },
+    {
+        "name": "Jiangrui Luo",
+        "avatar": "/friends/ljr.jpg",
+        "bio": "ShanghaiTech University | CS | Undergraduate | CVer",
+        "tags": ["CV","Embody AI"],
+        "social": {
+            "github": "https://github.com/TLNA114514",
+            "bilibili": "https://space.bilibili.com/405956881?spm_id_from=333.1007.0.0",
+            "email": "ljr050516@outlook.com"
+        }
+    },
+    {
+        "name": "C.R. Infinity Limit",
+        "avatar": "/friends/crinfinity.jpg",
+        "bio": "NJU 声学，本科",
+        "tags": ["Acoustics"],
+        "social": {
+            "github": "https://github.com/InfinityLimit",
+            "twitter": "https://x.com/CRInfinityLimit",
+            "bilibili": "https://space.bilibili.com/181454318",
+            "netease": "https://music.163.com/#/artist?id=57742828",
+            "soundcloud": "https://soundcloud.com/infinity_limit",
+            "email": "2845582736@qq.com"
+        },
+        "since": "2023-10-19"
+    },
+    {
+        "name": "Kenny",
+        "avatar": "/friends/kenny.jpg",
+        "bio": "UNSW CS，本科；写 C/Python/JS。",
+        "tags": ["Web", "Backend"],
+        "social": {
+          "github": "https://github.com/PKPIC",
+          "bilibili": "https://b23.tv/oCRhpus",
+          "twitter": "https://x.com/icode0723?s=21"
+        },
+        "since": "2018-11-11",
+        "note": "老同学+老朋友"
     }
 ]
