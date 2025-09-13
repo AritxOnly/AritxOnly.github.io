@@ -81,5 +81,19 @@
         },
         "since": "2024-01-05",
         "note": ""
+    },
+    {
+        "name": "Nick Tan",
+        "avatar": "/friends/tan.jpg",
+        "site": "https://orcid.org/0009-0007-3951-813X",
+        "bio": "SYSU Chem，本科； 科研 / 实验。",
+        "tags": ["化学", "科研"],
+        "social": {
+          "github": "https://github.com/Nick-Smile",
+          "bilibili": "https://b23.tv/4MJnfNB"
+        },
+        "since": "2018-09-01",
+        "note": "老同学+老朋友",
+        "priority": 80
     }
 ]

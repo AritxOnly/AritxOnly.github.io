@@ -25,14 +25,8 @@ const enriched = await Promise.all(
 )
 ---
 
-<Layout title="友链" description="互相链接，彼此增光 ✨">
+<Layout title="朋友们" description="互相链接，彼此增光 ✨">
   <section>
-    <BlockHeader>友链</BlockHeader>
-    <p class="mt-2 text-[var(--ec-foreground-muted)]">
-      想交换友链？给我发邮件：<a class="underline" href="mailto:aritxonly@outlook.com">aritxonly@outlook.com</a>。
-      支持展示 RSS。
-    </p>
-
     <div class="grid gap-4 sm:grid-cols-2 mt-4 auto-rows-fr items-stretch">
       {enriched.map((f) => <FriendCard friend={f} />)}
     </div>
@@ -40,6 +34,11 @@ const enriched = await Promise.all(
 
   <section class="mt-8">
     <BlockHeader>友链收录要求</BlockHeader>
+    <p class="mt-2 text-[var(--ec-foreground-muted)]">
+      想交换友链？给我发邮件：<a class="underline" href="mailto:aritxonly@outlook.com">aritxonly@outlook.com</a>。
+      支持展示 RSS。
+    </p>
+
     <ul class="list-disc pl-5 text-[var(--ec-foreground-muted)]">
       <li>原创内容为主，主题不限；</li>
       <li>站点稳定可访问；</li>

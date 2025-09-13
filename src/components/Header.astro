@@ -19,7 +19,12 @@ const selectTheme =
       href="/"
       class="block px-4 py-1.5 max-w-full no-underline items-center bg-accent text-background font-bold rounded-xl"
     >
-      {siteConfig.title}
+      <!-- {siteConfig.title} -->
+      <img 
+        src="/logo-trimmed.webp" 
+        alt="Aritx Logo" 
+        class="h-6 w-auto inline-block m-1 logo-img"
+      />
     </a>
 
     <nav class="hidden sm:flex items-center gap-3 ml-2" aria-label="Primary">
@@ -92,3 +97,18 @@ const selectTheme =
     toggleNavMobileMenu('toggle')
   })
 </script>
+
+<style>
+  /* 默认浅色模式：白色 logo */
+.logo-img {
+  filter: none;
+}
+
+/* 深色模式：用 filter 变为深色 */
+@media (prefers-color-scheme: dark) {
+  .logo-img {
+    filter: brightness(0) saturate(100%) invert(16%) sepia(10%) 
+            saturate(503%) hue-rotate(174deg) brightness(96%) contrast(92%);
+  }
+}
+</style>
