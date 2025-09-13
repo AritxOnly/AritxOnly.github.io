@@ -3,6 +3,7 @@ import IconRss from '~/icons/rss.svg'
 import IconGithub from '~/icons/github.svg'
 import IconBilibili from '~/icons/bilibili.svg'
 import IconXiaohongshu from '~/icons/xiaohongshu.svg'
+import IconEmail from '~/icons/email.svg'
 import type { SocialLinks } from '~/types'
 
 interface Friend {
@@ -106,6 +107,11 @@ const { friend } = Astro.props
       {friend.social?.xiaohongshu && (
         <a href={friend.social.xiaohongshu} target="_blank" rel="noopener" class="social-link" aria-label="Xiaohongshu">
           <IconXiaohongshu class="size-6" />
+        </a>
+      )}
+      {friend.social?.email && (
+        <a href={friend.social.email} target="_blank" rel="noopener" class="social-link" aria-label="Email">
+          <IconEmail class="size-6" />
         </a>
       )}
     </div>

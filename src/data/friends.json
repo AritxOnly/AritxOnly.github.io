@@ -42,6 +42,31 @@
         "note": "站主的女朋友❤️",
         "reciprocal": false,
         "priority": 100
+    },
+    {
+        "name": "Cris.Q",
+        "site": "https://crisq.top",
+        "avatar": "https://crisq.top/images/avatar.avif",
+        "bio": "WHU IS，本科；写 C++ / Rust。",
+        "tags": ["C++", "Rust", "Music"],
+        "rss": "https://crisq.top/index.xml",
+        "social": {
+          "github": "https://github.com/crisqyxw",
+          "bilibili": "https://space.bilibili.com/414669973"
+        },
+        "since": "2023-07-05",
+        "reciprocal": true,
+        "note": "?"
+    },
+    {
+        "name": "Boyuan Yu",
+        "avatar": "/friends/yby.jpg",
+        "bio": "NUC IC，本科；版图设计/开发。",
+        "tags": ["集成电路", "IC", "传感器设计"],
+        "social": {
+            "email": "yushiaa6577@gmail.com"
+        },
+        "since": "2022-09-15",
+        "note": "橘子真的很好吃😋"
     }
-
 ]
