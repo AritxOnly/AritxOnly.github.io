@@ -79,8 +79,7 @@
           "bilibili": "https://space.bilibili.com/522524076?spm_id_from=333.1007.0.0",
           "email": "dmkev@foxmail.com"
         },
-        "since": "2024-01-05",
-        "note": ""
+        "since": "2024-01-05"
     },
     {
         "name": "Nick Tan",
@@ -104,7 +103,8 @@
             "github": "https://github.com/TLNA114514",
             "bilibili": "https://space.bilibili.com/405956881?spm_id_from=333.1007.0.0",
             "email": "ljr050516@outlook.com"
-        }
+        },
+        "note": "高中同学"
     },
     {
         "name": "C.R. Infinity Limit",
@@ -132,6 +132,34 @@
           "twitter": "https://x.com/icode0723?s=21"
         },
         "since": "2018-11-11",
-        "note": "老同学+老朋友"
+        "note": "老同学+老朋友",
+        "priority": 50
+    },
+    {
+        "name": "许昌",
+        "avatar": "/friends/tusang.jpg",
+        "bio": "HUST AIA，本科。",
+        "tags": ["AIA"],
+        "social": {
+          "github": "https://github.com/xiyanwanjiaMAX",
+          "bilibili": "https://space.bilibili.com/285401244",
+          "twitter": "https://twitter.com/TusangXu",
+          "email": "3487137651@qq.com"
+        },
+        "since": "2020-9",
+        "note": "高中同学+二次元同好"
+    },
+    {
+        "name": "Elendilen",
+        "avatar": "https://obvious-jade-qkk2mydttx.edgeone.app/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250916144506.jpg",
+        "bio": "HUST CS，本科；研究分布式和去中心化系统。",
+        "tags": ["Blockchain", "go"],
+        "rss": null,
+        "social": {
+          "github": "https://github.com/elendilen",
+          "xiaohongshu": "https://www.xiaohongshu.com/user/profile/6758587d000000001d02f253"
+        },
+        "since": "2020-09-01",
+        "note": "老同学"
     }
 ]
