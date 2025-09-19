@@ -161,5 +161,16 @@
         },
         "since": "2020-09-01",
         "note": "老同学"
+    },
+    {
+        "name": "Max.Yan",
+        "avatar": "/friends/yan.jpg",
+        "bio": "TUM EI Bachelor 3.Semester\n健美式力量训练爱好者\n*n*j-t",
+        "tags": ["TUM", "EI"],
+        "social": {
+            "xiaohongshu": "https://xhslink.com/m/8GRfhlq6ZRI"
+        },
+        "note": "铁哥们",
+        "priority": 99
     }
 ]
