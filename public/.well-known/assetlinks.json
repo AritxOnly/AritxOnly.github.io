@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aritxonly.deadliner",
+      "sha256_cert_fingerprints": [
+        "3F:3F:7B:82:70:64:7A:10:D6:E0:40:80:BC:48:05:F1:06:5D:61:9D:B8:A7:4E:C7:5C:F5:B8:4B:1E:6C:84:06"
+      ]
+    }
+  }
+]

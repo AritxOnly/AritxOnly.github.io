@@ -1,0 +1,48 @@
+---
+import Layout from '~/layouts/Layout.astro';
+---
+
+<Layout title="Deadliner 分享链接">
+  <main style="max-width: 600px; margin: 2rem auto; font-family: system-ui, sans-serif;">
+    <h1>Deadliner 分享链接</h1>
+    <p>如果没有自动跳转到 Deadliner，可以点击下面按钮尝试在 App 中打开。</p>
+
+    <button
+      id="open-deadliner"
+      style="
+        padding: 0.75rem 1.5rem;
+        margin-top: 1.5rem;
+        border-radius: 999px;
+        border: none;
+        font-size: 1rem;
+        cursor: pointer;
+      ">
+      在 Deadliner 中打开
+    </button>
+
+    <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
+      如果仍未跳转，可以复制当前页面地址，在 Deadliner 中粘贴或打开。
+    </p>
+  </main>
+
+  <script>
+    function buildSchemeUrl() {
+      const url = new URL(window.location.href);
+      // https://www.aritxonly.top/deadliner/share?xxxxx
+      // -> deadliner://share?xxxxx
+      return "deadliner://share" + url.search;
+    }
+
+    function openInApp() {
+      const schemeUrl = buildSchemeUrl();
+      window.location.href = schemeUrl;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const btn = document.getElementById("open-deadliner");
+      if (btn) {
+        btn.addEventListener("click", openInApp);
+      }
+    });
+  </script>
+</Layout>
