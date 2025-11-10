@@ -3,18 +3,65 @@ import Layout from '~/layouts/Layout.astro';
 ---
 
 <Layout title="Deadliner 分享链接">
-  <main style="max-width: 600px; margin: 2rem auto; font-family: system-ui, sans-serif;">
-    <h1>你收到了一个 Deadliner 分享链接</h1>
-    <p>如果没有自动跳转到 Deadliner，可以点击下面按钮尝试在 App 中打开。</p>
+  <main class="flex justify-center items-start sm:items-center py-6 sm:py-10">
+    <section
+      class="w-full max-w-md rounded-2xl border border-accent/20 bg-card/80 shadow-xl px-5 py-5 md:px-6 md:py-6 backdrop-blur"
+    >
+      <header class="mb-4 flex items-start gap-3">
+        <div
+          class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent overflow-hidden"
+        >
+          <img
+            src="/icon.png"
+            alt="Deadliner Icon"
+            class="h-full w-full object-cover scale-110"
+          />
+        </div>
+        <div class="space-y-1">
+          <h1 class="m-0 text-base md:text-lg font-semibold text-foreground">
+            你收到了一个 Deadliner 分享链接
+          </h1>
+          <p class="m-0 text-xs md:text-sm text-muted-foreground">
+            如果设备已安装 Deadliner，可以在 App 中打开并导入这条任务。
+          </p>
+        </div>
+      </header>
 
-    <button
-      id="open-deadliner">
-      在 Deadliner 中打开
-    </button>
+      <div
+        class="mb-4 rounded-xl border border-accent/30 bg-muted/60 px-3.5 py-2.5 text-xs md:text-sm text-muted-foreground leading-relaxed"
+      >
+        <p class="m-0">
+          <span class="font-medium text-foreground">提示：</span>
+          如果没有自动跳转到 Deadliner，可以点击下面的按钮尝试在 App 中打开。
+        </p>
+      </div>
 
-    <p style="margin-top: 1rem; font-size: 0.9rem; color: #666;">
-      如果仍未跳转，可以复制当前页面地址，在 Deadliner 中粘贴或打开。
-    </p>
+      <div class="flex flex-col gap-2.5 mb-2">
+        <button
+          id="open-deadliner"
+          class="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-md hover:shadow-lg transition-transform transition-shadow active:translate-y-px"
+          type="button"
+        >
+          <span>在 Deadliner 中打开</span>
+          <span class="text-base">↗</span>
+        </button>
+
+        <button
+          id="copy-link"
+          class="inline-flex w-full items-center justify-center gap-1.5 rounded-full border border-accent/50 bg-background px-4 py-2.5 text-xs md:text-sm font-medium text-muted-foreground hover:bg-muted/60 transition-colors"
+          type="button"
+        >
+          <span>复制当前链接</span>
+          <span class="text-sm text-muted-foreground">⧉</span>
+        </button>
+      </div>
+
+      <footer class="mt-1 text-[11px] md:text-xs leading-relaxed text-muted-foreground">
+        <p class="m-0">
+          如果仍未跳转，可以手动打开 Deadliner，应用会尝试自动识别剪贴板中的链接。
+        </p>
+      </footer>
+    </section>
   </main>
 
   <script>
@@ -22,7 +69,22 @@ import Layout from '~/layouts/Layout.astro';
       const url = new URL(window.location.href);
       // https://www.aritxonly.top/deadliner/share?xxxxx
       // -> deadliner://share?xxxxx
-      return "deadliner://share" + url.search;
+      return 'deadliner://share' + url.search;
+    }
+
+    async function copyCurrentUrl() {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        const btn = document.getElementById('copy-link');
+        if (!btn) return;
+        const originalText = btn.innerText;
+        btn.innerText = '已复制';
+        setTimeout(() => {
+          btn.innerText = originalText;
+        }, 1600);
+      } catch (e) {
+        // 旧浏览器 / 权限失败就静默
+      }
     }
 
     function openInApp() {
@@ -30,10 +92,18 @@ import Layout from '~/layouts/Layout.astro';
       window.location.href = schemeUrl;
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const btn = document.getElementById("open-deadliner");
-      if (btn) {
-        btn.addEventListener("click", openInApp);
+    document.addEventListener('DOMContentLoaded', () => {
+      const openBtn = document.getElementById('open-deadliner');
+      if (openBtn) {
+        openBtn.addEventListener('click', openInApp);
+      }
+
+      const copyBtn = document.getElementById('copy-link');
+      if (copyBtn && navigator.clipboard) {
+        copyBtn.addEventListener('click', copyCurrentUrl);
+      } else if (copyBtn) {
+        // 不支持 clipboard API 的情况就隐藏复制按钮
+        copyBtn.style.display = 'none';
       }
     });
   </script>
