@@ -1,0 +1,363 @@
+---
+type Card = { title: string; text: string; image?: string; imageAlt?: string };
+type Carousel = { enabled?: boolean; autoScroll?: boolean; speed?: number };
+
+const { id, data } = Astro.props as {
+  id?: string;
+  data: { title: string; lead?: string; cards: Card[]; carousel?: Carousel };
+};
+
+const cid = `dl-showcase-${id ?? "x"}`;
+const carouselEnabled = data.carousel?.enabled ?? true;
+const autoScroll = data.carousel?.autoScroll ?? false;
+const speed = data.carousel?.speed ?? 32;
+---
+
+<section id={id} class="section">
+  <div class="wrap">
+    <div class="head">
+      <h2>{data.title}</h2>
+      {data.lead ? <p class="lead">{data.lead}</p> : null}
+    </div>
+
+    <div class="stage" data-enabled={carouselEnabled ? "1" : "0"}>
+      <div class="stage-top">
+        <div class="stage-title">Features</div>
+        <div class="stage-actions">
+          <button class="iconbtn" type="button" data-action="toggle" aria-label="toggle autoplay">
+            <span class="dot"></span>
+          </button>
+        </div>
+      </div>
+
+      <div
+        class={`track ${carouselEnabled ? "carousel" : "grid"}`}
+        id={cid}
+        data-autoplay={autoScroll ? "1" : "0"}
+        data-speed={String(speed)}
+        data-state="auto" 
+      >
+        {data.cards.map((c, idx) => (
+          <article class="card" data-idx={idx}>
+            <div class="media">
+              {c.image ? (
+                <img src={c.image} alt={c.imageAlt ?? c.title} loading="lazy" />
+              ) : (
+                <div class="ph">Add image</div>
+              )}
+            </div>
+            <div class="body">
+              <h3>{c.title}</h3>
+              <p>{c.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="stage-bottom">
+        <div class="dots" aria-label="carousel dots">
+          {data.cards.map((_, idx) => (
+            <button class="dotbtn" type="button" data-dot={idx} aria-label={`go ${idx + 1}`} />
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {carouselEnabled ? (
+    <script define:vars={{ cid, autoScroll }}>
+      const root = document.getElementById(cid);
+      if (!root) return;
+
+      const stage = root.closest(".stage");
+      const toggleBtn = stage?.querySelector('[data-action="toggle"]');
+      const dots = Array.from(stage?.querySelectorAll(".dotbtn") ?? []);
+      const cards = Array.from(root.querySelectorAll(".card"));
+
+      // 配置
+      const speed = Number(root.dataset.speed ?? "32");
+      let isAutoPlayConfigured = root.dataset.autoplay === "1";
+      if (typeof autoScroll === "boolean") isAutoPlayConfigured = autoScroll;
+
+      // 状态管理
+      let raf = 0;
+      let lastTime = performance.now();
+      let resumeTimer = 0;
+      
+      // 核心状态：isMoving (正在自动走) vs isUserInteracting (用户正在操作)
+      let state = {
+        enabled: isAutoPlayConfigured, // 总开关
+        userInteracting: false,        // 用户是否正在摸
+      };
+
+      // --- 核心逻辑函数 ---
+
+      const updateStateAttr = () => {
+        // 当自动播放开启，且用户没在操作时，设置为 'auto' (禁用 snap，开启平滑移动)
+        // 否则设置为 'manual' (开启 snap，停止 JS 移动)
+        const isAuto = state.enabled && !state.userInteracting;
+        root.setAttribute("data-state", isAuto ? "auto" : "manual");
+        
+        // 更新按钮状态
+        toggleBtn?.classList.toggle("playing", state.enabled);
+      };
+
+      const getActiveIndex = () => {
+        const rect = root.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        let best = 0, bestDist = Infinity;
+        cards.forEach((el, i) => {
+          const r = el.getBoundingClientRect();
+          const ecx = r.left + r.width / 2;
+          const d = Math.abs(ecx - cx);
+          if (d < bestDist) { bestDist = d; best = i; }
+        });
+        return best;
+      };
+
+      const setActive = (idx) => {
+        cards.forEach((el, i) => el.classList.toggle("active", i === idx));
+        dots.forEach((b, i) => b.classList.toggle("active", i === idx));
+      };
+
+      // --- 交互逻辑 ---
+
+      // 用户介入：暂停自动播放，并设置一个恢复计时器
+      const interact = () => {
+        state.userInteracting = true;
+        updateStateAttr();
+        
+        // 清除之前的恢复计时器
+        window.clearTimeout(resumeTimer);
+      };
+
+      // 用户离开：启动恢复计时器
+      const leave = () => {
+        window.clearTimeout(resumeTimer);
+        // 2.5秒后如果没有新操作，恢复自动播放
+        resumeTimer = window.setTimeout(() => {
+          state.userInteracting = false;
+          // 只有当总开关是开的时候，才恢复
+          updateStateAttr();
+          lastTime = performance.now(); // 重置时间防止跳跃
+        }, 2500);
+      };
+
+      // 点击点点
+      dots.forEach((b) => {
+        b.addEventListener("click", () => {
+          interact(); // 标记为交互中
+          const idx = Number(b.dataset.dot ?? "0");
+          const el = cards[idx];
+          if (el) {
+             const left = el.offsetLeft - (root.clientWidth - el.clientWidth) / 2;
+             root.scrollTo({ left, behavior: "smooth" });
+          }
+          leave(); // 稍后恢复
+        });
+      });
+
+      // 播放/暂停总开关
+      toggleBtn?.addEventListener("click", () => {
+        state.enabled = !state.enabled;
+        // 如果手动关了，就永久关了，不需要 leave() 恢复
+        if (!state.enabled) {
+            state.userInteracting = false; // 重置交互状态
+        } else {
+            lastTime = performance.now();
+        }
+        updateStateAttr();
+      });
+
+      // 触摸/鼠标事件监听
+      root.addEventListener("pointerdown", interact, { passive: true });
+      root.addEventListener("touchstart", interact, { passive: true });
+      root.addEventListener("wheel", interact, { passive: true });
+      
+      // 鼠标进入也算交互（方便悬停查看）
+      root.addEventListener("pointerenter", interact);
+      
+      // 离开/松开
+      root.addEventListener("pointerleave", leave);
+      root.addEventListener("touchend", leave);
+      root.addEventListener("pointerup", leave);
+
+      // 滚动监听 (更新高亮)
+      let st = 0;
+      root.addEventListener("scroll", () => {
+        window.clearTimeout(st);
+        st = window.setTimeout(() => setActive(getActiveIndex()), 50);
+      });
+
+      // --- 动画循环 ---
+
+      const tick = (t) => {
+        const dt = t - lastTime;
+        lastTime = t;
+
+        const isAuto = state.enabled && !state.userInteracting;
+        
+        if (isAuto) {
+          // 只有在自动模式下才修改 scrollLeft
+          // 注意：CSS 中 data-state="auto" 会设置 scroll-snap-type: none
+          // 这保证了 JS 修改 scrollLeft 时不会被 CSS 拽回去
+          
+          const px = (speed * dt) / 1000;
+          if (px > 0) root.scrollLeft += px;
+
+          // 循环逻辑 (简单的回跳，如果要无缝需要克隆节点，但这里保持简单)
+          const max = root.scrollWidth - root.clientWidth;
+          if (max > 0 && root.scrollLeft >= max - 2) {
+             // 稍微平滑一点的回跳，或者直接设为0
+             root.scrollLeft = 0; 
+          }
+        }
+
+        raf = requestAnimationFrame(tick);
+      };
+
+      // 初始化
+      updateStateAttr();
+      setActive(getActiveIndex());
+      raf = requestAnimationFrame(tick);
+      
+      window.addEventListener("beforeunload", () => cancelAnimationFrame(raf));
+    </script>
+  ) : null}
+</section>
+
+<style>
+  .section{padding:34px 0}
+  .head h2{margin:0 0 10px; font-size:28px; letter-spacing:-.2px}
+  .lead{margin:0 0 18px; color:var(--muted); line-height:1.7; max-width:78ch}
+
+  .stage{
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,.12);
+    background:
+      radial-gradient(900px 380px at 30% 10%, rgba(77,163,255,.20), transparent 60%),
+      radial-gradient(900px 420px at 80% 20%, rgba(155,123,255,.16), transparent 55%),
+      rgba(0,0,0,.55);
+    box-shadow: 0 28px 80px rgba(0,0,0,.55);
+    overflow:hidden;
+  }
+
+  .stage-top{
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    color: rgba(255,255,255,.62);
+    font-size: 13px;
+  }
+  .stage-title{letter-spacing:.18px}
+  
+  .iconbtn{
+    width:38px;height:30px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.06);
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition: transform .18s ease, background .18s ease;
+  }
+  .iconbtn:hover{transform: translateY(-1px); background: rgba(255,255,255,.10)}
+  .iconbtn .dot{
+    width:10px;height:10px;border-radius:999px;background: rgba(255,255,255,.35);
+  }
+  .iconbtn.playing .dot{
+    background: color-mix(in srgb, var(--accent) 70%, white 10%);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .track.carousel{
+    display:flex;
+    gap: 16px;
+    padding: 18px 18px 10px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width:none;
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .track.carousel::-webkit-scrollbar{display:none}
+
+  /* * 关键 CSS 修改：
+   * 默认开启 scroll-snap (手动模式)
+   * 当 data-state="auto" 时，禁用 snap 以便 JS 平滑移动
+   */
+  .track.carousel {
+    scroll-snap-type: x mandatory; 
+  }
+  .track.carousel[data-state="auto"] {
+    scroll-snap-type: none; /* 自动滚动时，取消吸附，防止打架 */
+    pointer-events: none;   /* 自动滚动时，暂时忽略鼠标，防止微小抖动，一旦真正交互会由 JS 切换回 manual */
+  }
+  /* 但我们需要保证用户随时可以点击，所以 pointer-events: none 需要配合 JS 的 pointerdown 监听父级或自身 */
+  /* 修正：还是不要 pointer-events: none，否则无法触发 pointerdown */
+  .track.carousel[data-state="auto"] {
+    scroll-snap-type: none;
+  }
+
+  .card{
+    flex: 0 0 360px;
+    scroll-snap-align: center;
+    border-radius: 24px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    overflow:hidden;
+    transform: translateY(2px) scale(.965);
+    opacity: .86;
+    transition: transform .28s ease, opacity .28s ease, border-color .28s ease, background .28s ease;
+  }
+  .card.active{
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    border-color: rgba(255,255,255,.20);
+    background: rgba(255,255,255,.07);
+  }
+  .card:hover{
+    transform: translateY(-2px) scale(1.01);
+    opacity: 1;
+    border-color: rgba(255,255,255,.22);
+    background: rgba(255,255,255,.08);
+  }
+
+  @media (max-width: 520px){
+    .card{flex-basis: 82vw}
+    .track.carousel{padding-left: 14px; padding-right: 14px}
+  }
+
+  .media{
+    aspect-ratio: 16 / 9;
+    background: rgba(0,0,0,.35);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .media img{width:100%;height:100%;object-fit:cover;display:block}
+  .ph{color: rgba(255,255,255,.55); font-size: 12px; padding: 16px; text-align:center}
+
+  .body{padding: 14px 16px 16px}
+  .body h3{margin:0 0 8px; font-size:16px}
+  .body p{margin:0; color:var(--muted); line-height:1.7; font-size:14px}
+
+  .stage-bottom{
+    padding: 10px 16px 14px;
+    display:flex; justify-content:center;
+  }
+  .dots{display:flex; gap:8px; align-items:center}
+  .dotbtn{
+    width: 26px; height: 6px; border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.08);
+    cursor:pointer;
+    transition: transform .18s ease, background .18s ease, border-color .18s ease, width .18s ease;
+  }
+  .dotbtn:hover{transform: translateY(-1px); border-color: rgba(255,255,255,.22)}
+  .dotbtn.active{
+    width: 38px;
+    background: color-mix(in srgb, var(--accent) 32%, rgba(255,255,255,.10));
+    border-color: color-mix(in srgb, var(--accent) 35%, rgba(255,255,255,.16));
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .iconbtn, .dotbtn{transition:none}
+  }
+</style>

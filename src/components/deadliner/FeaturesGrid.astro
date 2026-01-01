@@ -1,0 +1,107 @@
+---
+type Card = { title: string; text: string; image?: string; imageAlt?: string };
+type FeaturesGridData = {
+  title?: string;
+  lead?: string;
+  layout?: "grid" | "carousel";
+  carousel?: { autoScroll?: boolean; speed?: number };
+  cards: Card[];
+};
+
+const { id, data } = Astro.props as { id?: string; data: FeaturesGridData };
+
+const layout = data.layout ?? "grid";
+const cid = `dl-features-${id ?? "features"}`;
+const autoScroll = data.carousel?.autoScroll ?? false;
+const speed = data.carousel?.speed ?? 0.25;
+---
+
+<section id={id} class="section">
+  <div class="wrap">
+    {data.title ? <h2>{data.title}</h2> : null}
+    {data.lead ? <p class="lead">{data.lead}</p> : null}
+
+    <div class={`cards ${layout}`} id={cid}>
+      {data.cards.map((c) => (
+        <article class="card">
+          {c.image ? (
+            <div class="media">
+              <img src={c.image} alt={c.imageAlt ?? c.title} loading="lazy" />
+            </div>
+          ) : null}
+          <h3>{c.title}</h3>
+          <p>{c.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  {layout === "carousel" && autoScroll ? (
+    <script define:vars={{ cid, speed }}>
+      const el = document.getElementById(cid);
+      if (el) {
+        let raf = 0, paused = false, last = performance.now();
+        const pause = () => (paused = true);
+        const resume = () => (paused = false);
+        el.addEventListener("pointerenter", pause);
+        el.addEventListener("pointerleave", resume);
+        el.addEventListener("touchstart", pause, { passive: true });
+        el.addEventListener("touchend", resume, { passive: true });
+
+        const tick = (t) => {
+          const dt = t - last; last = t;
+          if (!paused) {
+            el.scrollLeft += (speed * dt) / 16.7;
+            const max = el.scrollWidth - el.clientWidth;
+            if (max > 0 && el.scrollLeft >= max - 1) el.scrollLeft = 0;
+          }
+          raf = requestAnimationFrame(tick);
+        };
+        raf = requestAnimationFrame(tick);
+        window.addEventListener("beforeunload", () => cancelAnimationFrame(raf));
+      }
+    </script>
+  ) : null}
+</section>
+
+<style>
+  .section{padding:34px 0}
+  h2{margin:0 0 10px; font-size:28px; letter-spacing:-.2px}
+  .lead{margin:0 0 22px; color:var(--muted); line-height:1.7; max-width:70ch}
+
+  .cards.grid{display:grid; gap:14px; grid-template-columns: repeat(3, 1fr)}
+  @media (max-width: 920px){ .cards.grid{grid-template-columns:1fr} }
+
+  .cards.carousel{
+    display:flex; gap:14px;
+    overflow-x:auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+  .cards.carousel::-webkit-scrollbar{display:none}
+
+  .card{
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.04);
+    padding:18px;
+  }
+  .cards.carousel .card{flex:0 0 320px; scroll-snap-align:start}
+  @media (max-width: 520px){ .cards.carousel .card{flex-basis:84vw} }
+
+  .media{
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.25);
+    overflow:hidden;
+    height: 140px;
+    margin-bottom: 12px;
+  }
+  .media img{width:100%;height:100%;object-fit:cover;display:block}
+
+  .card h3{margin:0 0 8px; font-size:16px}
+  .card p{margin:0; color:var(--muted); line-height:1.7; font-size:14px}
+</style>

@@ -1,0 +1,152 @@
+---
+type Meta = {
+  lang?: string;
+  title: string;
+  description: string;
+  og?: { type?: string; url?: string; image?: string };
+};
+
+type Theme = {
+  maxWidth?: string;
+  accent?: string;
+  bg?: string;
+};
+
+const { meta, theme, assets, nav, footer } = Astro.props as {
+  meta: Meta;
+  theme?: Theme;
+  assets?: { icon?: string; heroImage?: string };
+  nav?: any;
+  footer?: any;
+};
+
+const lang = meta.lang ?? "zh-CN";
+const ogType = meta.og?.type ?? "website";
+const ogUrl = meta.og?.url ?? "";
+const ogImage = meta.og?.image ?? "";
+const cssMax = theme?.maxWidth ?? "1120px";
+const cssAccent = theme?.accent ?? "#4da3ff";
+const cssBg = theme?.bg ?? "#0b0c0f";
+---
+
+<!doctype html>
+<html lang={lang} style={`--max:${cssMax};--accent:${cssAccent};--bg:${cssBg};`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{meta.title}</title>
+    <meta name="description" content={meta.description} />
+
+    <meta property="og:title" content={meta.title} />
+    <meta property="og:description" content={meta.description} />
+    <meta property="og:type" content={ogType} />
+    {ogUrl ? <meta property="og:url" content={ogUrl} /> : null}
+    {ogImage ? <meta property="og:image" content={ogImage} /> : null}
+
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/svg+xml" href="/icon.png" />
+  <link rel="apple-touch-icon" href="/icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+    <style is:global>
+    :root{
+        --panel: rgba(255,255,255,.06);
+        --panel2: rgba(255,255,255,.08);
+        --text: rgba(255,255,255,.92);
+        --muted: rgba(255,255,255,.62);
+        --line: rgba(255,255,255,.12);
+        --shadow: 0 24px 60px rgba(0,0,0,.45);
+        --radius: 22px;
+    }
+
+    *,
+    *::before,
+    *::after{box-sizing:border-box}
+
+    html,body{height:100%}
+
+    body{
+    margin:0;
+    color:var(--text);
+    background: var(--bg);
+    overflow-x:hidden;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+    }
+
+    /* 固定背景层：不会随滚动重复 */
+    body::before{
+    content:"";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(1200px 800px at 20% -10%, rgba(77,163,255,.25), transparent 55%),
+        radial-gradient(900px 600px at 90% 10%, rgba(153,102,255,.18), transparent 50%),
+        radial-gradient(900px 700px at 40% 110%, rgba(0,255,187,.10), transparent 55%),
+        var(--bg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: translateZ(0);
+    }
+
+    /* 强制覆盖浏览器默认链接样式（跨组件生效） */
+    a:any-link{
+        color: inherit !important;
+        text-decoration: none !important;
+    }
+    a:any-link:hover{ text-decoration: none !important; }
+    a:any-link:visited{ color: inherit !important; }
+
+    .wrap{
+        max-width: var(--max);
+        margin: 0 auto;
+        padding-left: max(20px, env(safe-area-inset-left));
+        padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .btn{
+        display:inline-flex; align-items:center; justify-content:center;
+        height:40px; padding:0 14px;
+        border-radius:999px;
+        border:1px solid var(--line);
+        background: rgba(255,255,255,.04);
+        color:var(--text);
+        font-size:14px;
+        transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
+        gap:8px;
+        user-select:none;
+    }
+    .btn:hover{
+        transform: translateY(-1px);
+        background: rgba(255,255,255,.07);
+        border-color: rgba(255,255,255,.18);
+    }
+    .btn.primary{
+        border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+        background: color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+    .btn.primary:hover{
+        background: color-mix(in srgb, var(--accent) 26%, transparent);
+    }
+    .btn[aria-disabled="true"]{opacity:.55; pointer-events:none}
+
+    .pill{
+        width:7px; height:7px; border-radius:999px;
+        background: rgba(255,255,255,.25);
+    }
+
+    html{scroll-behavior:smooth}
+
+    .fade{animation: fadeUp .55s ease both}
+    @keyframes fadeUp{
+        from{opacity:0; transform: translateY(10px)}
+        to{opacity:1; transform: translateY(0)}
+    }
+    </style>
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,34 @@
+---
+type FaqData = { title?: string; items: Array<{ q: string; a: string }> };
+const { id, data } = Astro.props as { id?: string; data: FaqData };
+---
+
+<section id={id} class="section">
+  <div class="wrap">
+    {data.title ? <h2>{data.title}</h2> : null}
+
+    <div class="faq" style="margin-top:14px">
+      {data.items.map((it) => (
+        <details>
+          <summary>{it.q}</summary>
+          <p>{it.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section{padding:34px 0}
+  h2{margin:0 0 10px; font-size:28px; letter-spacing:-.2px}
+  .faq details{
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.03);
+    padding:14px 16px;
+  }
+  .faq details + details{margin-top:10px}
+  summary{cursor:pointer; list-style:none; font-weight:600}
+  summary::-webkit-details-marker{display:none}
+  .faq p{color:var(--muted); margin:10px 0 0; line-height:1.7; font-size:14px}
+</style>

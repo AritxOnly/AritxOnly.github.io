@@ -1,0 +1,29 @@
+---
+type SplitCardsData = { cards: Array<{ title: string; text: string }> };
+const { id, data } = Astro.props as { id?: string; data: SplitCardsData };
+---
+
+<section id={id} class="section">
+  <div class="wrap split">
+    {data.cards.map((c) => (
+      <div class="card">
+        <h3>{c.title}</h3>
+        <p>{c.text}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .section{padding:34px 0}
+  .split{display:grid; gap:14px; grid-template-columns: 1fr 1fr}
+  @media (max-width: 920px){ .split{grid-template-columns:1fr} }
+  .card{
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.04);
+    padding:18px;
+  }
+  .card h3{margin:0 0 8px; font-size:16px}
+  .card p{margin:0; color:var(--muted); line-height:1.7; font-size:14px}
+</style>

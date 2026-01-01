@@ -1,0 +1,295 @@
+{
+  "meta": {
+    "lang": "zh-CN",
+    "title": "Deadliner · 重塑任务管理体验",
+    "description": "可视化任务管理 · WebDAV · AI任务规划 · 多平台 · 极简但强大",
+    "og": {
+      "type": "website",
+      "url": "/deadliner",
+      "image": "/icon.png"
+    }
+  },
+  "theme": {
+    "maxWidth": "1120px",
+    "accent": "#4da3ff",
+    "bg": "#0b0c0f"
+  },
+  "assets": {
+    "icon": "/res/apps/deadliner/icon.png",
+    "heroImage": ""
+  },
+  "nav": {
+    "brand": {
+      "name": "Deadliner",
+      "iconAlt": "Deadliner Icon"
+    },
+    "links": [
+      { "label": "特性", "href": "#features" },
+      { "label": "源代码", "href": "#source" },
+      { "label": "常见问题", "href": "#faq" },
+      { "label": "返回主站", "href": ".." }
+    ],
+    "cta": { "label": "下载", "href": "#download" }
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "id": "top",
+      "data": {
+        "kicker": "Deadliner 待办日历",
+        "title": "重塑任务管理体验",
+        "subtitle": "让任务可感，让进度可见",
+        "ctas": [
+          { "style": "primary", "label": "下载", "href": "#download" },
+          { "style": "secondary", "label": "Android", "href": "#android" },
+          { "style": "secondary", "label": "HarmonyOS", "href": "#next" },
+          { "style": "secondary", "label": "PC", "href": "#client" }
+        ],
+        "metaPills": ["可视化任务管理", "WebDAV", "AI任务规划", "多平台"],
+        "device": {
+          "title": "Deadliner · Preview",
+          "badge": "v4.x",
+          "placeholder": "这里放截图：public/res/apps/deadliner/hero.webp"
+        }
+      }
+    },
+    {
+      "type": "featuresGrid",
+      "id": "features",
+      "data": {
+        "title": "为“把事做完”设计",
+        "lead": "用原生、极简的设计理念，带你实现更高效的任务体验：直观的手势、清晰的交互，回顾更清晰、同步更可靠。",
+        "cards": [
+          { "title": "原生 UI", "text": "无论是 Material 3 UI 还是 ArkUI；都能给你带来最视觉原生的任务管理体验。" },
+          { "title": "手势与交互", "text": "滑动、点击、长按，将常用操作浓缩在三步以内，降低学习成本与使用负担。" },
+          { "title": "概览统计", "text": "通过图表的方式带你清晰直观地看见任务的趋势。" },
+          { "title": "自备后端模式", "text": "所有信息均在设备端侧存储。通过自备后端服务，你可以拓展联网能力，但这并非必需的。" },
+          { "title": "WebDAV 同步", "text": "打通各大平台，让任务体验无缝、互联，在你的每一个设备上都能快速访问。" },
+          { "title": "Deadliner AI", "text": "可选接入大模型服务，从长段文本中筛选任务信息。" }
+        ]
+      }
+    },
+    {
+      "type": "featureShowcase",
+      "id": "android",
+      "data": {
+        "title": "Deadliner Android",
+        "lead": "原生高效，AI 赋能",
+        "carousel": { "enabled": true, "autoScroll": true, "speed": 0.35 },
+        "cards": [
+          {
+            "title": "全新 UI 设计",
+            "text": "简洁模式崭新登场，基于 Material 3 Expressive 设计，带来全新、高效的任务体验。同时经典 UI 布局仍然可选。",
+            "image": "/res/apps/deadliner/feature/android-ui.webp",
+            "imageAlt": "Dual UI"
+          },
+          {
+            "title": "时时刻刻，在你手心",
+            "text": "桌面小组件，让你只需一眼就可以掌握任务进度；临近通知推送与每日概览推送，时刻提醒，让任务的临近不再被遗忘。",
+            "image": "/res/apps/deadliner/feature/android-widget.webp",
+            "imageAlt": "Widget"
+          },
+          {
+            "title": "每月有总结，月月看得见",
+            "text": "概览统计，通过图表的方式带你清晰直观地看见自己努力的轨迹。一步一个脚印，Deadliner 陪你一起成长。",
+            "image": "/res/apps/deadliner/feature/android-overview.webp",
+            "imageAlt": "Overview"
+          },
+          {
+            "title": "任务助手，也是贴心管家",
+            "text": "Deadliner AI，通过自然语言描述任务，自动帮你提取文本中的任务。一次点击，省心又省力。",
+            "image": "/res/apps/deadliner/feature/android-ai.webp",
+            "imageAlt": "AI assist"
+          },
+          {
+            "title": "多端同步，无惧设备隔阂",
+            "text": "通过 WebDAV 云同步，Deadliner 实现了三个平台的“大一统”。我们坚持开源开放的理念，让 Deadliner 的同步可以适配更多伙伴。",
+            "image": "/res/apps/deadliner/feature/android-webdav.webp",
+            "imageAlt": "WebDAV"
+          },
+          {
+            "title": "任务上岛，看得见的进度",
+            "text": "实时通知与流体云适配，让任务的临近更加可感。",
+            "image": "/res/apps/deadliner/feature/android-progress.webp",
+            "imageAlt": "Progress"
+          }
+        ]
+      }
+    },
+    {
+      "type": "featureShowcase",
+      "id": "next",
+      "data": {
+        "title": "Deadliner NEXT",
+        "lead": "把你熟悉的任务体验，带来鸿蒙",
+        "carousel": { "enabled": true, "autoScroll": true, "speed": 0.35 },
+        "cards": [
+          {
+            "title": "原生设计，纯净体验",
+            "text": "鸿蒙版本 Deadliner待办日历 正式上架。基于 ArkTS 原生构建，带给你纯净的鸿蒙体验。",
+            "image": "/res/apps/deadliner/feature/harmony-ui.webp",
+            "imageAlt": "UI"
+          },
+          {
+            "title": "系统卡片，一目了然",
+            "text": "通过桌面卡片，你可以查看临近的任务和任务的总数。让任务可感，让进度可见。",
+            "image": "/res/apps/deadliner/feature/harmony-widget.webp",
+            "imageAlt": "Harmony widget"
+          },
+          {
+            "title": "熟悉的体验，熟悉的高效",
+            "text": "直观的手势、清晰的交互，还是那么熟悉，还是那么高效。",
+            "image": "/res/apps/deadliner/feature/harmony-gesture.webp",
+            "imageAlt": "Harmony gesture"
+          },
+          {
+            "title": "AI 管家，多端同步？我全都要！",
+            "text": "Deadliner AI，WebDAV 云同步；全部集结鸿蒙。打通平台隔阂，享受智能任务体验。",
+            "image": "/res/apps/deadliner/feature/harmony-para.webp",
+            "imageAlt": "AI & WebDAV"
+          }
+        ]
+      }
+    },
+    {
+      "type": "featureShowcase",
+      "id": "client",
+      "data": {
+        "title": "Deadliner Client",
+        "lead": "PC 上的 Deadliner，比大更大",
+        "carousel": { "enabled": true, "autoScroll": true, "speed": 0.35 },
+        "cards": [
+          {
+            "title": "键盘驱动",
+            "text": "占位：全局快捷键、命令面板、快速创建/完成/归档。",
+            "image": "/res/apps/deadliner/feature/client-kb.webp",
+            "imageAlt": "Keyboard workflow"
+          },
+          {
+            "title": "批量管理",
+            "text": "占位：多选、批量改期/标签/优先级、拖拽排序、批量导出。",
+            "image": "/res/apps/deadliner/feature/client-batch.webp",
+            "imageAlt": "Batch actions"
+          },
+          {
+            "title": "更强回顾",
+            "text": "占位：周/月视图、过滤器组合、统计视图、复盘模板。",
+            "image": "/res/apps/deadliner/feature/client-review.webp",
+            "imageAlt": "Review"
+          }
+        ]
+      }
+    },
+    {
+      "type": "downloadCards",
+      "id": "download",
+      "data": {
+        "title": "获取 Deadliner",
+        "lead": "每一个平台，总能找到你的 Deadliner。",
+        "groups": [
+          {
+            "title": "Android",
+            "id": "download-android",
+            "cards": [
+              {
+                "title": "安装包",
+                "text": "下载 APK 格式的安装包",
+                  "buttons": [
+                    { "label": "蓝奏云", "href": "#", "external": true, "style": "primary" },
+                    { "label": "Github", "href": "https://github.com/AritxOnly/Deadliner/releases/download/v4.0.0/app-release.apk", "external": true, "style": "secondary" }
+                  ]
+              },
+              {
+                "title": "GitHub Releases",
+                "text": "适合开发者与追新用户。",
+                "button": { "label": "打开 GitHub", "href": "https://github.com/AritxOnly/Deadliner/releases", "external": true, "style": "secondary" }
+              }
+            ]
+          },
+          {
+            "title": "HarmonyOS",
+            "id": "download-harmony",
+            "cards": [
+              {
+                "title": "应用商店",
+                "text": "前往 AppGallery 查看",
+                "button": { "label": "打开", "href": "https://appgallery.huawei.com/app/detail?id=com.aritxonly.deadliner&channelId=SHARE&source=appshare", "external": true, "style": "primary" }
+              }
+            ]
+          },
+          {
+            "title": "PC 客户端 (Beta)",
+            "id": "download-client",
+            "cards": [
+              {
+                "title": "Windows",
+                "text": "下载.exe格式的安装包",
+                "button": { "label": "下载", "href": "#", "disabled": true, "style": "primary" }
+              },
+              {
+                "title": "macOS",
+                "text": "下载.dmg格式的安装包",
+                "button": { "label": "下载", "href": "#", "disabled": true, "style": "secondary" }
+              },
+              {
+                "title": "Linux",
+                "text": "暂不可用",
+                "button": { "label": "下载", "href": "#", "disabled": true, "style": "secondary" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "sourceCode",
+      "id": "source",
+      "data": {
+        "title": "源代码",
+        "lead": "三个平台分别维护，保持接口与数据结构一致。点击即可查看仓库与分支结构。Deadliner 基于 MIT 协议开源。",
+        "items": [
+          {
+            "label": "Android",
+            "text": "仓库 / Releases / Issue",
+            "href": "https://github.com/AritxOnly/Deadliner",
+            "external": true,
+            "icon": "/res/deadliner/android.svg"
+          },
+          {
+            "label": "HarmonyOS",
+            "text": "仓库 / Releases / Issue",
+            "href": "https://github.com/AritxOnly/DeadlinerNEXT",
+            "external": true,
+            "icon": "/res/deadliner/hmos.svg"
+          },
+          {
+            "label": "PC 客户端 (Beta)",
+            "text": "仓库 / Releases / Issue",
+            "href": "https://github.com/XiaoChennnng/Deadliner-Client",
+            "external": true,
+            "icon": "/res/deadliner/pc.svg"
+          }
+        ]
+      }
+    },
+    {
+      "type": "faq",
+      "id": "faq",
+      "data": {
+        "title": "常见问题",
+        "items": [
+          { "q": "为什么不用账号体系？", "a": "因为这是工具：账号会引入绑定、迁移成本、合规与服务器长期运维。你用 WebDAV 自持更可控。" },
+          { "q": "AI 会不会自动上传我的内容？", "a": "不会。你显式触发才会请求；Key 在你手里；App 只是 prompt/解析载体。" }
+        ]
+      }
+    }
+  ],
+  "footer": {
+    "brand": { "name": "Deadliner 待办日历" },
+    "links": [
+      { "label": "隐私政策", "href": "/privacy" },
+      { "label": "开放源代码许可", "href": "https://github.com/AritxOnly/Deadliner", "external": true },
+      { "label": "GitHub", "href": "https://github.com/AritxOnly/Deadliner", "external": true }
+    ]
+  }
+}

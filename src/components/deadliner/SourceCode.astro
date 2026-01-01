@@ -1,0 +1,174 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+
+type Item = {
+  label: string;
+  text?: string;
+  href: string;
+  external?: boolean;
+  icon?: string;      // svg path like "/res/deadliner/pc.svg"
+  iconAlt?: string;
+  iconInvert?: boolean;
+};
+
+type SourceCodeData = {
+  title?: string;
+  lead?: string;
+  items: Item[];
+};
+
+const { id, data } = Astro.props as { id?: string; data: SourceCodeData };
+
+function inlineSvgFromPublic(iconPath?: string) {
+  if (!iconPath) return "";
+  // 只允许 public 下的绝对路径
+  if (!iconPath.startsWith("/")) return "";
+  // 映射到项目 public 目录
+  const full = path.join(process.cwd(), "public", iconPath);
+  try {
+    let svg = fs.readFileSync(full, "utf-8");
+
+    // 基础清理：去掉 xml/doctype，避免奇怪解析
+    svg = svg
+      .replace(/<\?xml[\s\S]*?\?>/g, "")
+      .replace(/<!doctype[\s\S]*?>/gi, "")
+      .trim();
+
+    // 给 <svg> 注入 class，方便统一尺寸/颜色；不破坏原有属性
+    if (svg.startsWith("<svg")) {
+      svg = svg.replace(
+        /<svg\b([^>]*)>/,
+        (m, attrs) => {
+          if (/\bclass=/.test(attrs)) {
+            return `<svg${attrs.replace(/\bclass=(["'])(.*?)\1/, (mm: any, q: any, cls: any) => ` class=${q}${cls} dl-svg${q}`)}>`;
+          }
+          return `<svg${attrs} class="dl-svg">`;
+        }
+      );
+    }
+
+    return svg;
+  } catch {
+    return "";
+  }
+}
+---
+
+<section id={id} class="section">
+  <div class="wrap">
+    {data.title ? <h2>{data.title}</h2> : null}
+    {data.lead ? <p class="lead">{data.lead}</p> : null}
+
+    <div class="grid">
+      {data.items.map((it) => (
+        <a
+          class="item"
+          href={it.href}
+          target={it.external ? "_blank" : undefined}
+          rel={it.external ? "noreferrer" : undefined}
+        >
+          <div class="row">
+            <div class="icon" aria-hidden="true">
+            {(() => {
+                const svg = inlineSvgFromPublic(it.icon);
+                if (svg) return <Fragment set:html={svg} />;
+                return <span class="ph">SVG</span>;
+            })()}
+            </div>
+
+            <div class="meta">
+              <div class="label">{it.label}</div>
+              {it.text ? <div class="text">{it.text}</div> : null}
+            </div>
+
+            <div class="chev" aria-hidden="true">→</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section{padding:34px 0}
+  h2{margin:0 0 10px; font-size:28px; letter-spacing:-.2px}
+  .lead{margin:0 0 22px; color:var(--muted); line-height:1.7; max-width:70ch}
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:14px;
+  }
+  @media (max-width: 920px){ .grid{grid-template-columns:1fr} }
+
+  .item{
+    display:block;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.04);
+    padding:16px;
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  }
+  .item:hover{
+    transform: translateY(-1px);
+    background: rgba(255,255,255,.07);
+    border-color: rgba(255,255,255,.18);
+  }
+
+  .row{display:flex; align-items:center; gap:12px}
+
+  .icon{
+    width:42px; height:42px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(0,0,0,.20);
+    display:flex; align-items:center; justify-content:center;
+    flex: 0 0 auto;
+
+    /* 关键：设置 icon 容器的 color */
+    color: rgba(255,255,255,.88);
+  }
+
+  .icon :global(svg.dl-svg){
+    width:22px;
+    height:22px;
+    display:block;
+  }
+
+  /* 如果你的 svg 用 fill="currentColor"，就会跟随上面的 color */
+  .icon :global(svg.dl-svg *){
+    /* 不强行覆盖 fill/stroke，避免破坏多色图标
+        只要内部写了 currentColor，就会继承 .icon 的 color */
+  }
+
+  /* 可选：悬浮时用 accent 强调（仅影响使用 currentColor 的部分） */
+  .item:hover .icon{
+    color: color-mix(in srgb, var(--accent) 70%, white 10%);
+  }
+  .icon img{
+    width:22px; height:22px;
+    display:block;
+    opacity:.92;
+  }
+  .icon img.inv{ filter: invert(1); opacity:.88; }
+
+  .ph{font-size:12px; color: rgba(255,255,255,.55)}
+
+  .meta{min-width:0}
+  .label{font-size:15px; color: rgba(255,255,255,.92); margin-bottom:4px}
+  .text{
+    font-size:13px;
+    color: var(--muted);
+    line-height:1.5;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .chev{margin-left:auto; color: rgba(255,255,255,.55); font-size:16px}
+
+  @media (prefers-reduced-motion: reduce){
+    .item{transition:none}
+  }
+</style>

@@ -1,0 +1,93 @@
+---
+type Btn = { label: string; href: string; style?: "primary" | "secondary"; external?: boolean; disabled?: boolean };
+type Card = { title: string; text: string; button?: Btn; buttons?: Btn[] };
+type Group = { title: string; id?: string; cards: Card[] };
+
+type DownloadCardsData =
+  | { title?: string; lead?: string; cards: Card[]; groups?: never }
+  | { title?: string; lead?: string; groups: Group[]; cards?: never };
+
+const { id, data } = Astro.props as { id?: string; data: DownloadCardsData };
+
+const groups: Group[] =
+  "groups" in data && Array.isArray(data.groups)
+    ? data.groups
+    : [{ title: "", cards: (data as any).cards ?? [] }];
+---
+
+<section id={id} class="section">
+  <div class="wrap">
+    {"title" in data && data.title ? <h2>{data.title}</h2> : null}
+    {"lead" in data && data.lead ? <p class="lead">{data.lead}</p> : null}
+
+    <div class="groups">
+      {groups.map((g) => (
+        <div class="group" id={g.id}>
+          {g.title ? <h3 class="gtitle">{g.title}</h3> : null}
+
+          <div class="grid3">
+            {g.cards.map((c) => (
+              <div class="card">
+                <h4>{c.title}</h4>
+                <p>{c.text}</p>
+
+                {(() => {
+                const btns = c.buttons?.length ? c.buttons : (c.button ? [c.button] : []);
+                if (!btns.length) return null;
+
+                return (
+                    <div class="btnrow">
+                    {btns.map((b) => (
+                        <a
+                        class={`btn ${b.style === "primary" ? "primary" : ""}`}
+                        href={b.href}
+                        target={b.external ? "_blank" : undefined}
+                        rel={b.external ? "noreferrer" : undefined}
+                        aria-disabled={b.disabled ? "true" : "false"}
+                        onclick={b.disabled ? "return false" : undefined}
+                        >
+                        {b.label}
+                        </a>
+                    ))}
+                    </div>
+                );
+                })()}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section{padding:34px 0}
+  h2{margin:0 0 10px; font-size:28px; letter-spacing:-.2px}
+  .lead{margin:0 0 22px; color:var(--muted); line-height:1.7; max-width:70ch}
+
+  .groups{display:flex; flex-direction:column; gap:22px}
+  .group{
+    padding-top: 6px;
+  }
+  .gtitle{
+    margin: 0 0 12px;
+    font-size: 14px;
+    letter-spacing: .18px;
+    color: rgba(255,255,255,.68);
+    text-transform: none;
+  }
+
+  .grid3{display:grid; gap:14px; grid-template-columns: repeat(3, 1fr)}
+  @media (max-width: 920px){ .grid3{grid-template-columns:1fr} }
+
+  .card{
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,.04);
+    padding:18px;
+  }
+  .card h4{margin:0 0 8px; font-size:16px}
+  .card p{margin:0; color:var(--muted); line-height:1.7; font-size:14px}
+  .btnrow{margin-top:14px}
+</style>

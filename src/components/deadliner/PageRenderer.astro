@@ -1,0 +1,40 @@
+---
+import Hero from "./Hero.astro";
+import FeaturesGrid from "./FeaturesGrid.astro";
+import SplitCards from "./SplitCards.astro";
+import DownloadCards from "./DownloadCards.astro";
+import FAQ from "./FAQ.astro";
+import FeatureShowcase from "./FeatureShowcase.astro";
+import SourceCode from "./SourceCode.astro";
+
+type Section =
+  | { type: "hero"; id?: string; data: any }
+  | { type: "featuresGrid"; id?: string; data: any }
+  | { type: "splitCards"; id?: string; data: any }
+  | { type: "downloadCards"; id?: string; data: any }
+  | { type: "faq"; id?: string; data: any }
+  | { type: string; id?: string; data: any };
+
+const { assets, sections } = Astro.props as {
+  assets?: any;
+  sections: Section[];
+};
+
+const map: Record<string, any> = {
+  hero: Hero,
+  featuresGrid: FeaturesGrid,
+  splitCards: SplitCards,
+  downloadCards: DownloadCards,
+  featureShowcase: FeatureShowcase,
+  sourceCode: SourceCode,
+  faq: FAQ
+};
+---
+
+{sections.map((s) => {
+  const Comp = map[s.type];
+  if (!Comp) return null;
+  // hero 需要 assets（截图等），其他按需也可传
+  if (s.type === "hero") return <Comp assets={assets} data={s.data} />;
+  return <Comp id={s.id} data={s.data} />;
+})}
