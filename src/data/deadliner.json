@@ -49,7 +49,7 @@
         "device": {
           "title": "Deadliner · Preview",
           "badge": "v4.x",
-          "placeholder": "这里放截图：public/res/apps/deadliner/hero.webp"
+          "placeholder": "TODO"
         }
       }
     },
@@ -195,13 +195,13 @@
                 "title": "安装包",
                 "text": "下载 APK 格式的安装包",
                   "buttons": [
-                    { "label": "蓝奏云", "href": "#", "external": true, "style": "primary" },
+                    { "label": "123 云盘", "href": "https://www.123865.com/s/n2Qvjv-3tXud", "external": true, "style": "primary" },
                     { "label": "Github", "href": "https://github.com/AritxOnly/Deadliner/releases/download/v4.0.0/app-release.apk", "external": true, "style": "secondary" }
                   ]
               },
               {
                 "title": "GitHub Releases",
-                "text": "适合开发者与追新用户。",
+                "text": "适合开发者与追新用户",
                 "button": { "label": "打开 GitHub", "href": "https://github.com/AritxOnly/Deadliner/releases", "external": true, "style": "secondary" }
               }
             ]
@@ -223,12 +223,12 @@
             "cards": [
               {
                 "title": "Windows",
-                "text": "下载.exe格式的安装包",
+                "text": "下载 .exe 格式的安装包",
                 "button": { "label": "下载", "href": "#", "disabled": true, "style": "primary" }
               },
               {
                 "title": "macOS",
-                "text": "下载.dmg格式的安装包",
+                "text": "下载 .dmg 格式的安装包",
                 "button": { "label": "下载", "href": "#", "disabled": true, "style": "secondary" }
               },
               {
