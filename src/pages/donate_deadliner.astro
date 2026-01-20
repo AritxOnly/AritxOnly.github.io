@@ -1,0 +1,103 @@
+---
+import Layout from '~/layouts/Layout.astro'
+
+const wechatQr = '/res/donate/wechat.jpg'
+const alipayQr = '/res/donate/alipay.jpg'
+
+const alipayUrl = 'https://qr.alipay.com/fkx16416hshql04f7otg30a?0'
+---
+
+<Layout title="捐赠支持" description="你的支持是对我最大的鼓励">
+  <main class="min-h-screen py-12 px-4 sm:px-6 lg:px-8 flex flex-col items-center">
+    
+    <div class="max-w-3xl w-full text-center mb-10">
+      <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl mb-4">
+        感谢您的支持 ❤️
+      </h1>
+      <p class="text-lg text-gray-600 leading-relaxed">
+        Deadliner 是一个独立开发项目。如果您喜欢这个应用，或者它帮您战胜了拖延症，<br class="hidden sm:block" />
+        欢迎请我喝一杯咖啡，这将成为我持续维护和更新的最大动力。
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl w-full">
+      
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+        <div class="bg-[#2FAC60] py-4 px-6 flex items-center justify-between">
+          <span class="text-white font-bold text-lg tracking-wide">WeChat Pay</span>
+          <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22.74 6.58a0.5 0.5 0 0 0 -0.67 -0.09L8.89 15.65a0.69 0.69 0 0 1 -1 -0.23L4.41 9.37a0.7 0.7 0 0 1 0.11 -0.84 0.67 0.67 0 0 1 0.83 -0.12l3.85 2.14a0.51 0.51 0 0 0 0.48 0l10.77 -5.74a0.49 0.49 0 0 0 0.26 -0.39 0.48 0.48 0 0 0 -0.17 -0.42A13.07 13.07 0 0 0 12 1C5.38 1 0 5.5 0 11a9.2 9.2 0 0 0 3.44 7 0.24 0.24 0 0 1 0.09 0.22l-0.43 3.95a0.76 0.76 0 0 0 0.36 0.73 0.76 0.76 0 0 0 0.39 0.1 0.72 0.72 0 0 0 0.42 -0.13c0.11 -0.08 2.58 -1.76 3.43 -2.38a0.24 0.24 0 0 1 0.2 0 22.28 22.28 0 0 0 4.1 0.63c6.62 0 12 -4.5 12 -10a8.75 8.75 0 0 0 -1.26 -4.54Z"></path>
+            <path d="M8.34 19.82Z"></path>
+          </svg>
+        </div>
+        <div class="p-8 flex flex-col items-center">
+          <div class="relative group">
+            <img src={wechatQr} alt="微信支付二维码" class="w-48 h-48 object-cover rounded-lg border-2 border-gray-100" />
+            <div class="absolute inset-0 bg-black/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+              <span class="text-xs text-gray-800 bg-white/90 px-2 py-1 rounded shadow">微信扫一扫</span>
+            </div>
+          </div>
+          <p class="mt-6 text-sm text-gray-500 text-center">
+            <span class="block md:hidden">长按图片保存或截图</span>
+            <span class="hidden md:block">打开微信 - 扫一扫</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+        <div class="bg-[#1677FF] py-4 px-6 flex items-center justify-between">
+          <span class="text-white font-bold text-lg tracking-wide">Alipay</span>
+          <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M16 15.74a0.24 0.24 0 0 0 -0.29 0.06 11.47 11.47 0 0 1 -7.87 3.7c-4.51 0 -4.4 -3.7 -4.4 -3.81a3.93 3.93 0 0 1 1.73 -3.57c2.76 -1.75 7.94 0.16 9.85 1a0.26 0.26 0 0 0 0.31 -0.1 8.41 8.41 0 0 0 1 -2.27 0.25 0.25 0 0 0 -0.05 -0.22 0.26 0.26 0 0 0 -0.2 -0.1H8.43a1 1 0 0 1 0 -2h3.34a0.25 0.25 0 0 0 0.23 -0.28V7.1a0.25 0.25 0 0 0 -0.25 -0.25h-4a1 1 0 0 1 0 -2h4A0.25 0.25 0 0 0 12 4.6v-0.1a1 1 0 0 1 2 0v0.1a0.25 0.25 0 0 0 0.25 0.25h4a1 1 0 0 1 0 2h-4a0.25 0.25 0 0 0 -0.25 0.25v1.05a0.25 0.25 0 0 0 0.25 0.25h3a1.28 1.28 0 0 1 0.95 0.43 1.26 1.26 0 0 1 0.31 1 10 10 0 0 1 -1.32 4 0.28 0.28 0 0 0 0 0.2 0.26 0.26 0 0 0 0.13 0.16l5.2 2.44a0.51 0.51 0 0 0 0.4 0 0.5 0.5 0 0 0 0.28 -0.29 12 12 0 1 0 -1.51 2.76 0.53 0.53 0 0 0 0.08 -0.42 0.49 0.49 0 0 0 -0.28 -0.33c-1.18 -0.57 -2.91 -1.35 -5.49 -2.61Z"></path>
+            <path d="M6.24 13.81c-0.34 0.22 -0.8 0.65 -0.8 1.88s0.72 1.72 2.12 1.8a9 9 0 0 0 6 -2.44 0.24 0.24 0 0 0 -0.08 -0.41c-2.42 -0.95 -5.78 -1.76 -7.24 -0.83Z"></path>
+          </svg>
+        </div>
+        <div class="p-8 flex flex-col items-center">
+          <div class="relative">
+            <img src={alipayQr} alt="支付宝二维码" class="w-48 h-48 object-cover rounded-lg border-2 border-gray-100" />
+          </div>
+          
+          <a 
+            href={alipayUrl}
+            target="_blank"
+            id="alipay-btn"
+            class="mt-6 px-6 py-2 bg-[#1677FF] hover:bg-[#0e63de] text-white text-sm font-medium rounded-full transition-colors duration-200 flex items-center space-x-2 shadow-sm hover:shadow"
+          >
+            <span>打开支付宝支付</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+          </a>
+          <p class="mt-2 text-xs text-gray-400">若无法跳转，请保存图片扫码</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-sm text-gray-500">
+        所有捐赠将用于支付服务器、域名及 App Store 开发者账号费用。
+      </p>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a href="/" class="text-gray-400 hover:text-gray-600 transition-colors text-sm">返回首页</a>
+        <span class="text-gray-300">|</span>
+        <a href="https://github.com/AritxOnly/DeadlinerNEXT" target="_blank" class="text-gray-400 hover:text-gray-600 transition-colors text-sm">GitHub</a>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  // 简单的客户端脚本，用于处理支付宝在移动端的跳转
+  const alipayBtn = document.getElementById('alipay-btn');
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+
+  if (alipayBtn) {
+    if (isMobile) {
+      // 移动端尝试直接唤起，这里利用了 alipays 协议（部分浏览器可能拦截）
+      // 注意：最好的方式还是解析出二维码里的 url 填在 href 里
+      alipayBtn.innerText = '点击启动支付宝';
+    } else {
+      // 桌面端隐藏跳转按钮，因为桌面跳转通常没意义，直接扫码即可
+      alipayBtn.style.display = 'none';
+    }
+  }
+</script>
