@@ -195,7 +195,8 @@
                 "title": "安装包",
                 "text": "下载 APK 格式的安装包",
                   "buttons": [
-                    { "label": "123 云盘", "href": "https://www.123865.com/s/n2Qvjv-3tXud", "external": true, "style": "primary" },
+                    { "label": "下载", "href": "https://dav.aritxonly.top/d/deadliner/downloads/app-release.apk", "external": true, "style": "primary" },
+                    { "label": "123 云盘", "href": "https://www.123865.com/s/n2Qvjv-3tXud", "external": true, "style": "secondary" },
                     { "label": "Github", "href": "https://github.com/AritxOnly/Deadliner/releases/download/v4.0.0/app-release.apk", "external": true, "style": "secondary" }
                   ]
               },
