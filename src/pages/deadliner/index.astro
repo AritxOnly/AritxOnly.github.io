@@ -3,7 +3,7 @@ export const prerender = true;
 
 import DeadlinerLayout from "../../components/deadliner/DeadlinerLayout.astro";
 import Nav from "../../components/deadliner/Nav.astro";
-import PageRenderer from "../../components/deadliner/PageRenderer.astro";
+import DeadlinerHome from "../../components/deadliner/DeadlinerHome.astro";
 import Footer from "../../components/deadliner/Footer.astro";
 
 import content from "../../data/deadliner.json";
@@ -12,7 +12,7 @@ import content from "../../data/deadliner.json";
 <DeadlinerLayout meta={content.meta} theme={content.theme} assets={content.assets} nav={content.nav} footer={content.footer}>
   <Nav assets={content.assets} nav={content.nav} />
   <main>
-    <PageRenderer assets={content.assets} sections={content.sections} />
+    <DeadlinerHome />
     <Footer footer={content.footer} />
   </main>
 </DeadlinerLayout>

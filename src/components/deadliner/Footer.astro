@@ -14,7 +14,7 @@ const brand = footer.brand?.name ?? "Deadliner";
   <div class="wrap foot">
     <div>
       <div class="brand">{brand}</div>
-      <div class="copy">© {year} {brand}. All rights reserved.</div>
+      <div class="copy">© {year} {brand}</div>
       <div class="icp">
         <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">鄂ICP备2026002477号-1</a>
       </div>
@@ -33,16 +33,17 @@ const brand = footer.brand?.name ?? "Deadliner";
 <style>
   .footer{
     padding:34px 0 50px;
-    color:var(--muted);
+    color:#77777c;
     border-top:1px solid var(--line);
     margin-top:24px;
   }
   .foot{display:flex; gap:16px; justify-content:space-between; align-items:flex-start; flex-wrap:wrap}
-  .brand{font-weight:650; color:var(--text)}
+  .brand{font-weight:650; color:#1d1d1f}
   .copy{margin-top:10px}
   .icp{margin-top:10px; font-size:80%}
   .icp a{color:var(--muted); text-decoration:underline}
   .icp a:hover{color:var(--text)}
-  .links a{color:var(--muted); font-size: 80%;}
-  .links a:hover{color:var(--text)}
+  .links{display:flex;gap:20px;flex-wrap:wrap}
+  .links a{color:#6e6e73!important;font-size: 80%;}
+  .links a:hover{color:#1d1d1f!important}
 </style>

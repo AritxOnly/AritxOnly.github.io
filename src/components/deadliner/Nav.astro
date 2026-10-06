@@ -1,32 +1,47 @@
 ---
+import { Image } from 'astro:assets'
+import brandBackground from '../../../public/res/apps/deadliner/brand-background.png'
+import brandForeground from '../../../public/res/apps/deadliner/brand-foreground.png'
 const { assets, nav } = Astro.props as {
-  assets?: { icon?: string };
+  assets?: { icon?: string }
   nav: {
-    brand: { name: string; iconAlt?: string; href?: string };
-    links?: Array<{ label: string; href: string }>;
-    cta?: { label: string; href: string };
-  };
-};
+    brand: { name: string; iconAlt?: string; href?: string }
+    links?: Array<{ label: string; href: string }>
+    cta?: { label: string; href: string }
+  }
+}
 
-const icon = assets?.icon ?? "";
-const brandHref = nav.brand.href ?? "/deadliner";
-const links = nav.links ?? [];
-const cta = nav.cta;
+const brandHref = nav.brand.href ?? '/deadliner'
+const links = nav.links ?? []
+const cta = nav.cta
 ---
 
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="brand" href={brandHref} aria-label={nav.brand.name}>
-      {icon ? <img class="icon" src={icon} alt={nav.brand.iconAlt ?? nav.brand.name} /> : null}
+      <span class="icon" aria-hidden="true">
+        <Image src={brandBackground} alt="" width={88} loading="eager" decoding="async" />
+        <Image src={brandForeground} alt="" width={88} loading="eager" decoding="async" />
+      </span>
       <span class="brand-name">{nav.brand.name}</span>
     </a>
 
     {/* Desktop */}
     <nav class="nav-links desktop" aria-label="Primary">
-      {links.map((l) => (
-        <a class="link" href={l.href}>{l.label}</a>
-      ))}
-      {cta ? <a class="btn" href={cta.href}>{cta.label}</a> : null}
+      {
+        links.map((l) => (
+          <a class="link" href={l.href}>
+            {l.label}
+          </a>
+        ))
+      }
+      {
+        cta ? (
+          <a class="btn" href={cta.href}>
+            {cta.label}
+          </a>
+        ) : null
+      }
     </nav>
 
     {/* Mobile */}
@@ -37,156 +52,257 @@ const cta = nav.cta;
 
       <div class="menu" aria-label="Mobile menu">
         <div class="menu-links">
-          {links.map((l) => (
-            <a class="menu-link" href={l.href}>{l.label}</a>
-          ))}
+          {
+            links.map((l) => (
+              <a class="menu-link" href={l.href}>
+                {l.label}
+              </a>
+            ))
+          }
         </div>
 
-        {cta ? (
-          <div class="menu-cta">
-            <a class="btn primary" href={cta.href} style="width:100%; justify-content:center;">
-              {cta.label}
-            </a>
-          </div>
-        ) : null}
+        {
+          cta ? (
+            <div class="menu-cta">
+              <a
+                class="btn primary"
+                href={cta.href}
+                style="width:100%; justify-content:center;"
+              >
+                {cta.label}
+              </a>
+            </div>
+          ) : null
+        }
       </div>
     </details>
   </div>
 </header>
 
 <style>
-  .nav{
-    position:sticky; top:0; z-index:50;
-    backdrop-filter: blur(14px);
-    background: rgba(11,12,15,.6);
-    border-bottom:1px solid var(--line);
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: saturate(180%) blur(18px);
+    background: rgba(0, 0, 0, 0.84);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    color: #f5f5f7;
   }
 
-  .nav-inner{
-    display:flex; align-items:center; justify-content:space-between;
-    height:64px;
-    gap:12px;
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    gap: 12px;
   }
 
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-weight:650; letter-spacing:.2px;
-    min-width:0;
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 650;
+    letter-spacing: 0.2px;
+    min-width: 0;
   }
-  .icon{width:22px;height:22px;border-radius:6px; display:block}
-  .brand-name{
-    line-height:1;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+  .icon {
+    position: relative;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    border-radius: 6px;
+    display: block;
+  }
+  .icon img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .brand-name {
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   /* Desktop links */
-  .nav-links{
-    display:flex; gap:18px; align-items:center;
-    color:var(--muted); font-size:14px;
+  .nav-links {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    color: #a1a1a6;
+    font-size: 12px;
   }
-  .link:hover{color:var(--text)}
+  .link:hover {
+    color: #f5f5f7;
+  }
+  .nav .btn {
+    border-color: #f5f5f7;
+    background: #f5f5f7;
+    color: #1d1d1f !important;
+    font-size: 12px;
+    height: 34px;
+    padding: 0 15px;
+  }
+  .nav .btn:hover {
+    background: #d2d2d7;
+    border-color: #d2d2d7;
+  }
 
   /* Mobile menu: hidden on desktop */
-  .mobile{display:none; position:relative}
+  .mobile {
+    display: none;
+    position: relative;
+  }
 
   /* Breakpoint */
-  @media (max-width: 820px){
-    .desktop{display:none}
-    .mobile{display:block}
+  @media (max-width: 820px) {
+    .desktop {
+      display: none;
+    }
+    .mobile {
+      display: block;
+    }
   }
 
   /* details/summary reset */
-  summary{list-style:none}
-  summary::-webkit-details-marker{display:none}
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
 
-  .menu-btn{
-    width:40px; height:40px;
-    display:flex; align-items:center; justify-content:center;
-    border-radius:999px;
-    border:1px solid var(--line);
-    background: rgba(255,255,255,.04);
-    cursor:pointer;
-    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+  .menu-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition:
+      transform 0.18s ease,
+      background 0.18s ease,
+      border-color 0.18s ease;
   }
-  .menu-btn:hover{
+  .menu-btn:hover {
     transform: translateY(-1px);
-    background: rgba(255,255,255,.07);
-    border-color: rgba(255,255,255,.18);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
   }
-  .menu-btn:focus-visible{
+  .menu-btn:focus-visible {
     outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
     outline-offset: 2px;
   }
 
   /* Hamburger */
-  .bars{
-    width:18px; height:12px;
-    position:relative;
+  .bars {
+    width: 18px;
+    height: 12px;
+    position: relative;
   }
-  .bars::before, .bars::after, .bars span{
-    content:"";
-    position:absolute; left:0; right:0;
-    height:2px;
-    background: rgba(255,255,255,.82);
-    border-radius:999px;
+  .bars::before,
+  .bars::after,
+  .bars span {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.82);
+    border-radius: 999px;
   }
-  .bars::before{top:0}
-  .bars::after{bottom:0}
-  .bars{ }
-  .bars::marker{display:none}
+  .bars::before {
+    top: 0;
+  }
+  .bars::after {
+    bottom: 0;
+  }
+  .bars {
+  }
+  .bars::marker {
+    display: none;
+  }
 
   /* Dropdown panel */
-  .menu{
-    position:absolute;
-    right:0;
+  .menu {
+    position: absolute;
+    right: 0;
     top: calc(100% + 10px);
     width: min(360px, calc(100vw - 24px));
     border-radius: 18px;
-    border:1px solid var(--line);
-    background: rgba(11,12,15,.92);
-    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(25, 25, 27, 0.98);
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
     padding: 10px;
     transform-origin: top right;
-    animation: pop .16s ease both;
+    animation: pop 0.16s ease both;
   }
 
-  @keyframes pop{
-    from{opacity:0; transform: translateY(-6px) scale(.98)}
-    to{opacity:1; transform: translateY(0) scale(1)}
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
-  .menu-links{display:flex; flex-direction:column; gap:2px; padding:4px}
-  .menu-link{
+  .menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px;
+  }
+  .menu-link {
     padding: 12px 12px;
     border-radius: 14px;
-    color: rgba(255,255,255,.86);
-    font-size:14px;
+    color: rgba(245, 245, 247, 0.9);
+    font-size: 14px;
     background: transparent;
-    transition: background .16s ease;
+    transition: background 0.16s ease;
   }
-  .menu-link:hover{
-    background: rgba(255,255,255,.06);
+  .menu-link:hover {
+    background: rgba(255, 255, 255, 0.08);
   }
 
-  .menu-cta{
-    border-top:1px solid rgba(255,255,255,.10);
-    margin-top:6px;
-    padding:10px 6px 6px;
+  .menu-cta {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 6px;
+    padding: 10px 6px 6px;
+  }
+  .menu-cta .btn {
+    height: 42px;
+    font-size: 13px;
   }
 
   /* Open state: turn hamburger into X */
-  details[open] .bars::before{
-    top:5px; transform: rotate(45deg);
+  details[open] .bars::before {
+    top: 5px;
+    transform: rotate(45deg);
   }
-  details[open] .bars::after{
-    bottom:5px; transform: rotate(-45deg);
+  details[open] .bars::after {
+    bottom: 5px;
+    transform: rotate(-45deg);
   }
 
   /* reduce motion */
-  @media (prefers-reduced-motion: reduce){
-    .menu{animation:none}
-    .menu-btn{transition:none}
+  @media (prefers-reduced-motion: reduce) {
+    .menu {
+      animation: none;
+    }
+    .menu-btn {
+      transition: none;
+    }
   }
 </style>

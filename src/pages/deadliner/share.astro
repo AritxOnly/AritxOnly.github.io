@@ -1,5 +1,7 @@
 ---
-import Layout from '~/layouts/Layout.astro';
+import { Image } from 'astro:assets'
+import appIcon from '../../../public/icon.png'
+import Layout from '~/layouts/Layout.astro'
 ---
 
 <Layout title="Deadliner 分享链接">
@@ -11,8 +13,11 @@ import Layout from '~/layouts/Layout.astro';
         <div
           class="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent overflow-hidden"
         >
-          <img
-            src="/icon.png"
+          <Image
+            src={appIcon}
+            width={80}
+            loading="eager"
+            decoding="async"
             alt="Deadliner Icon"
             class="h-full w-full object-cover scale-110"
           />
@@ -66,45 +71,45 @@ import Layout from '~/layouts/Layout.astro';
 
   <script>
     function buildSchemeUrl() {
-      const url = new URL(window.location.href);
+      const url = new URL(window.location.href)
       // https://www.aritxonly.top/deadliner/share?xxxxx
       // -> deadliner://share?xxxxx
-      return 'deadliner://share' + url.search;
+      return 'deadliner://share' + url.search
     }
 
     async function copyCurrentUrl() {
       try {
-        await navigator.clipboard.writeText(window.location.href);
-        const btn = document.getElementById('copy-link');
-        if (!btn) return;
-        const originalText = btn.innerText;
-        btn.innerText = '已复制';
+        await navigator.clipboard.writeText(window.location.href)
+        const btn = document.getElementById('copy-link')
+        if (!btn) return
+        const originalText = btn.innerText
+        btn.innerText = '已复制'
         setTimeout(() => {
-          btn.innerText = originalText;
-        }, 1600);
+          btn.innerText = originalText
+        }, 1600)
       } catch (e) {
         // 旧浏览器 / 权限失败就静默
       }
     }
 
     function openInApp() {
-      const schemeUrl = buildSchemeUrl();
-      window.location.href = schemeUrl;
+      const schemeUrl = buildSchemeUrl()
+      window.location.href = schemeUrl
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      const openBtn = document.getElementById('open-deadliner');
+      const openBtn = document.getElementById('open-deadliner')
       if (openBtn) {
-        openBtn.addEventListener('click', openInApp);
+        openBtn.addEventListener('click', openInApp)
       }
 
-      const copyBtn = document.getElementById('copy-link');
+      const copyBtn = document.getElementById('copy-link')
       if (copyBtn && navigator.clipboard) {
-        copyBtn.addEventListener('click', copyCurrentUrl);
+        copyBtn.addEventListener('click', copyCurrentUrl)
       } else if (copyBtn) {
         // 不支持 clipboard API 的情况就隐藏复制按钮
-        copyBtn.style.display = 'none';
+        copyBtn.style.display = 'none'
       }
-    });
+    })
   </script>
 </Layout>

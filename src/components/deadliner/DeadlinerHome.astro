@@ -1,0 +1,926 @@
+---
+import { Image } from 'astro:assets'
+import DeadlinerHero from './DeadlinerHero.astro'
+import DeadlinerFeatures from './DeadlinerFeatures.astro'
+import DeadlinerArchitecture from './DeadlinerArchitecture.astro'
+import androidPlatform from '../../../public/res/deadliner/android-platform.png'
+import iosPlatform from '../../../public/res/deadliner/ios-platform.png'
+
+const repositories = {
+  android: 'https://github.com/DeadlinerStudio/Deadliner',
+  ios: 'https://github.com/DeadlinerStudio/Deadliner-iOS',
+  harmony: 'https://github.com/DeadlinerStudio/DeadlinerNEXT',
+  client: 'https://github.com/DeadlinerStudio/Deadliner-Client',
+}
+---
+
+<div class="deadliner-home">
+  <DeadlinerHero />
+
+  <DeadlinerFeatures />
+
+  <section class="platform-section" id="platforms">
+    <div class="wrap section">
+      <div class="section-heading centered">
+        <p class="eyebrow">手机、手表，还有电脑</p>
+        <h2>原生设计，<br class="mobile-break" />系统体验。</h2>
+        <p>为不同平台分别打造契合平台特性的 Deadliner。</p>
+      </div>
+      <div class="platform-grid">
+        <article class="platform-card android-platform">
+          <div class="platform-visual">
+            <Image
+              src={androidPlatform}
+              alt="Deadliner Android 概览统计与 HyperOS 桌面体验"
+              class="platform-screenshot"
+              widths={[320, 560, 1024]}
+              sizes="(max-width: 650px) calc(100vw - 44px), (max-width: 900px) 260px, 380px"
+              format="webp"
+              loading="lazy"
+            />
+          </div><div class="platform-copy">
+            <span class="platform-name">Android</span><h3>
+              现代设计，<br />助力优雅任务管理。
+            </h3><p>
+              基于 MIUIX
+              框架自研的柔光玻璃渲染管线，带来现代的安卓原生设计体验。同时支持安卓实时活动与小米超级岛<sup
+                ><a href="#super-island-note" aria-label="查看小米超级岛使用备注">1</a
+                ></sup
+              >，让任务，触手可及。
+            </p><a
+              class="platform-link"
+              href={repositories.android}
+              target="_blank"
+              rel="noreferrer">查看 Android 项目 <span>↗</span></a
+            >
+            <p class="platform-note" id="super-island-note">
+              <span>1.</span> 小米超级岛需要使用 Shizuku 绕过官方白名单限制
+            </p>
+          </div>
+        </article>
+        <article class="platform-card ios-platform">
+          <div class="platform-visual">
+            <Image
+              src={iosPlatform}
+              alt="Deadliner 在 iPhone 与 Apple Watch 上的任务和习惯界面"
+              class="platform-screenshot"
+              widths={[320, 560, 1024]}
+              sizes="(max-width: 650px) calc(100vw - 44px), (max-width: 900px) 260px, 380px"
+              format="webp"
+              loading="lazy"
+            />
+          </div><div class="platform-copy">
+            <span class="platform-name">iPhone · Apple Watch</span><h3>
+              熟悉的苹果生态，<br />轻轻承载了每个计划。
+            </h3><p>
+              优美的 SwiftUI 液态玻璃设计，搭配 Apple
+              Watch，让任务管理成为流动的享受。iCloud 让苹果设备间的数据，无缝衔接。
+            </p><a
+              class="platform-link"
+              href={repositories.ios}
+              target="_blank"
+              rel="noreferrer">查看 iOS 项目 <span>↗</span></a
+            >
+          </div>
+        </article>
+        <article class="platform-card harmony-platform">
+          <div class="platform-visual">
+            <div class="device-mock harmony-mock">
+              <div class="harmony-greeting">下午好<br /><b>今天的安排</b></div><div
+                class="harmony-task"
+              >
+                <span>16:00</span><b>准备项目评审</b>
+              </div><div class="harmony-task"><span>每日</span><b>拉伸与休息</b></div><div
+                class="harmony-card"
+              >
+                待办卡片 <span>→</span>
+              </div>
+            </div><span class="visual-label">HARMONYOS · 界面占位</span>
+          </div><div class="platform-copy">
+            <span class="platform-name">HarmonyOS</span><h3>
+              原生鸿蒙体验，<br />延续熟悉的节奏。
+            </h3><p>
+              全量沉浸光感适配，搭配桌面卡片、自然手势与云同步，把熟悉的任务管理体验，带到鸿蒙。
+            </p><a
+              class="platform-link"
+              href={repositories.harmony}
+              target="_blank"
+              rel="noreferrer">查看 HarmonyOS 项目 <span>↗</span></a
+            >
+          </div>
+        </article>
+      </div>
+      <div class="desktop-row">
+        <div class="desktop-copy">
+          <span class="step-label">也在桌面上</span><h3>
+            留出空间，<br />把计划放大来看。
+          </h3><p>
+            Deadliner Client 采用 Electron 与 React 构建，面向 Windows、macOS 和 Linux。
+          </p><a
+            class="platform-link"
+            href={repositories.client}
+            target="_blank"
+            rel="noreferrer">查看桌面端项目 <span>↗</span></a
+          >
+        </div><div class="desktop-visual">
+          <div class="desktop-window">
+            <div class="window-bar">
+              <i></i><i></i><i></i><span>Deadliner · 本周</span>
+            </div><div class="window-body">
+              <aside>概览<br /><br />收件箱<br /><br />习惯<br /><br />已归档</aside><div
+                class="window-tasks"
+              >
+                <small>周二 · 10 月 6 日</small><h4>本周，循序渐进。</h4><div>
+                  ◯　整理分享材料 <span>今天</span>
+                </div><div>✓　完成第一次评审 <span>已完成</span></div><div>
+                  ◯　每晚阅读 20 分钟 <span>习惯</span>
+                </div>
+              </div><div class="placeholder-tag">桌面端界面示意占位</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DeadlinerArchitecture />
+
+  <section class="download-section" id="download">
+    <div class="wrap download-inner">
+      <p class="eyebrow">下载</p>
+      <h2>把计划，带在身边。</h2>
+      <div class="download-list" aria-label="Deadliner 下载平台">
+        <a
+          class="download-item"
+          href="https://github.com/DeadlinerStudio/Deadliner/releases"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Android，前往 GitHub Releases 下载"
+        >
+          <span class="download-logo is-android"
+            ><Image
+              src="/res/deadliner/android-logo.svg"
+              width={280}
+              height={155}
+              loading="lazy"
+              decoding="async"
+              alt=""
+            /></span
+          >
+          <span class="download-copy"
+            ><b>Android</b><small
+              >GitHub Releases <span aria-hidden="true">↗</span></small
+            ></span
+          >
+        </a>
+        <a
+          class="download-item"
+          href="https://apps.apple.com/cn/app/deadliner%E5%BE%85%E5%8A%9E%E6%97%A5%E5%8E%86/id6760482719"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="iOS，前往 App Store 下载"
+        >
+          <span class="download-logo is-apple"
+            ><Image
+              src="/res/deadliner/apple-logo.svg"
+              width={1300}
+              height={1781}
+              loading="lazy"
+              decoding="async"
+              alt=""
+            /></span
+          >
+          <span class="download-copy"
+            ><b>iOS</b><small>App Store <span aria-hidden="true">↗</span></small></span
+          >
+        </a>
+        <a
+          class="download-item"
+          href="https://appgallery.huawei.com/app/detail?id=com.aritxonly.deadliner"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="HarmonyOS，前往 AppGallery 下载"
+        >
+          <span class="download-logo is-harmony"
+            ><Image
+              src="/res/deadliner/harmony-o.svg"
+              width={10}
+              height={13}
+              loading="lazy"
+              decoding="async"
+              alt=""
+            /></span
+          >
+          <span class="download-copy"
+            ><b>HarmonyOS</b><small>AppGallery <span aria-hidden="true">↗</span></small
+            ></span
+          >
+        </a>
+      </div>
+      <div class="more-platforms">
+        <a href={repositories.client} target="_blank" rel="noreferrer"
+          >桌面端项目 <span>↗</span></a
+        >
+      </div>
+    </div>
+  </section>
+
+  <section class="faq-section section wrap" id="faq">
+    <div class="section-heading">
+      <p class="eyebrow">大家常问的</p><h2>常见问题。</h2>
+    </div><div class="faq-list">
+      <details>
+        <summary>需要注册 Deadliner 账号吗？<span>＋</span></summary><p>
+          不需要账号也可以使用支持本地管理的客户端。远端同步与服务端能力取决于具体客户端版本及配置。
+        </p>
+      </details><details>
+        <summary>各平台现在使用同一套代码吗？<span>＋</span></summary><p>
+          各端保留平台原生界面。Android、iOS 与 HarmonyOS 通过 DeadlinerCore 共享
+          ViewModel、领域模型、数据与同步逻辑，并保留各端原生 UI。
+        </p>
+      </details><details>
+        <summary>Deadliner 是开源的吗？<span>＋</span></summary><p>
+          Android、HarmonyOS、跨平台核心和服务端项目均可在下方仓库查看。各仓库标明各自的许可证；Lifi
+          AI 的具体实现为闭源。
+        </p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<style>
+  .deadliner-home {
+    --ink: #1d1d1f;
+    --sub: #6e6e73;
+    --blue: #1976d2;
+    --hair: rgba(29, 29, 31, 0.1);
+    color: var(--ink);
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+      'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+  }
+  .deadliner-home * {
+    box-sizing: border-box;
+  }
+  .wrap {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 28px;
+  }
+  .eyebrow {
+    margin: 0 0 20px;
+    color: #6e6e73;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 650;
+  }
+  .platform-link {
+    color: #1671cf !important;
+    font-size: 13px;
+  }
+  .platform-link span {
+    margin-left: 4px;
+  }
+  .section-heading h2,
+  .download-inner h2 {
+    margin: 0;
+    font-size: clamp(34px, 4.8vw, 56px);
+    line-height: 1.14;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+  }
+  .section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .section-heading {
+    max-width: 680px;
+    margin-bottom: 42px;
+  }
+  .section-heading h2 {
+    font-size: clamp(34px, 4vw, 48px);
+  }
+  .section-heading > p:last-child {
+    margin: 15px 0 0;
+    color: var(--sub);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .step-label {
+    color: #77777c;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .desktop-copy h3 {
+    margin: 13px 0 10px;
+    font-size: 29px;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+  }
+  .desktop-copy p {
+    margin: 0;
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .centered {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .platform-section {
+    background: #f5f5f7;
+  }
+  .platform-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .platform-card {
+    overflow: hidden;
+    border-radius: 22px;
+    background: #fff;
+  }
+  .platform-visual {
+    aspect-ratio: 1;
+    position: relative;
+    display: grid;
+    place-items: end center;
+    overflow: hidden;
+    background: linear-gradient(150deg, #eaf4fa, #f6f8fa 70%);
+  }
+  .platform-screenshot {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .ios-platform .platform-visual {
+    background: linear-gradient(145deg, #f4f0fc, #faf9fb 74%);
+  }
+  .harmony-platform .platform-visual {
+    background: linear-gradient(145deg, #e8f3f7, #f8fafb 75%);
+  }
+  .device-mock {
+    position: relative;
+    width: 68%;
+    height: 235px;
+    padding: 19px 15px 13px;
+    border: 5px solid #25272a;
+    border-bottom: 0;
+    border-radius: 22px 22px 0 0;
+    background: white;
+    box-shadow: 0 12px 26px rgba(30, 49, 65, 0.12);
+  }
+  .android-mock {
+    width: 68%;
+    padding: 23px 13px;
+    background: #fff;
+    border-radius: 19px 19px 0 0;
+  }
+  .mock-appbar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 620;
+  }
+  .mock-appbar span {
+    color: #4599ce;
+  }
+  .mini-date {
+    margin: 8px 0 17px;
+    color: #8e9499;
+    font-size: 8px;
+  }
+  .mini-row {
+    display: grid;
+    grid-template-columns: 13px 1fr;
+    column-gap: 6px;
+    margin-top: 11px;
+    padding: 9px 7px;
+    border: 1px solid #eef0f2;
+    border-radius: 9px;
+  }
+  .mini-row i {
+    grid-row: span 2;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #c1c9cf;
+    border-radius: 50%;
+  }
+  .mini-row i.done {
+    border-color: #4198ce;
+    background: #4198ce;
+  }
+  .mini-row b {
+    font-size: 8px;
+    font-weight: 560;
+  }
+  .mini-row small {
+    margin-top: 4px;
+    color: #969ba0;
+    font-size: 7px;
+  }
+  .visual-label {
+    position: absolute;
+    right: 13px;
+    bottom: 10px;
+    color: #8d9297;
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+  .ios-mock {
+    height: 221px;
+    padding: 17px 13px 12px;
+    border-radius: 20px 20px 0 0;
+  }
+  .ios-top {
+    display: flex;
+    justify-content: space-between;
+    color: #638cb0;
+    font-size: 9px;
+  }
+  .ios-date {
+    margin: 22px 0 12px;
+    font-size: 13px;
+    font-weight: 620;
+  }
+  .ios-task {
+    display: grid;
+    grid-template-columns: 13px 1fr;
+    gap: 4px 7px;
+    padding: 9px 0;
+    border-top: 1px solid #eef0f3;
+  }
+  .ios-task > span {
+    grid-row: span 2;
+    color: #569ad0;
+    font-size: 11px;
+  }
+  .ios-task b {
+    font-size: 8px;
+    font-weight: 560;
+  }
+  .ios-task small {
+    color: #95999f;
+    font-size: 7px;
+  }
+  .ios-widget {
+    margin-top: 9px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #f6f5fb;
+    font-size: 8px;
+  }
+  .ios-widget b {
+    float: right;
+    color: #8472b7;
+  }
+  .ios-widget-line {
+    height: 3px;
+    margin-top: 8px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #8c7bbd 68%, #e7e3f0 68%);
+  }
+  .harmony-mock {
+    height: 222px;
+    padding: 20px 12px 12px;
+    border-radius: 20px 20px 0 0;
+  }
+  .harmony-greeting {
+    font-size: 8px;
+    color: #858d92;
+    line-height: 1.5;
+  }
+  .harmony-greeting b {
+    font-size: 14px;
+    color: #282c2f;
+  }
+  .harmony-task {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 9px 7px;
+    border-radius: 8px;
+    background: #f7f9fa;
+    font-size: 7px;
+  }
+  .harmony-task span {
+    color: #478faf;
+  }
+  .harmony-task b {
+    font-size: 7px;
+    font-weight: 550;
+  }
+  .harmony-card {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 9px;
+    background: #eaf4f7;
+    color: #567781;
+    font-size: 8px;
+  }
+  .platform-copy {
+    padding: 24px 24px 25px;
+  }
+  .platform-name {
+    color: #747980;
+    font-size: 10px;
+  }
+  .platform-copy h3 {
+    margin: 10px 0;
+    font-size: 23px;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+  .platform-copy p {
+    min-height: 66px;
+    margin: 0 0 16px;
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.75;
+  }
+  .platform-link {
+    font-weight: 520;
+  }
+  .platform-copy sup {
+    margin-left: 2px;
+    font-size: 9px;
+  }
+  .platform-copy .platform-note {
+    min-height: 0;
+    margin: 14px 0 0;
+    color: #86868b;
+    font-size: 10px;
+    line-height: 1.6;
+    scroll-margin-top: 80px;
+  }
+  .desktop-row {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 50px;
+    align-items: center;
+    margin-top: 75px;
+    padding: 30px 35px 30px 10px;
+  }
+  .desktop-copy {
+    max-width: 330px;
+  }
+  .desktop-copy h3 {
+    font-size: 35px;
+  }
+  .desktop-copy p {
+    margin-bottom: 17px;
+  }
+  .desktop-visual {
+    position: relative;
+    min-height: 300px;
+    display: grid;
+    place-items: center;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #e9edf0, #f8f9fa);
+  }
+  .desktop-window {
+    width: 83%;
+    height: 240px;
+    overflow: hidden;
+    border: 1px solid rgba(29, 29, 31, 0.12);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 18px 44px rgba(35, 51, 62, 0.13);
+    transform: perspective(900px) rotateY(-5deg) rotateX(2deg);
+  }
+  .window-bar {
+    height: 29px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 10px;
+    background: #f5f5f6;
+  }
+  .window-bar i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #d4d6d8;
+  }
+  .window-bar span {
+    margin: auto;
+    font-size: 8px;
+    color: #82868a;
+  }
+  .window-body {
+    position: relative;
+    height: calc(100% - 29px);
+    display: flex;
+    padding: 15px;
+  }
+  .window-body aside {
+    width: 25%;
+    border-right: 1px solid #eee;
+    color: #8b9095;
+    font-size: 8px;
+  }
+  .window-tasks {
+    flex: 1;
+    padding-left: 19px;
+  }
+  .window-tasks small {
+    color: #969a9e;
+    font-size: 8px;
+  }
+  .window-tasks h4 {
+    margin: 9px 0 16px;
+    font-size: 14px;
+  }
+  .window-tasks div {
+    padding: 10px 0;
+    border-top: 1px solid #f0f1f2;
+    font-size: 9px;
+  }
+  .window-tasks div span {
+    float: right;
+    color: #92969a;
+    font-size: 8px;
+  }
+  .window-body .placeholder-tag {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    font-size: 7px;
+  }
+  .more-platforms a {
+    color: #1976d2 !important;
+    font-size: 11px;
+  }
+  .download-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 800px;
+    margin: 38px auto 0;
+    border-top: 1px solid rgba(29, 29, 31, 0.13);
+    border-bottom: 1px solid rgba(29, 29, 31, 0.13);
+  }
+  .download-item {
+    min-height: 124px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 14px;
+    text-align: center;
+    transition: color 0.18s;
+  }
+  .download-item + .download-item {
+    border-left: 1px solid rgba(29, 29, 31, 0.1);
+  }
+  .download-logo {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+  }
+  .download-logo img {
+    display: block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    filter: grayscale(1) brightness(0.22);
+  }
+  .download-logo.is-android img {
+    transform: scale(0.78);
+  }
+  .download-logo.is-apple img {
+    transform: scale(1.05);
+  }
+  .download-logo.is-harmony img {
+    transform: scale(0.77);
+  }
+  .download-copy b,
+  .download-copy small {
+    display: block;
+  }
+  .download-copy b {
+    font-size: 13px;
+    font-weight: 570;
+  }
+  .download-copy small {
+    margin-top: 5px;
+    color: #767b80;
+    font-size: 10px;
+  }
+  .download-copy small span {
+    padding-left: 3px;
+    color: #1976d2;
+  }
+  .download-item:hover .download-copy small {
+    color: #1976d2;
+  }
+  .download-section {
+    padding: 92px 0 87px;
+    background: #f5f5f7;
+    text-align: center;
+  }
+  .download-inner h2 {
+    font-size: clamp(37px, 5vw, 55px);
+  }
+  .download-inner > p:not(.eyebrow) {
+    margin: 15px 0 0;
+    color: var(--sub);
+    font-size: 14px;
+  }
+  .more-platforms {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 23px;
+  }
+  .faq-section {
+    padding-top: 80px;
+    padding-bottom: 90px;
+  }
+  .faq-section .section-heading {
+    margin-bottom: 28px;
+  }
+  .faq-list {
+    border-top: 1px solid var(--hair);
+  }
+  .faq-list details {
+    border-bottom: 1px solid var(--hair);
+  }
+  .faq-list summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 19px 3px;
+    list-style: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary span {
+    color: #77777c;
+    transition: transform 0.2s;
+  }
+  .faq-list details[open] summary span {
+    transform: rotate(45deg);
+  }
+  .faq-list details p {
+    max-width: 730px;
+    margin: 0;
+    padding: 0 35px 19px 3px;
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .mobile-break {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    .platform-grid {
+      grid-template-columns: 1fr;
+      max-width: 560px;
+      margin: auto;
+      gap: 15px;
+    }
+    .platform-card {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      min-height: 260px;
+    }
+    .platform-visual {
+      align-self: center;
+    }
+    .platform-copy {
+      align-self: center;
+    }
+    .platform-copy p {
+      min-height: 0;
+    }
+    .desktop-row {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 25px;
+    }
+  }
+  @media (max-width: 650px) {
+    .wrap {
+      padding-inline: 22px;
+    }
+    .section-heading h2 {
+      font-size: 36px;
+    }
+    .section {
+      padding-top: 74px;
+      padding-bottom: 74px;
+    }
+    .section-heading {
+      margin-bottom: 29px;
+    }
+    .section-heading > p:last-child {
+      font-size: 13px;
+    }
+    .centered {
+      margin-bottom: 29px;
+    }
+    .mobile-break {
+      display: block;
+    }
+    .platform-card {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+    .platform-visual {
+      width: 100%;
+    }
+    .device-mock {
+      width: 52%;
+      height: 215px;
+    }
+    .android-mock {
+      width: 51%;
+    }
+    .ios-mock,
+    .harmony-mock {
+      height: 206px;
+    }
+    .platform-copy {
+      padding: 19px 22px 23px;
+    }
+    .platform-copy h3 {
+      font-size: 21px;
+    }
+    .platform-copy p {
+      margin-bottom: 12px;
+    }
+    .desktop-row {
+      grid-template-columns: 1fr;
+      gap: 23px;
+      margin-top: 38px;
+      padding: 10px 0 0;
+    }
+    .desktop-copy {
+      max-width: 370px;
+    }
+    .desktop-copy h3 {
+      font-size: 30px;
+    }
+    .desktop-visual {
+      min-height: 240px;
+    }
+    .desktop-window {
+      height: 205px;
+      width: 88%;
+    }
+    .window-body {
+      padding: 11px;
+    }
+    .window-tasks {
+      padding-left: 12px;
+    }
+    .download-section {
+      padding: 72px 0;
+    }
+    .download-inner h2 {
+      font-size: 38px;
+    }
+    .download-list {
+      max-width: 380px;
+      grid-template-columns: 1fr;
+    }
+    .download-item {
+      min-height: 88px;
+      flex-direction: row;
+      justify-content: flex-start;
+      padding: 17px 10px;
+      text-align: left;
+    }
+    .download-item + .download-item {
+      border-left: 0;
+      border-top: 1px solid rgba(29, 29, 31, 0.1);
+    }
+    .download-logo {
+      flex: none;
+    }
+    .download-copy {
+      text-align: left;
+    }
+    .faq-section {
+      padding-top: 66px;
+      padding-bottom: 70px;
+    }
+    .faq-list summary {
+      font-size: 12px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-list summary span {
+      transition: none;
+    }
+  }
+</style>

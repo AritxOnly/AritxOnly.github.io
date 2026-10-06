@@ -1,0 +1,497 @@
+---
+import { Image } from 'astro:assets'
+import architectureVisual from '../../../public/res/deadliner/shared-core-background.png'
+const rows = [
+  {
+    name: '界面体验',
+    current: 'Compose · SwiftUI · ArkUI，保留各端原生体验',
+    legacy: '各平台分别开发原生界面',
+  },
+  {
+    name: '任务与习惯',
+    current: '共用领域模型与业务逻辑，功能更一致',
+    legacy: '各端独立实现，功能与行为存在差异',
+  },
+  {
+    name: '数据与同步',
+    current: '共享数据核心与合并规则，连接平台服务',
+    legacy: '各端分别维护数据与同步逻辑',
+  },
+  {
+    name: 'Lifi AI',
+    current: '通过共享接口接入任务管理 Agent',
+    legacy: 'AI 能力由各端分别接入',
+  },
+]
+---
+
+<section class="architecture-section" id="architecture">
+  <div class="architecture-wrap">
+    <header class="architecture-hero">
+      <Image
+        class="architecture-backdrop"
+        src={architectureVisual}
+        widths={[640, 960, 1280, 1672]}
+        sizes="(max-width: 1180px) 100vw, 1180px"
+        format="webp"
+        alt=""
+        aria-hidden="true"
+        width="1672"
+        height="941"
+        loading="lazy"
+        decoding="async"
+      />
+      <div class="architecture-copy">
+        <p class="eyebrow">跨平台混合原生开发</p><h2>
+          <span class="brand">Deadliner<span class="kmp-badge">KMP</span></span><br
+          /><span class="headline">各有手感。内里一致。</span>
+        </h2><p class="intro">原生界面，加上共享核心。<br />用得熟悉，功能也更齐。</p>
+      </div>
+    </header>
+    <div class="native-stack">
+      <div class="native-platforms">
+        <div><span>Android</span><b>Jetpack Compose</b></div><div>
+          <span>iOS</span><b>SwiftUI</b>
+        </div><div><span>HarmonyOS</span><b>ArkUI</b></div>
+      </div><div class="core-layer">
+        <span>Kotlin Multiplatform</span><b>任务 · 习惯 · ViewModel · 数据与同步</b><small
+          >SQLDelight · Ktor · 平台原生能力</small
+        >
+      </div>
+    </div>
+    <div class="comparison-heading">
+      <h3>这次升级，<br />从里面开始。</h3><p>
+        相较于 Deadliner Legacy，<br />大幅提升跨平台功能一致性。
+      </p>
+    </div>
+    <div class="performance">
+      <div>
+        <span class="metric">35 <span>%+</span></span><b>列表加载性能提升*</b>
+      </div><div
+        class="performance-bars"
+        aria-label="列表加载性能提升 35% 以上；条形长度为对比示意"
+      >
+        <div><span>Deadliner KMP</span><i class="new-bar"></i></div><div>
+          <span>Deadliner Legacy</span><i class="old-bar"></i>
+        </div>
+      </div>
+    </div>
+    <div class="comparison-scroll">
+      <table>
+        <caption>Deadliner KMP 与 Deadliner Legacy 架构对比</caption><thead
+          ><tr
+            ><th scope="col">升级在哪儿</th><th scope="col"
+              ><span class="table-brand">Deadliner <sup>KMP</sup></span></th
+            ><th scope="col">Deadliner Legacy</th></tr
+          ></thead
+        ><tbody
+          >{
+            rows.map((row) => (
+              <tr>
+                <>
+                  <th scope="row">{row.name}</th>
+                  <td>{row.current}</td>
+                  <td>{row.legacy}</td>
+                </>
+              </tr>
+            ))
+          }</tbody
+        >
+      </table>
+    </div>
+    <p class="metric-note">
+      * 数据由项目提供，对比 Deadliner Legacy 的列表加载性能。测试设备：小米 17（HyperOS 4
+      / Android 17）、华为 Pura X（HarmonyOS 7）。实际表现随设备、任务量与版本而异。
+    </p>
+    <a
+      class="core-link"
+      href="https://github.com/DeadlinerStudio/DeadlinerCore"
+      target="_blank"
+      rel="noreferrer">了解 DeadlinerCore <span>↗</span></a
+    >
+  </div>
+</section>
+<style>
+  .architecture-section {
+    background: #101013;
+    color: #f5f5f7;
+  }
+  .architecture-wrap {
+    max-width: 1180px;
+    margin: auto;
+    padding: 110px 36px;
+  }
+  .architecture-hero {
+    position: relative;
+    isolation: isolate;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    margin: -110px -36px 0;
+    padding: 90px 36px;
+  }
+  .architecture-backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image:
+      linear-gradient(to bottom, transparent, #000 12%, #000 80%, transparent),
+      linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    mask-composite: intersect;
+  }
+  .architecture-copy {
+    position: relative;
+    max-width: 620px;
+  }
+  .eyebrow {
+    color: #a1a1a6;
+    font-size: 13px;
+    margin: 0 0 25px;
+    font-weight: 550;
+    letter-spacing: 0.04em;
+  }
+  h2 {
+    font-size: clamp(37px, 5vw, 65px);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.22;
+    margin: 0;
+  }
+  .brand {
+    position: relative;
+    display: inline-block;
+    padding-right: 49px;
+  }
+  .kmp-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border: 1px solid #74747e;
+    border-radius: 6px;
+    padding: 4px 6px;
+    font-weight: 550;
+    line-height: 1;
+  }
+  .headline {
+    display: block;
+    font-size: clamp(28px, 3.5vw, 44px);
+    line-height: 1.35;
+    letter-spacing: -0.035em;
+    color: #a1a1a6;
+    margin-top: 9px;
+  }
+  .intro {
+    font-size: 17px;
+    line-height: 1.75;
+    color: #a1a1a6;
+    margin: 22px 0 0;
+  }
+  .native-stack {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 24px auto 100px;
+    padding: 30px 36px 36px;
+    background: #242427;
+    border-radius: 28px;
+  }
+  .native-platforms {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+  .native-platforms > div {
+    text-align: center;
+    padding: 20px 8px 35px;
+    position: relative;
+  }
+  .native-platforms > div:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 22px;
+    border-left: 1px solid #494954;
+  }
+  .native-platforms span,
+  .native-platforms b {
+    display: block;
+  }
+  .native-platforms span {
+    font-size: 12px;
+    color: #a1a1a6;
+  }
+  .native-platforms b {
+    font-size: 21px;
+    margin-top: 10px;
+    font-weight: 550;
+  }
+  .core-layer {
+    text-align: center;
+    border: 1px solid #414652;
+    border-radius: 18px;
+    padding: 30px 16px;
+    background: linear-gradient(130deg, #17232e, #1d1c28);
+  }
+  .core-layer > span {
+    color: #8cc5f3;
+    font-size: 12px;
+  }
+  .core-layer b {
+    display: block;
+    font-size: 22px;
+    font-weight: 550;
+    margin: 12px 0;
+  }
+  .core-layer small {
+    font-size: 11px;
+    color: #a1a1a6;
+  }
+  .comparison-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .comparison-heading h3 {
+    font-size: clamp(32px, 4vw, 48px);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    margin: 0;
+  }
+  .comparison-heading p {
+    color: #a1a1a6;
+    font-size: 15px;
+    line-height: 1.8;
+    margin: 0;
+  }
+  .performance {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    align-items: center;
+    gap: 60px;
+    margin: 55px 0 65px;
+    padding: 40px 0;
+    border-top: 1px solid #34343b;
+    border-bottom: 1px solid #34343b;
+  }
+  .metric {
+    font-size: 100px;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.07em;
+    color: #83bafa;
+  }
+  .metric > span {
+    font-size: 48px;
+    letter-spacing: -0.04em;
+  }
+  .performance b {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 16px;
+    color: #c2c2c7;
+  }
+  .performance-bars > div + div {
+    margin-top: 26px;
+  }
+  .performance-bars span {
+    font-size: 12px;
+    color: #a1a1a6;
+  }
+  .performance-bars i {
+    display: block;
+    height: 10px;
+    margin-top: 12px;
+    border-radius: 20px;
+  }
+  .new-bar {
+    width: 100%;
+    background: linear-gradient(90deg, #397fcd, #a4cfff);
+  }
+  .old-bar {
+    width: 74%;
+    background: #4f4f59;
+  }
+  .comparison-scroll {
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    table-layout: fixed;
+  }
+  caption {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  th,
+  td {
+    padding: 23px 24px 23px 0;
+    border-bottom: 1px solid #34343b;
+    font-size: 13px;
+    line-height: 1.8;
+    vertical-align: top;
+  }
+  thead th {
+    font-size: 18px;
+    font-weight: 550;
+    padding-bottom: 28px;
+  }
+  th:first-child {
+    width: 20%;
+  }
+  tbody th {
+    font-weight: 500;
+    color: #d4d4d8;
+  }
+  td {
+    width: 40%;
+    color: #d4d4d8;
+  }
+  td:last-child {
+    color: #86868e;
+  }
+  .table-brand {
+    white-space: nowrap;
+  }
+  .table-brand sup {
+    font-size: 9px;
+    border: 1px solid #74747e;
+    border-radius: 4px;
+    padding: 2px 4px;
+    margin-left: 2px;
+  }
+  .metric-note {
+    font-size: 10px;
+    color: #85858d;
+    line-height: 1.8;
+    margin: 25px 0;
+  }
+  .core-link {
+    color: #8cc5f3 !important;
+    font-size: 13px;
+  }
+  .core-link span {
+    margin-left: 5px;
+  }
+  @media (max-width: 650px) {
+    .architecture-wrap {
+      padding: 75px 24px;
+    }
+    .architecture-hero {
+      min-height: 590px;
+      margin: -75px -24px 0;
+      padding: 75px 24px 290px;
+      align-items: flex-start;
+    }
+    .architecture-backdrop {
+      object-fit: contain;
+      object-position: center bottom;
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 30%,
+        #000 58%,
+        #000 85%,
+        transparent
+      );
+    }
+    .eyebrow {
+      font-size: 11px;
+    }
+    h2 {
+      font-size: 36px;
+    }
+    .headline {
+      font-size: 27px;
+    }
+    .brand {
+      padding-right: 41px;
+    }
+    .kmp-badge {
+      font-size: 10px;
+    }
+    .intro {
+      font-size: 14px;
+    }
+    .native-stack {
+      margin: 20px 0 60px;
+      padding: 20px 14px 24px;
+      border-radius: 22px;
+    }
+    .native-platforms {
+      gap: 10px;
+    }
+    .native-platforms span {
+      font-size: 10px;
+    }
+    .native-platforms b {
+      font-size: 12px;
+    }
+    .core-layer {
+      padding: 25px 12px;
+    }
+    .core-layer b {
+      font-size: 14px;
+      line-height: 1.7;
+    }
+    .core-layer small {
+      font-size: 9px;
+    }
+    .comparison-heading {
+      display: block;
+    }
+    .comparison-heading h3 {
+      font-size: 34px;
+    }
+    .comparison-heading p {
+      font-size: 13px;
+      margin-top: 20px;
+    }
+    .performance {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin: 32px 0;
+      padding: 30px 0;
+    }
+    .metric {
+      font-size: 82px;
+    }
+    .metric > span {
+      font-size: 40px;
+    }
+    .performance b {
+      font-size: 14px;
+    }
+    .performance-bars span {
+      font-size: 10px;
+    }
+    table {
+      min-width: 540px;
+    }
+    thead th {
+      font-size: 14px;
+    }
+    th,
+    td {
+      font-size: 11px;
+      padding-right: 18px;
+    }
+    th:first-child {
+      width: 17%;
+    }
+    .metric-note {
+      font-size: 9px;
+    }
+  }
+</style>
