@@ -1,12 +1,13 @@
 ---
 import { Image } from 'astro:assets'
-import androidWidget from '../../../public/res/deadliner/widget-android.png'
-import iosWidget from '../../../public/res/deadliner/widget-ios.png'
-import harmonyWidget from '../../../public/res/deadliner/widget-harmony.png'
-import syncVisual from '../../../public/res/deadliner/multi-device-sync.png'
-import overviewScreenshot from '../../../public/res/deadliner/overview-light-anonymized.png'
-import quickAddScreenshot from '../../../public/res/deadliner/quick-add.png'
-import lifiHabitPhone from '../../../public/res/deadliner/lifi-habit-phone.png'
+import DeadlinerResponsive from './DeadlinerResponsive.astro'
+import androidWidget from '../../assets/deadliner/widget-android.png'
+import iosWidget from '../../assets/deadliner/widget-ios.png'
+import harmonyWidget from '../../assets/deadliner/widget-harmony.png'
+import syncVisual from '../../assets/deadliner/multi-device-sync.png'
+import overviewScreenshot from '../../assets/deadliner/overview-light-anonymized.png'
+import quickAddScreenshot from '../../assets/deadliner/quick-add.png'
+import lifiHabitPhone from '../../assets/deadliner/lifi-habit-phone.png'
 const widgetScreens = [
   {
     platform: 'Android',
@@ -63,16 +64,18 @@ const widgetScreens = [
             </div>
           </div>
           <div class="demo-real" aria-hidden="true">
-            <Image
-              class="quick-photo"
-              src={quickAddScreenshot}
-              alt="快速添加任务，AI 解析完成后的确认提示"
-              widths={[400, 640, 1170]}
-              sizes="(max-width: 650px) 420px, 28vw"
-              format="webp"
-              loading="lazy"
-              decoding="async"
-            />
+            <template data-real-media>
+              <Image
+                class="quick-photo"
+                src={quickAddScreenshot}
+                alt="快速添加任务，AI 解析完成后的确认提示"
+                widths={[400, 640, 1170]}
+                sizes="(max-width: 650px) 420px, 28vw"
+                format="webp"
+                loading="lazy"
+                decoding="async"
+              />
+            </template>
           </div>
         </div><h3>先记下，再安排。</h3><p>
           填上任务，选好日期和分类。<br />给脑子腾点地方。
@@ -105,21 +108,23 @@ const widgetScreens = [
             </div>
           </div>
           <div class="demo-real" aria-hidden="true">
-            <video
-              class="swipe-video"
-              data-swipe-video
-              src="/res/deadliner/swipe-demo.mp4"
-              poster="/res/deadliner/swipe-demo-poster.jpg"
-              width="960"
-              height="534"
-              muted
-              loop
-              playsinline
-              preload="none"
-              aria-label="Deadliner 任务列表滑动操作演示"
-            >
-              你的浏览器暂不支持视频播放。
-            </video>
+            <template data-real-media>
+              <video
+                class="swipe-video"
+                data-swipe-video
+                src="/res/deadliner/swipe-demo.mp4"
+                poster="/res/deadliner/swipe-demo-poster.jpg"
+                width="960"
+                height="534"
+                muted
+                loop
+                playsinline
+                preload="none"
+                aria-label="Deadliner 任务列表滑动操作演示"
+              >
+                你的浏览器暂不支持视频播放。
+              </video>
+            </template>
           </div>
         </div><h3>划一下，搞定。</h3><p>
           完成和删除，顺手一划。<br />常用操作，不用翻菜单。
@@ -148,18 +153,20 @@ const widgetScreens = [
             </div>
           </div>
           <div class="demo-real" aria-hidden="true">
-            <div class="overview-crop">
-              <Image
-                class="overview-photo"
-                src={overviewScreenshot}
-                alt="Deadliner 月度洞察与完成统计，内容为示例数据"
-                widths={[400, 640, 1006]}
-                sizes="(max-width: 650px) 320px, 28vw"
-                format="webp"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
+            <template data-real-media>
+              <div class="overview-crop">
+                <Image
+                  class="overview-photo"
+                  src={overviewScreenshot}
+                  alt="Deadliner 月度洞察与完成统计，内容为示例数据"
+                  widths={[400, 640, 1006]}
+                  sizes="(max-width: 650px) 320px, 28vw"
+                  format="webp"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+            </template>
           </div>
         </div><h3>忙没白忙。</h3><p>完成多少，进度如何。<br />打开概览，心里有数。</p>
       </article>
@@ -306,6 +313,8 @@ const widgetScreens = [
   </div>
 </section>
 
+<DeadlinerResponsive />
+
 <script>
   const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)')
   function setupFeatureDemos() {
@@ -313,6 +322,10 @@ const widgetScreens = [
       if (demo.dataset.bound) return
       demo.dataset.bound = 'true'
       const setReal = (show: boolean) => {
+        if (show) {
+          const template = demo.querySelector<HTMLTemplateElement>('[data-real-media]')
+          template?.replaceWith(template.content.cloneNode(true))
+        }
         demo.classList.toggle('is-real', show)
         demo.setAttribute('aria-pressed', String(show))
         demo.querySelector('.demo-sample')?.setAttribute('aria-hidden', String(show))

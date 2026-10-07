@@ -13,6 +13,7 @@
 | Lifi 记忆 | 记忆页面或实际调用已保存偏好的对话；确保截图里的行为确实发生 | lifi-memory.png |
 | 桌面小组件 | Android、iOS、HarmonyOS 各一张真实桌面截图，使用中号任务组件；可另补习惯组件 | widget-{平台}.png |
 | 同步 | WebDAV、华为云、iCloud 的设置或同步成功状态；隐去地址、账号、密码 | sync-webdav.png / sync-huawei.png / sync-icloud.png |
+| 响应式布局 | Android、iOS、HarmonyOS 各提供手机竖屏与平板横屏截图，共 6 张；同一平台使用相同页面和示例任务，平板保留完整侧栏或分栏布局 | responsive-{平台}-phone.png / responsive-{平台}-tablet.png |
 
 ## 统一示例内容
 

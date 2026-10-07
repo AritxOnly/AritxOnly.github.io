@@ -1,0 +1,75 @@
+<script>
+  const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
+  let contentObserver: IntersectionObserver | undefined
+  const targets = [
+    '.features .section-title',
+    '.task-showcase > article',
+    '.lifi-copy',
+    '.widgets-section .section-title',
+    '.sync-options > article',
+    '.responsive-section header',
+    '.platform-section .section-heading',
+    '.platform-card',
+    '.desktop-row',
+    '.native-stack',
+    '.comparison-heading',
+    '.performance',
+    '.comparison-scroll',
+    '.download-inner',
+    '.faq-section .section-heading',
+  ].join(',')
+
+  function revealContent() {
+    contentObserver?.disconnect()
+    const elements = document.querySelectorAll<HTMLElement>(targets)
+    if (motionPreference.matches || !('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.remove('dl-reveal-pending'))
+      return
+    }
+    contentObserver = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return
+          entry.target.classList.remove('dl-reveal-pending')
+          observer.unobserve(entry.target)
+        })
+      },
+      { threshold: 0, rootMargin: '0px 0px -24px 0px' },
+    )
+    elements.forEach((element) => {
+      if (element.dataset.motionReady) {
+        if (element.classList.contains('dl-reveal-pending'))
+          contentObserver?.observe(element)
+        return
+      }
+      element.dataset.motionReady = 'true'
+      // Only prepare content below the viewport; already visible content stays visible.
+      if (element.getBoundingClientRect().top < window.innerHeight) return
+      element.classList.add('dl-reveal', 'dl-reveal-pending')
+      contentObserver?.observe(element)
+    })
+  }
+  revealContent()
+  document.addEventListener('astro:page-load', revealContent)
+  document.addEventListener('astro:before-swap', () => contentObserver?.disconnect())
+  motionPreference.addEventListener('change', revealContent)
+</script>
+
+<style is:global>
+  .deadliner-home .dl-reveal {
+    transition:
+      opacity 550ms ease,
+      translate 550ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .deadliner-home .dl-reveal-pending {
+    opacity: 0;
+    translate: 0 20px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .deadliner-home .dl-reveal {
+      transition: none;
+      opacity: 1;
+      translate: none;
+    }
+  }
+</style>

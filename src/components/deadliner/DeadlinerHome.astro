@@ -3,8 +3,10 @@ import { Image } from 'astro:assets'
 import DeadlinerHero from './DeadlinerHero.astro'
 import DeadlinerFeatures from './DeadlinerFeatures.astro'
 import DeadlinerArchitecture from './DeadlinerArchitecture.astro'
-import androidPlatform from '../../../public/res/deadliner/android-platform.png'
-import iosPlatform from '../../../public/res/deadliner/ios-platform.png'
+import DeadlinerMotion from './DeadlinerMotion.astro'
+import androidPlatform from '../../assets/deadliner/android-platform.png'
+import iosPlatform from '../../assets/deadliner/ios-platform.png'
+import harmonyPlatform from '../../assets/deadliner/harmony-platform.png'
 
 const repositories = {
   android: 'https://github.com/DeadlinerStudio/Deadliner',
@@ -15,6 +17,7 @@ const repositories = {
 ---
 
 <div class="deadliner-home">
+  <DeadlinerMotion />
   <DeadlinerHero />
 
   <DeadlinerFeatures />
@@ -74,39 +77,48 @@ const repositories = {
               熟悉的苹果生态，<br />轻轻承载了每个计划。
             </h3><p>
               优美的 SwiftUI 液态玻璃设计，搭配 Apple
-              Watch，让任务管理成为流动的享受。iCloud 让苹果设备间的数据，无缝衔接。
+              Watch，让任务管理成为流动的享受。iCloud<sup
+                ><a href="#icloud-note" aria-label="查看 iCloud 使用备注">2</a></sup
+              > 让苹果设备间的数据，无缝衔接。
             </p><a
               class="platform-link"
               href={repositories.ios}
               target="_blank"
               rel="noreferrer">查看 iOS 项目 <span>↗</span></a
             >
+            <p class="platform-note" id="icloud-note">
+              <span>2.</span> iCloud 需要购买 Deadliner+ Geek 套餐解锁
+            </p>
           </div>
         </article>
         <article class="platform-card harmony-platform">
           <div class="platform-visual">
-            <div class="device-mock harmony-mock">
-              <div class="harmony-greeting">下午好<br /><b>今天的安排</b></div><div
-                class="harmony-task"
-              >
-                <span>16:00</span><b>准备项目评审</b>
-              </div><div class="harmony-task"><span>每日</span><b>拉伸与休息</b></div><div
-                class="harmony-card"
-              >
-                待办卡片 <span>→</span>
-              </div>
-            </div><span class="visual-label">HARMONYOS · 界面占位</span>
+            <Image
+              src={harmonyPlatform}
+              alt="Deadliner 在鸿蒙平板与手机上的灵感、桌面卡片和习惯界面"
+              class="platform-screenshot"
+              widths={[320, 560, 1024]}
+              sizes="(max-width: 650px) calc(100vw - 44px), (max-width: 900px) 260px, 380px"
+              format="webp"
+              loading="lazy"
+            />
           </div><div class="platform-copy">
             <span class="platform-name">HarmonyOS</span><h3>
               原生鸿蒙体验，<br />延续熟悉的节奏。
             </h3><p>
-              全量沉浸光感适配，搭配桌面卡片、自然手势与云同步，把熟悉的任务管理体验，带到鸿蒙。
+              沉浸光感设计<sup
+                ><a href="#harmony-design-note" aria-label="查看沉浸光感使用备注">3</a
+                ></sup
+              >、多设备好用的响应式布局，搭配桌面卡片、自然手势与云同步，把熟悉的任务管理体验，带到鸿蒙。
             </p><a
               class="platform-link"
               href={repositories.harmony}
               target="_blank"
               rel="noreferrer">查看 HarmonyOS 项目 <span>↗</span></a
             >
+            <p class="platform-note" id="harmony-design-note">
+              <span>3.</span> 沉浸光感需要使用 HarmonyOS6.1+，部分效果需要在 HarmonyOS7+上生效
+            </p>
           </div>
         </article>
       </div>

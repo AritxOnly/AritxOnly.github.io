@@ -1,0 +1,303 @@
+---
+import { Image } from 'astro:assets'
+import androidPad from '../../assets/deadliner/responsive-android-pad.png'
+import androidPhone from '../../assets/deadliner/responsive-android-phone.png'
+import iphoneDuo from '../../assets/deadliner/responsive-iphone-duo-clean-v2.png'
+import iphone16e from '../../assets/deadliner/responsive-iphone-16e.jpg'
+import matePad from '../../assets/deadliner/responsive-matepad.png'
+import puraX from '../../assets/deadliner/responsive-pura-x.png'
+const platforms = [
+  {
+    name: 'iOS',
+    large: {
+      src: iphoneDuo,
+      name: 'iPhone Duo',
+      bounds: [0.015625, 0.025257, 0.980978, 0.97942],
+    },
+    small: {
+      src: iphone16e,
+      name: 'iPhone 16e',
+      bounds: [0.051745, 0.030625, 0.945848, 0.969375],
+    },
+  },
+  {
+    name: 'Android',
+    large: {
+      src: androidPad,
+      name: 'Android Pad',
+      bounds: [0.120625, 0.228125, 0.974375, 0.771875],
+    },
+    small: { src: androidPhone, name: 'Xiaomi17', bounds: [0, 0, 1, 1] },
+  },
+  {
+    name: 'HarmonyOS',
+    large: {
+      src: matePad,
+      name: 'MatePad',
+      bounds: [0.100625, 0.228125, 0.859375, 0.771875],
+    },
+    small: { src: puraX, name: 'Pura X', bounds: [0, 0, 1, 1] },
+  },
+]
+const cropStyle = (device: (typeof platforms)[number]['large']) => {
+  const [left, top, right, bottom] = device.bounds
+  return `aspect-ratio:${device.src.width * (right - left)}/${device.src.height * (bottom - top)};--crop-ratio:${(device.src.width * (right - left)) / (device.src.height * (bottom - top))};--image-width:${100 / (right - left)}%;--image-left:${(-100 * left) / (right - left)}%;--image-top:${(-100 * top) / (bottom - top)}%`
+}
+---
+
+<section class="responsive-section" id="responsive-layout">
+  <div class="responsive-wrap">
+    <header><p class="eyebrow">响应式布局</p><h2>小屏，大屏，都好用。</h2></header>
+    <div class="platform-tabs" role="tablist" aria-label="选择展示平台">
+      {
+        platforms.map((platform, index) => (
+          <button
+            type="button"
+            role="tab"
+            id={`responsive-tab-${index}`}
+            aria-controls={`responsive-panel-${index}`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            tabindex={index === 0 ? 0 : -1}
+          >
+            {platform.name}
+          </button>
+        ))
+      }
+    </div>
+    {
+      platforms.map((platform, index) => {
+        const Content = index === 0 ? 'div' : 'template'
+        return (
+          <div
+            class="device-panel"
+            data-platform={platform.name}
+            role="tabpanel"
+            id={`responsive-panel-${index}`}
+            aria-labelledby={`responsive-tab-${index}`}
+            hidden={index !== 0}
+          >
+            <Content class="devices" data-device-template={index !== 0 ? '' : undefined}>
+              {[platform.large, platform.small].map((device, deviceIndex) => (
+                <figure class={deviceIndex === 0 ? 'large-device' : 'small-device'}>
+                  <div class="image-crop" style={cropStyle(device)}>
+                    <Image
+                      src={device.src}
+                      alt={`${device.name} 上的 Deadliner ${deviceIndex === 0 ? '大屏' : '小屏'}布局`}
+                      widths={deviceIndex === 0 ? [640, 1000, 1600] : [320, 640, 960]}
+                      sizes={
+                        deviceIndex === 0
+                          ? '(max-width:650px) 66vw, 760px'
+                          : '(max-width:650px) 25vw, 270px'
+                      }
+                      format="webp"
+                      quality={82}
+                      loading="lazy"
+                    />
+                  </div>
+                  <figcaption>
+                    {device.name}
+                    <span>{deviceIndex === 0 ? '大屏' : '小屏'}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </Content>
+          </div>
+        )
+      })
+    }
+  </div>
+</section>
+<script>
+  function setupResponsiveTabs() {
+    const section = document.querySelector('#responsive-layout')
+    if (!section || section.hasAttribute('data-tabs-ready')) return
+    section.setAttribute('data-tabs-ready', '')
+    const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>('[role="tab"]'))
+    const panels = Array.from(section.querySelectorAll<HTMLElement>('[role="tabpanel"]'))
+    const select = (index: number) => {
+      const template = panels[index].querySelector<HTMLTemplateElement>(
+        '[data-device-template]',
+      )
+      if (template) {
+        const content = document.createElement('div')
+        for (const attribute of template.attributes) {
+          if (attribute.name !== 'data-device-template')
+            content.setAttribute(attribute.name, attribute.value)
+        }
+        content.append(template.content.cloneNode(true))
+        template.replaceWith(content)
+      }
+      tabs.forEach((tab, i) => {
+        tab.setAttribute('aria-selected', String(i === index))
+        tab.tabIndex = i === index ? 0 : -1
+        panels[i].hidden = i !== index
+      })
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => select(index))
+      tab.addEventListener('keydown', (event) => {
+        const next =
+          event.key === 'ArrowRight'
+            ? (index + 1) % tabs.length
+            : event.key === 'ArrowLeft'
+              ? (index + tabs.length - 1) % tabs.length
+              : event.key === 'Home'
+                ? 0
+                : event.key === 'End'
+                  ? tabs.length - 1
+                  : null
+        if (next === null) return
+        event.preventDefault()
+        select(next)
+        tabs[next].focus()
+      })
+    })
+  }
+  setupResponsiveTabs()
+  document.addEventListener('astro:page-load', setupResponsiveTabs)
+</script>
+
+<style>
+  .responsive-section {
+    background: #fff;
+    color: #1d1d1f;
+    padding: 100px 28px;
+  }
+  .responsive-wrap {
+    max-width: 1064px;
+    margin: auto;
+  }
+  header {
+    text-align: center;
+  }
+  .eyebrow {
+    margin: 0 0 18px;
+    font-size: 11px;
+    font-weight: 650;
+    color: #6e6e73;
+    letter-spacing: 0.12em;
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(32px, 4.5vw, 52px);
+    font-weight: 650;
+    letter-spacing: -0.045em;
+  }
+  .platform-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 32px 0 48px;
+  }
+  .platform-tabs button {
+    appearance: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 10px 0;
+    background: none;
+    color: #86868b;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .platform-tabs button[aria-selected='true'] {
+    color: #1d1d1f;
+    border-bottom-color: #1d1d1f;
+  }
+  .platform-tabs button:focus-visible {
+    outline: 2px solid #1976d2;
+    outline-offset: 5px;
+  }
+  .device-panel[hidden] {
+    display: none;
+  }
+  .device-panel:not([hidden]) .devices {
+    animation: device-panel-arrive 300ms ease both;
+  }
+  @keyframes device-panel-arrive {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .device-panel:not([hidden]) .devices {
+      animation: none;
+    }
+  }
+  .devices {
+    --stage-height: clamp(240px, 48vw, 560px);
+    height: calc(var(--stage-height) + 44px);
+    display: grid;
+    grid-template-columns: minmax(0, 2.85fr) minmax(0, 1fr);
+    align-items: end;
+    gap: 4%;
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .image-crop {
+    position: relative;
+    overflow: hidden;
+    width: min(100%, calc(var(--stage-height) * var(--crop-ratio)));
+  }
+  .device-panel[data-platform='iOS'] .large-device .image-crop {
+    width: min(87.3%, calc(var(--stage-height) * var(--crop-ratio) * 0.873));
+  }
+  .device-panel[data-platform='HarmonyOS'] .large-device .image-crop {
+    width: min(85%, calc(var(--stage-height) * var(--crop-ratio) * 0.85));
+  }
+  .device-panel[data-platform='HarmonyOS'] .small-device .image-crop {
+    width: min(108%, calc(var(--stage-height) * var(--crop-ratio) * 1.08));
+  }
+  .image-crop img {
+    position: absolute;
+    width: var(--image-width);
+    max-width: none;
+    height: auto;
+    left: var(--image-left);
+    top: var(--image-top);
+  }
+  figcaption {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #1d1d1f;
+  }
+  figcaption span {
+    font-size: 11px;
+    color: #86868b;
+  }
+  @media (max-width: 650px) {
+    .responsive-section {
+      padding: 74px 22px;
+    }
+    .platform-tabs {
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+    .devices {
+      height: calc(var(--stage-height) + 50px);
+      gap: 3%;
+      grid-template-columns: minmax(0, 2.5fr) minmax(0, 1fr);
+    }
+    figcaption {
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      margin-top: 14px;
+    }
+    figcaption span {
+      font-size: 10px;
+    }
+  }
+</style>

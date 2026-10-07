@@ -25,8 +25,6 @@
     },
     "links": [
       { "label": "功能", "href": "#experience" },
-      { "label": "平台", "href": "#platforms" },
-      { "label": "项目结构", "href": "#architecture" },
       { "label": "常见问题", "href": "#faq" },
       { "label": "返回主站", "href": ".." }
     ],
