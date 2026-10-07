@@ -73,10 +73,7 @@ jobs:
 
       - name: Rsync dist to VPS
         run: |
-          # Keep old hashed assets available for cached HTML and open tabs.
-          # Publish completed files only after the transfer finishes.
-          rsync -az --delay-updates --delete-delay \
-            --filter='P /_astro/***' \
+          rsync -az --delete \
             --chmod=D755,F644 \
             ./dist/ \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/
