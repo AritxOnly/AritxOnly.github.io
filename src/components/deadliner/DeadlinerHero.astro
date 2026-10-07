@@ -27,7 +27,7 @@ import DeadlinerHelloEffect from './DeadlinerHelloEffect'
         src={heroDevices}
         alt="Deadliner 在手机、平板与手表上的任务、灵感、AI 对话和概览界面"
         widths={[768, 1280, 1920, 2560, 3840]}
-        sizes="100vw"
+        sizes="(max-width: 650px) 100vw, 98vw"
         format="webp"
         quality={85}
         loading="eager"
@@ -113,11 +113,15 @@ import DeadlinerHelloEffect from './DeadlinerHelloEffect'
     max-width: 1800px;
     height: auto;
     overflow: visible;
-    transform: translateY(0);
-    transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translateY(calc(clamp(24px, 7vw, 120px) + 80px));
+    filter: blur(6px);
+    transition:
+      transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 1.1s ease;
   }
   :global(.deadliner-intro) .deadliner-welcome :global(svg) {
     transform: translateY(var(--welcome-offset-y, 0px));
+    filter: blur(0);
   }
   .deadliner-hero {
     min-height: calc(100svh - 64px);
@@ -270,6 +274,11 @@ import DeadlinerHelloEffect from './DeadlinerHelloEffect'
     .product-stage {
       position: relative;
       min-height: 600px;
+    }
+  }
+  @media (min-width: 651px) {
+    .hero-devices {
+      padding-inline: clamp(8px, 1vw, 20px);
     }
   }
   @media (max-width: 900px) {

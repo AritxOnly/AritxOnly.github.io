@@ -11,6 +11,8 @@ import TagsSection from '~/components/TagsSection.astro'
 import SeriesSection from '~/components/SeriesSection.astro'
 import ChevronsRightIcon from '~/icons/chevrons-right.svg'
 import apps from '~/data/apps.json'
+import { Image } from 'astro:assets'
+import deadlinerPoster from '~/assets/deadliner/home-poster.png'
 
 const home = await getCollection('home')
 let HomeContent
@@ -57,7 +59,18 @@ const postsHaveSeries = sortedPosts.some((post) => post.data.series)
         aria-label={`查看 ${app.name}`}
       >
         <div>
-          {app.images && app.images.length > 0 && (
+          {app.url === '/deadliner' ? (
+            <Image
+              src={deadlinerPoster}
+              alt="Deadliner 跨平台任务管理：手机、平板与 Apple Watch"
+              widths={[480, 800, 1200]}
+              sizes="(max-width: 639px) 100vw, 50vw"
+              format="webp"
+              quality={85}
+              loading="lazy"
+              class="mb-3 aspect-video w-full rounded-lg bg-[#151515] object-contain"
+            />
+          ) : app.images && app.images.length > 0 && (
             <img
               src={app.images[0]}
               alt={app.name}
