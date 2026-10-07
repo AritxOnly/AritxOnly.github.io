@@ -1,0 +1,13 @@
+{
+  "name": "AritxOnly",
+  "short_name": "AritxOnly",
+  "start_url": "/",
+  "display": "browser",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
