@@ -7,6 +7,15 @@ import DeadlinerMotion from './DeadlinerMotion.astro'
 import androidPlatform from '../../assets/deadliner/android-platform.png'
 import iosPlatform from '../../assets/deadliner/ios-platform.png'
 import harmonyPlatform from '../../assets/deadliner/harmony-platform.png'
+import aritxAvatar from '../../assets/deadliner/team/aritxonly.jpg'
+import qiaoAvatar from '../../assets/deadliner/team/qiao411.jpg'
+import xiaoAvatar from '../../assets/deadliner/team/xiaochennnng.jpg'
+
+const team = [
+  { name: 'Aritx Zhou', handle: 'AritxOnly', role: '移动端开发，项目联合发起人', avatar: aritxAvatar },
+  { name: 'qiao411', handle: 'qiao411', role: '产品经理，项目发起人', avatar: qiaoAvatar },
+  { name: 'XiaoChennnng', handle: 'XiaoChennnng', role: 'PC 端开发', avatar: xiaoAvatar },
+]
 
 const repositories = {
   android: 'https://github.com/DeadlinerStudio/Deadliner',
@@ -237,6 +246,44 @@ const repositories = {
     </div>
   </section>
 
+  <section class="team-section section" id="team" aria-labelledby="team-title">
+    <div class="wrap">
+      <div class="section-heading team-heading">
+        <h2 id="team-title">产品团队。</h2>
+        <p>一起把每个“用着顺手”，做进 Deadliner。</p>
+      </div>
+      <ul class="team-list">
+        {team.map((member) => (
+          <li>
+            <a
+              class="team-member"
+              href={`https://github.com/${member.handle}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${member.name}，${member.role}，查看 GitHub`}
+            >
+              <Image
+                class="team-avatar"
+                src={member.avatar}
+                alt=""
+                widths={[144, 288]}
+                sizes="(max-width: 650px) 80px, 144px"
+                format="webp"
+                quality={85}
+                loading="lazy"
+              />
+              <div class="team-info">
+                <h3>{member.name}</h3>
+                <p class="team-role">{member.role}</p>
+                <span class="team-github">@{member.handle} <span aria-hidden="true">↗</span></span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
   <section class="faq-section section wrap" id="faq">
     <div class="section-heading">
       <p class="eyebrow">大家常问的</p><h2>常见问题。</h2>
@@ -261,6 +308,113 @@ const repositories = {
 </div>
 
 <style>
+  .team-section {
+    background: linear-gradient(180deg, #fff 0%, #f5f5f7 28%, #f5f5f7 100%);
+    scroll-margin-top: 80px;
+  }
+  .team-section .team-heading {
+    margin-inline: auto;
+    margin-bottom: 64px;
+    text-align: center;
+  }
+  .team-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 48px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .team-member {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    text-decoration: none !important;
+  }
+  .team-avatar {
+    display: block;
+    width: 144px;
+    height: 144px;
+    margin-bottom: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 8px 24px rgba(29, 29, 31, 0.07);
+    transition: transform 250ms ease;
+  }
+  .team-list h3 {
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-size: clamp(22px, 2.2vw, 28px);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+  .team-role {
+    margin: 0 0 17px;
+    color: var(--sub);
+    font-size: 14px;
+  }
+  .team-github {
+    color: var(--blue);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+  .team-github > span {
+    display: inline-block;
+    margin-left: 3px;
+  }
+  .team-member:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 12px;
+    border-radius: 12px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .team-member:hover .team-avatar {
+      transform: translateY(-4px);
+    }
+    .team-member:hover .team-github {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+  @media (max-width: 650px) {
+    .team-section .team-heading {
+      margin-bottom: 40px;
+    }
+    .team-list {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: 340px;
+      margin-inline: auto;
+    }
+    .team-member {
+      flex-direction: row;
+      gap: 24px;
+      text-align: left;
+    }
+    .team-avatar {
+      flex: none;
+      width: 80px;
+      height: 80px;
+      margin: 0;
+    }
+    .team-list h3 {
+      font-size: 21px;
+    }
+    .team-role {
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .team-avatar {
+      transition: none;
+    }
+    .team-member:hover .team-avatar {
+      transform: none;
+    }
+  }
   .deadliner-home {
     --ink: #1d1d1f;
     --sub: #6e6e73;

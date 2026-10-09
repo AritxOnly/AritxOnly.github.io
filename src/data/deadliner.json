@@ -25,6 +25,7 @@
     },
     "links": [
       { "label": "功能", "href": "#experience" },
+      { "label": "产品团队", "href": "#team" },
       { "label": "常见问题", "href": "#faq" },
       { "label": "返回主站", "href": ".." }
     ],
