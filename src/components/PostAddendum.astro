@@ -1,6 +1,6 @@
 ---
 import type { FrontmatterImage } from '~/types'
-import { Image } from 'astro:assets'
+import ProfileAvatar from './ProfileAvatar.astro'
 
 interface Props {
   avatarImage?: FrontmatterImage
@@ -13,14 +13,9 @@ const { avatarImage } = Astro.props
 >
   {
     avatarImage && (
-      <Image
-        src={avatarImage.src}
-        alt={avatarImage.alt}
-        class="rounded-full border-8 border-accent/15 size-36 aspect-square box-content shrink-0"
-        widths={[288]}
-        height={144}
-        width={144}
-      />
+      <div class="size-36 shrink-0 overflow-hidden rounded-full">
+        <ProfileAvatar />
+      </div>
     )
   }
   <div>

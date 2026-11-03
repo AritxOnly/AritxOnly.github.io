@@ -6,12 +6,19 @@ const config: SiteConfig = {
   // The name of your site, used in the title and for SEO.
   title: '音唯的个人小站',
   // The description of your site, used for SEO and RSS feed.
-  description:
-    '音唯的个人小站：记录开发、音乐创作与学习。', 
+  description: 'Aritx Zhou（音唯）的个人小站：记录开发、音乐创作与学习。',
   // The author of the site, used in the footer, SEO, and RSS feed.
-  author: 'Aritx音唯',
+  author: 'Aritx Zhou / 音唯',
   // Keywords for SEO, used in the meta tags.
-  tags: ['AritxOnly', 'Aritx音唯', '个人博客', '个人小站', 'NJUCS', '南京大学'],
+  tags: [
+    'Aritx Zhou',
+    'AritxOnly',
+    'Aritx音唯',
+    '个人博客',
+    '个人小站',
+    'NJUCS',
+    '南京大学',
+  ],
   // Path to the image used for generating social media previews.
   // Needs to be a square JPEG file due to limitations of the social card generator.
   // Try https://squoosh.app/ to easily convert images to JPEG.
@@ -38,11 +45,11 @@ const config: SiteConfig = {
     },
     {
       name: '音乐作品',
-      url: '/music'
+      url: '/music',
     },
     {
       name: '应用开发',
-      url: '/app'
+      url: '/app',
     },
     {
       name: '博客',
@@ -50,7 +57,7 @@ const config: SiteConfig = {
     },
     {
       name: '友链',
-      url: '/friends'
+      url: '/friends',
     },
     // {
     //   name: 'GitHub',
@@ -69,10 +76,7 @@ const config: SiteConfig = {
     // https://expressive-code.com/guides/themes/#using-bundled-themes
     // These will be used to theme the entire site along with syntax highlighting.
     // To use light-dark-auto mode, only include a light and a dark theme in that order.
-    include: [
-      'github-light',
-      'github-dark',
-    ],
+    include: ['github-light', 'github-dark'],
     // include: [
     //   'andromeeda',
     //   'aurora-x',

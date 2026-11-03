@@ -1,0 +1,58 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import ProfileAvatar from '~/components/ProfileAvatar.astro'
+import ExperienceTimeline from '~/components/ExperienceTimeline.astro'
+import SectionIntro from '~/components/SectionIntro.astro'
+---
+
+<Layout
+  title="关于我"
+  description="我是 Aritx Zhou，也叫音唯。这里是我的学习、开发与实习经历。"
+>
+  <div class="about-intro">
+    <SectionIntro
+      label="关于我"
+      title="音唯，也叫 Aritx Zhou。"
+      description="来自武汉，在南京大学读书。写代码，做电子音乐，也会在模拟飞行里给自己安排一趟远行。"
+      ><span slot="title"
+        >音唯，也叫<br /><span class="name-together">Aritx Zhou.</span></span
+      ><a class="md-button tonal" href="mailto:aritxonly@outlook.com">来聊聊 ↗</a
+      ></SectionIntro
+    ><div class="about-portrait">
+      <span class="portrait-caption">A FEW SIDES OF ME</span>
+      <div class="about-avatar"><ProfileAvatar /></div>
+      <span class="portrait-tag portrait-tag-code" aria-hidden="true"
+        >&lt;/&gt; 写代码</span
+      >
+      <span class="portrait-tag portrait-tag-music" aria-hidden="true">♫ 做音乐</span>
+      <span class="portrait-signature">Aritx Zhou</span>
+    </div>
+  </div>
+  <div class="personal-notes">
+    <div>
+      <span class="note-symbol" aria-hidden="true">{'{ }'}</span><h2>平时在折腾</h2><p>
+        Go 后端、多端原生应用、智能体与多模态。从好奇开始，做着做着就认真了。
+      </p>
+    </div><div>
+      <span class="note-symbol note-sound" aria-hidden="true"
+        ><i></i><i></i><i></i><i></i><i></i></span
+      ><h2>耳机里的另一面</h2><p>
+        Melodic Dubstep、Colour Bass，旋律系 Bass 乐爱好者。<a href="/music"
+          >来听听我的作品 ↗</a
+        >
+      </p>
+    </div>
+  </div>
+  <section id="journey" class="home-section">
+    <div class="section-top">
+      <div>
+        <p class="eyebrow">走过的几站 / MY JOURNEY</p><h2>一路折腾，几线并行。</h2>
+      </div>
+    </div><ExperienceTimeline />
+  </section>
+  <div class="page-note">
+    代码之外，也想多认识些有趣的人。可以给我<a href="mailto:aritxonly@outlook.com"
+      >发邮件</a
+    >，或去 <a href="https://github.com/AritxOnly">GitHub</a> 打个招呼。
+  </div>
+</Layout>

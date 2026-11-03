@@ -1,0 +1,348 @@
+@import '@fontsource-variable/noto-serif-sc';
+
+/* Only the Latin subset is needed: Chinese UI text uses native sans-serif faces. */
+@font-face {
+  font-family: 'Manrope Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 800;
+  src: url('@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2')
+    format('woff2-variations');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308,
+    U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root[data-theme][data-theme-mode] {
+  --font-ui:
+    'Manrope Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  --font-editorial: 'Noto Serif SC Variable', 'Songti SC', 'STSong', serif;
+  --font-display: 'Manrope Variable', 'Noto Serif SC Variable', 'Songti SC', serif;
+  --font-mono: 'JetBrains Mono Variable', 'SFMono-Regular', monospace;
+  --default-font-family: var(--font-ui);
+  --default-mono-font-family: var(--font-mono);
+}
+body {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 450;
+  line-height: 1.8;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+.site-shell :is(button, input, textarea, select) {
+  font-family: inherit;
+}
+.site-main :is(h1, h2, h3) {
+  text-wrap: pretty;
+}
+
+/* Large editorial titles contrast with the quiet, functional card typography. */
+.site-main
+  :is(
+    .page-intro h1,
+    .intro h1,
+    .scene-copy h2,
+    .section-top h2,
+    .about-section h2,
+    .explore-grid h2,
+    .section-heading,
+    .article-title
+  ) {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+.site-main .page-intro h1 {
+  font-size: clamp(36px, 4.6vw, 58px);
+  margin-bottom: 22px;
+}
+.site-main .about-intro .page-intro h1 {
+  max-width: none;
+  line-height: 1.25;
+}
+.name-together {
+  font-family: var(--font-ui);
+  font-weight: 750;
+  letter-spacing: -0.055em;
+}
+.story-opening .intro h1 {
+  font-size: clamp(36px, 3.8vw, 52px);
+  letter-spacing: -0.035em;
+}
+.story-opening .intro h1 > span {
+  font-weight: 800;
+}
+.story-opening .intro-line {
+  font-family: var(--font-editorial);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.7;
+  letter-spacing: 0.015em;
+}
+.scene-copy h2 {
+  font-size: clamp(34px, 4vw, 52px);
+}
+.scene-copy > p:not(.eyebrow),
+.intro-note {
+  line-height: 1.95;
+}
+.site-main .section-top h2,
+.site-main .about-section h2 {
+  font-size: clamp(27px, 3vw, 36px);
+}
+.page-intro > p:not(.eyebrow) {
+  font-size: 16px;
+  line-height: 1.95;
+  max-width: 40em;
+}
+
+.site-main
+  :is(
+    .post-card-title,
+    .work-copy h3,
+    .project-copy h3,
+    .friend-card h3,
+    .track-card h3,
+    .journey-detail h3,
+    .personal-notes h2,
+    .scene-reading h3
+  ) {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.5;
+}
+.post-card-title {
+  font-size: clamp(21px, 2.2vw, 25px);
+}
+.post-card-description {
+  font-size: 15px;
+  line-height: 1.95;
+}
+.work-copy h3 {
+  letter-spacing: -0.045em;
+}
+.personal-notes h2 {
+  font-size: 21px;
+}
+.journey-chart-heading > p {
+  font-family: var(--font-editorial);
+  font-weight: 600;
+  font-size: 22px;
+}
+.gantt-label strong {
+  font-weight: 650;
+}
+
+/* Small labels and dates have their own steady rhythm. */
+.site-shell
+  :is(
+    .eyebrow,
+    .portrait-caption,
+    .portrait-tag,
+    .story-tab-number,
+    .work-index,
+    .work-meta,
+    .gantt-axis,
+    .gantt-label small,
+    .journey-chart-heading > span,
+    .track-date,
+    .post-card-meta time
+  ) {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.eyebrow {
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+.story-tab-label {
+  font-weight: 600;
+}
+.site-header .nav-link {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 550;
+}
+.site-header .nav-link[data-active] {
+  font-weight: 750;
+}
+.wordmark {
+  font-weight: 750;
+  letter-spacing: -0.04em;
+}
+.brand-en {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 450;
+  letter-spacing: 0.02em;
+}
+.brand-symbol {
+  font-family: Georgia, serif;
+}
+.md-button,
+.text-link,
+.post-card-read {
+  font-weight: 650;
+}
+.site-shell
+  :is(.archive-stamp strong, .journey-detail-mark span, .scene-milestones > div > span) {
+  font-family: var(--font-ui);
+  font-weight: 450;
+  font-variant-numeric: lining-nums tabular-nums;
+  letter-spacing: -0.075em;
+}
+.portrait-signature {
+  font-family: Georgia, var(--font-editorial);
+  font-size: 32px;
+  font-style: italic;
+  letter-spacing: -0.035em;
+}
+
+/* Long-form reading: generous Chinese leading, clear headings, unchanged code metrics. */
+.site-main .article-title {
+  font-size: clamp(29px, 3.4vw, 40px);
+  line-height: 1.5;
+  margin-bottom: 28px;
+}
+.site-main .prose {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.95;
+  letter-spacing: 0.005em;
+  overflow-wrap: break-word;
+}
+.site-main .prose :is(h1, h2, h3, h4) {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+}
+.site-main .prose p {
+  margin-block: 1.25em;
+}
+.site-main .prose li {
+  line-height: 1.95;
+}
+.site-main .prose blockquote {
+  font-family: var(--font-editorial);
+  font-size: 1.05em;
+  line-height: 1.9;
+}
+.site-main .prose :is(code, pre, kbd, samp) {
+  font-family: var(--font-mono);
+  letter-spacing: normal;
+}
+.site-main .prose .katex {
+  font-family: KaTeX_Main, 'Times New Roman', serif;
+}
+.site-main .about-copy.prose {
+  font-size: 15px;
+  line-height: 1.9;
+}
+.site-main .about-copy.prose p:first-child {
+  margin-top: 0;
+}
+.site-main .about-copy.prose p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  body {
+    font-size: 15px;
+  }
+  .site-main .page-intro h1,
+  .site-main .about-intro .page-intro h1 {
+    font-size: clamp(30px, 8.6vw, 38px);
+  }
+  .story-opening .intro h1 {
+    font-size: 34px;
+  }
+  .story-opening .intro-line {
+    font-size: 19px;
+    line-height: 1.65;
+  }
+  .scene-copy h2 {
+    font-size: 31px;
+    line-height: 1.35;
+  }
+  .scene-copy > p:not(.eyebrow),
+  .intro-note {
+    line-height: 1.85;
+  }
+  .site-main .section-top h2,
+  .site-main .about-section h2 {
+    font-size: 27px;
+  }
+  .page-intro > p:not(.eyebrow) {
+    font-size: 15px;
+  }
+  .site-main .prose {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+  .site-main .article-title {
+    font-size: 28px;
+    line-height: 1.5;
+  }
+  .journey-chart-heading > p {
+    font-size: 19px;
+  }
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .personal-notes h2 {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 700px) {
+  .scene-copy .intro-actions {
+    gap: 8px;
+  }
+  .scene-copy .intro-actions .md-button {
+    padding: 10px 12px;
+    gap: 8px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .story-scene {
+    padding: 20px;
+    gap: 16px;
+  }
+  .scene-copy h2 {
+    font-size: 28px;
+  }
+  .scene-copy > p:not(.eyebrow) {
+    font-size: 13px;
+    line-height: 1.8;
+  }
+  .scene-copy .intro-actions {
+    gap: 8px;
+  }
+  .scene-copy .intro-actions .md-button {
+    padding: 10px 12px;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .scene-milestones > div {
+    padding-block: 10px;
+    gap: 14px;
+  }
+  .scene-milestones p {
+    font-size: 12px;
+  }
+  .scene-milestones > a {
+    font-size: 11px;
+  }
+}

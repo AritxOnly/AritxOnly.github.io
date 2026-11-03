@@ -1,5 +1,9 @@
 ---
 import '~/styles/global.css'
+import '~/styles/material.css'
+import '~/styles/typography.css'
+import uiFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url'
+import AvatarTheme from '~/components/AvatarTheme.astro'
 import Header from '~/components/Header.astro'
 import Footer from '~/components/Footer.astro'
 import LightDarkAutoThemeLoader from '~/components/LightDarkAutoThemeLoader.astro'
@@ -115,7 +119,7 @@ let generatedCss: string = cssLines.join('\n')
 
 <!doctype html>
 <html
-  lang="en"
+  lang="zh-CN"
   data-theme={defaultTheme}
   data-dark-theme={darkTheme}
   data-light-theme={lightTheme}
@@ -142,6 +146,7 @@ let generatedCss: string = cssLines.join('\n')
     <link rel="canonical" href={pageUrl} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={uiFont} as="font" type="font/woff2" crossorigin />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -153,13 +158,23 @@ let generatedCss: string = cssLines.join('\n')
     <style is:inline set:html={generatedCss}></style>
     {themeMode === 'light-dark-auto' && <LightDarkAutoThemeLoader />}
     {themeMode === 'select' && <SelectThemeLoader />}
+    <AvatarTheme />
   </head>
   <body class="w-full h-full m-0 bg-background text-foreground">
-    <div
-      class="flex flex-col max-w-3xl min-h-screen border-accent/10 m-auto p-3 sm:py-5 sm:px-6 md:py-10"
-    >
+    <div class="site-shell">
+      <a class="skip-link" href="#main-content">跳到内容</a>
       <Header />
-      <main class="flex flex-col py-1">
+      <main
+        id="main-content"
+        class:list={[
+          'site-main',
+          {
+            'home-main': ['/', '/app', '/friends', '/music', '/about'].includes(
+              Astro.url.pathname,
+            ),
+          },
+        ]}
+      >
         <slot />
       </main>
       <Footer />

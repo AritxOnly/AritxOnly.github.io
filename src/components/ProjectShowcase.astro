@@ -1,0 +1,65 @@
+---
+import apps from '~/data/apps.json'
+import { Image } from 'astro:assets'
+import deadlinerPoster from '~/assets/deadliner/home-poster.png'
+interface Props {
+  featured?: boolean
+}
+const { featured = false } = Astro.props
+const selected = featured ? apps.slice(0, 3) : apps
+---
+
+<div class="work-list">
+  {
+    selected.map((app, index) => (
+      <article class="work-row" id={app.id}>
+        <div class="work-copy">
+          <>
+            <p class="eyebrow">
+              {String(index + 1).padStart(2, '0')} / {app.category}
+            </p>
+            <h3>
+              <a href={app.url}>{app.name}</a>
+            </h3>
+            <p class="work-line">{app.short}</p>
+            <p class="work-description">{app.description}</p>
+            <div class="work-meta">
+              <>
+                <span>{app.platform}</span>
+                <span>{app.kind}</span>
+              </>
+            </div>
+            <a class="md-button tonal" href={app.url}>
+              {app.url.startsWith('/') ? '去看看' : '到 GitHub 看看'}{' '}
+              <span aria-hidden="true">↗</span>
+            </a>
+          </>
+        </div>
+        <a
+          href={app.url}
+          class:list={['work-art', `art-${app.id}`, { 'work-symbol': !app.image }]}
+          aria-label={`查看 ${app.name}`}
+        >
+          {app.image === 'deadliner' ? (
+            <Image
+              src={deadlinerPoster}
+              alt="Deadliner 多端界面"
+              widths={[480, 800, 1200]}
+              sizes="(max-width:700px) 100vw, 55vw"
+              format="webp"
+              loading="lazy"
+            />
+          ) : app.image ? (
+            <img
+              src={app.image}
+              alt={`${app.name}${app.id === 'hypermodifier' ? '应用图标' : '实际界面'}`}
+              loading="lazy"
+            />
+          ) : (
+            <span aria-hidden="true">{app.mark}</span>
+          )}
+        </a>
+      </article>
+    ))
+  }
+</div>

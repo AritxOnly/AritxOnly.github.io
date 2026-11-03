@@ -1,0 +1,157 @@
+---
+import { journey } from '~/data/journey'
+
+const monthIndex = (date: string) => {
+  const [year, month] = date.split('-').map(Number)
+  return year * 12 + month - 1
+}
+const currentMonth = new Intl.DateTimeFormat('sv-SE', {
+  timeZone: 'Asia/Shanghai',
+  year: 'numeric',
+  month: '2-digit',
+}).format(new Date())
+const items = [...journey].sort((a, b) => a.start.localeCompare(b.start))
+const firstYear = Number(items[0].start.slice(0, 4))
+const lastMonth = Math.max(
+  monthIndex(currentMonth),
+  ...items.map((item) => monthIndex(item.end || item.start)),
+)
+const lastYear = Math.floor(lastMonth / 12)
+const start = firstYear * 12
+const total = (lastYear - firstYear + 1) * 12
+const years = Array.from({ length: lastYear - firstYear + 1 }, (_, i) => firstYear + i)
+const tones: Record<string, string> = {
+  教育: 'secondary',
+  项目: 'primary',
+  竞赛: 'tertiary',
+  研究: 'tertiary',
+  实习: 'secondary',
+}
+---
+
+<div class="journey-chart" data-journey>
+  <div class="journey-chart-heading">
+    <p>有些故事，是同时发生的。</p>
+    <span>{firstYear} — {lastYear} <i aria-hidden="true"></i> 还在继续</span>
+  </div>
+  <p class="journey-hint" id="journey-help">点选一条经历，看看那段时间在忙什么。</p>
+  <div
+    class="gantt-scroll"
+    role="region"
+    aria-label="个人经历时间跨度图"
+    aria-describedby="journey-help"
+    tabindex="0"
+  >
+    <div
+      class="gantt"
+      style={`--year-count:${years.length};--now:${((monthIndex(currentMonth) - start + 1) / total) * 100}%`}
+    >
+      <div class="gantt-axis" aria-hidden="true">
+        <span>我的几条支线</span>
+        <div>
+          {
+            years.map((year) => (
+              <span>
+                {year}
+                <small>
+                  {['01', '04', '07', '10'].map((month) => (
+                    <span>{month}</span>
+                  ))}
+                </small>
+              </span>
+            ))
+          }
+        </div>
+      </div>
+      <ol class="gantt-rows">
+        {
+          items.map((item, index) => {
+            const offset = ((monthIndex(item.start) - start) / total) * 100
+            const duration =
+              ((monthIndex(item.end || currentMonth) - monthIndex(item.start) + 1) /
+                total) *
+              100
+            return (
+              <li>
+                <a
+                  class="gantt-row"
+                  href={`#experience-${index}`}
+                  aria-controls={`experience-${index}`}
+                  data-experience={index}
+                  style={`--bar-start:${offset}%;--bar-width:${duration}%`}
+                  data-tone={tones[item.kind]}
+                >
+                  <span class="gantt-label">
+                    <>
+                      <span class="gantt-kind">{item.kind}</span>
+                      <strong>{item.title}</strong>
+                      <small>{item.period}</small>
+                    </>
+                  </span>
+                  <span class="gantt-track" aria-hidden="true">
+                    <span class:list={['gantt-bar', { ongoing: !item.end }]}>
+                      <span>{item.kind}</span>
+                      {!item.end && <i />}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            )
+          })
+        }
+      </ol>
+    </div>
+  </div>
+  <div class="journey-details" aria-live="polite" aria-atomic="true">
+    {
+      items.map((item, index) => (
+        <article
+          class="journey-detail"
+          id={`experience-${index}`}
+          data-experience-panel={index}
+          data-tone={tones[item.kind]}
+        >
+          <div class="journey-detail-mark" aria-hidden="true">
+            <>
+              <span>0{index + 1}</span>
+              <small>{item.kind}</small>
+            </>
+          </div>
+          <div>
+            <>
+              <p class="eyebrow">{item.period}</p>
+              <h3>{item.title}</h3>
+              <p class="journey-role">{item.role}</p>
+              <p class="journey-description">{item.description}</p>
+            </>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-journey]').forEach((chart) => {
+    const links = [...chart.querySelectorAll<HTMLAnchorElement>('[data-experience]')]
+    const panels = [...chart.querySelectorAll<HTMLElement>('[data-experience-panel]')]
+    const select = (index: number) => {
+      links.forEach((link, i) => {
+        if (i === index) link.setAttribute('aria-current', 'true')
+        else link.removeAttribute('aria-current')
+      })
+      panels.forEach((panel, i) => {
+        panel.hidden = i !== index
+      })
+    }
+    links.forEach((link, index) =>
+      link.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+        event.preventDefault()
+        select(index)
+      }),
+    )
+    const linkedIndex = panels.findIndex((panel) => `#${panel.id}` === location.hash)
+    select(linkedIndex >= 0 ? linkedIndex : links.length - 1)
+  })
+</script>

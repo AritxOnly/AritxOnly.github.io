@@ -1,124 +1,141 @@
 ---
-import IconRss from '~/icons/rss.svg'
 import IconGithub from '~/icons/github.svg'
 import IconBilibili from '~/icons/bilibili.svg'
 import IconXiaohongshu from '~/icons/xiaohongshu.svg'
 import IconEmail from '~/icons/email.svg'
-import type { SocialLinks } from '~/types'
-
-interface Friend {
-  name: string
-  site?: string
-  avatar?: string
-  bio?: string
-  tags?: string[]
-  rss?: string | null
-  social?: SocialLinks
-  since?: string
-  reciprocal?: boolean
-  note?: string
-  priority?: number
+import IconTwitter from '~/icons/twitter.svg'
+import IconNetease from '~/icons/netease.svg'
+import IconSoundcloud from '~/icons/soundcloud.svg'
+import IconRss from '~/icons/rss.svg'
+const icons = {
+  github: IconGithub,
+  bilibili: IconBilibili,
+  xiaohongshu: IconXiaohongshu,
+  email: IconEmail,
+  twitter: IconTwitter,
+  netease: IconNetease,
+  soundcloud: IconSoundcloud,
 }
 
 interface Props {
-  friend: Friend
+  friend: {
+    name: string
+    site?: string
+    avatar?: string
+    bio?: string
+    tags?: string[]
+    rss?: string | null
+    social?: Record<string, string | boolean | undefined>
+    note?: string
+    reciprocal?: boolean
+  }
 }
-
 const { friend } = Astro.props
+const labels: Record<string, string> = {
+  github: 'GitHub',
+  bilibili: 'Bilibili',
+  xiaohongshu: '小红书',
+  email: '邮件',
+  twitter: 'X',
+  netease: '网易云',
+  soundcloud: 'SoundCloud',
+}
+const links = Object.entries(friend.social ?? {}).filter(
+  (entry): entry is [string, string] => typeof entry[1] === 'string',
+)
 ---
 
-<article
-  class="group grid h-full grid-rows-[auto_1fr_auto] rounded-2xl border border-accent p-4 hover:bg-accent/5 transition"
->
-  <!-- row 1: 头像 + 标题/标签等主体 -->
-  <div>
-    <!-- 头像 -->
-    {friend.avatar && (
-      <div
-        class="not-prose relative w-2/5 rounded-full border-[6px] border-accent/20 overflow-hidden"
-        style="aspect-ratio:1/1;"
-      >
-        <img
-          src={friend.avatar}
-          alt={friend.name}
-          loading="lazy"
-          class="absolute inset-0 block w-full h-full object-cover object-center m-0 p-0"
-        />
-      </div>
-    )}
-
-    <div class="flex items-center justify-between gap-3 mt-3">
-      <h3 class="text-lg font-semibold">{friend.name}</h3>
-      {friend.reciprocal && (
-        <span class="text-xs rounded-full border border-[var(--ec-border)] px-2 py-0.5 text-[var(--ec-foreground-muted)]">
-          互加友链
-        </span>
-      )}
-    </div>
-
-    {friend.bio && (
-      <p class="mt-1 text-[var(--ec-foreground-muted)]">{friend.bio}</p>
-    )}
-
-    <div class="mt-2 flex flex-wrap gap-1.5 text-xs text-[var(--ec-foreground-muted)]">
-      {friend.note && (
-        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full border border-accent/80 bg-accent/20">
-          <span class="inline-block size-1.5 rounded-full bg-accent"></span>
-          {friend.note}
-        </span>
-      )}
-      {friend.tags?.map(t => (
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full border border-[var(--ec-border)]">{t}</span>
-      ))}
+<article class="friend-card">
+  <div class="friend-top">
+    <div class="friend-avatar">
+      <span aria-hidden="true">{friend.name.slice(0, 1)}</span>{
+        friend.avatar && (
+          <img
+            src={friend.avatar}
+            alt={`${friend.name}的头像`}
+            width="64"
+            height="64"
+            loading="lazy"
+            data-friend-avatar
+          />
+        )
+      }
+    </div><div>
+      <h2>
+        {
+          friend.site ? (
+            <a href={friend.site} target="_blank" rel="noopener noreferrer">
+              {friend.name} ↗
+            </a>
+          ) : (
+            friend.name
+          )
+        }
+      </h2>{
+        friend.note && (
+          <p class="friend-note">{friend.note === 'Friend' ? '好朋友' : friend.note}</p>
+        )
+      }
     </div>
   </div>
-
-  <!-- row 2: 占位伸展（什么都不放，让这一行吃掉多余空间） -->
-  <div></div>
-
-  <!-- row 3: 底部按钮 —— 永远处在最后一行，天然贴到底部内边距 -->
-  <div class="pt-3 flex items-center gap-2">
-    {friend.site && (
-      <a href={friend.site} target="_blank" rel="noopener"
-         class="inline-flex items-center gap-1 rounded-xl border border-[var(--ec-border)] px-2.5 py-1.5 text-sm
-                hover:bg-accent/10 text-accent transition">
-        访问
-      </a>
-    )}
-    {friend.rss && (
-      <a href={friend.rss} target="_blank" rel="noopener"
-         class="social-link inline-flex items-center gap-1 rounded-xl border border-[var(--ec-border)] px-2.5 py-1.5
-                hover:bg-accent/10 transition" aria-label="RSS">
-        <IconRss class="size-5" />
-        <span class="text-sm">RSS</span>
-      </a>
-    )}
-    <div class="ml-auto flex items-center gap-2">
-      {friend.social?.github && (
-        <a href={friend.social.github} target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
-          <IconGithub class="size-6" />
+  <p class="friend-bio">{friend.bio || '见字如面，常来常往。'}</p>
+  <div class="friend-tags">
+    {friend.tags?.map((tag) => <span>{tag}</span>)}{
+      friend.reciprocal && <span>已互链</span>
+    }
+  </div>
+  <div class="friend-links">
+    {
+      friend.site && (
+        <a
+          class="friend-visit"
+          href={friend.site}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          去串门 <span aria-hidden="true">↗</span>
         </a>
-      )}
-      {friend.social?.bilibili && (
-        <a href={friend.social.bilibili} target="_blank" rel="noopener" class="social-link" aria-label="Bilibili">
-          <IconBilibili class="size-6" />
-        </a>
-      )}
-      {friend.social?.xiaohongshu && (
-        <a href={friend.social.xiaohongshu} target="_blank" rel="noopener" class="social-link" aria-label="Xiaohongshu">
-          <IconXiaohongshu class="size-6" />
-        </a>
-      )}
-      {friend.social?.email && (
-        <a href={friend.social.email} target="_blank" rel="noopener" class="social-link" aria-label="Email">
-          <IconEmail class="size-6" />
-        </a>
-      )}
+      )
+    }
+    <div class="friend-socials">
+      {
+        friend.rss && (
+          <a
+            href={friend.rss}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`订阅 ${friend.name} 的 RSS`}
+            title="RSS 订阅"
+          >
+            <IconRss aria-hidden="true" />
+          </a>
+        )
+      }
+      {
+        links.map(([key, url]) => {
+          const Icon = icons[key as keyof typeof icons]
+          return (
+            <a
+              href={key === 'email' && !url.startsWith('mailto:') ? 'mailto:' + url : url}
+              target={key === 'email' ? undefined : '_blank'}
+              rel="noopener noreferrer"
+              aria-label={`${friend.name} · ${labels[key] ?? key}`}
+              title={labels[key] ?? key}
+            >
+              {Icon ? <Icon aria-hidden="true" /> : <span>{labels[key] ?? key}</span>}
+            </a>
+          )
+        })
+      }
     </div>
   </div>
 </article>
-
-<style>
-  /* 仅作用于这个组件：把本组件卡片内的 img 高度强制 100% */
-  article img { height: 100% !important; width: 100% !important; border: 0; }
-</style>
+<script>
+  document.querySelectorAll<HTMLImageElement>('[data-friend-avatar]').forEach((img) => {
+    const hide = () => {
+      img.hidden = true
+    }
+    img.addEventListener('error', hide, { once: true })
+    if (img.complete && !img.naturalWidth) hide()
+  })
+</script>

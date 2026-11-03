@@ -62,6 +62,8 @@ export default defineConfig({
     responsiveStyles: true,
   },
   vite: {
+    // Bundle MCU: its 0.4 release contains extensionless ESM imports.
+    ssr: { noExternal: ['@material/material-color-utilities'] },
     plugins: [tailwindcss()],
   },
   integrations: [

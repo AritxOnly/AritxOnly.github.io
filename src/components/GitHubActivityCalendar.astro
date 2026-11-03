@@ -46,7 +46,9 @@ async function fetchData(
     }
   }
   const apiUrl = 'https://github-contributions-api.jogruber.de/v4/'
-  const response = await fetch(`${apiUrl}${username}?y=${String(year)}`)
+  const response = await fetch(`${apiUrl}${username}?y=${String(year)}`, {
+    signal: AbortSignal.timeout(5000),
+  })
   const data = (await response.json()) as GitHubActivityApiResponse
   if (!response.ok) {
     const message = data.error || 'Unknown error'
@@ -162,14 +164,23 @@ function getMonthLabels(
 
 const { username, year = 'last' } = Astro.props
 
-const data = await fetchData(username, year)
+let data: GitHubActivityApiResponse | undefined
+try {
+  data = await fetchData(username, year)
+} catch {
+  console.warn('GitHub activity unavailable; showing profile link.')
+}
 
 const themeFromColorscheme: [string, string] = [
   'var(--theme-background)',
   'var(--theme-accent)',
 ]
 
-const totalCount = year === 'last' ? data.total.lastYear : data.total[year]
+const totalCount = data
+  ? year === 'last'
+    ? data.total.lastYear
+    : data.total[year]
+  : undefined
 const maxLevel = 4
 const blockMargin = 4
 const labelMargin = 8
@@ -182,11 +193,11 @@ const hideTotalCount = false
 const weekStart = 0 // 0 = Sunday, 1 = Monday, etc.
 
 const colorScale = calcColorScale(themeFromColorscheme, maxLevel + 1)
-const activities = data.contributions
+const activities = data?.contributions ?? []
 
 const firstActivity = activities[0]
-const activityYear = getYear(parseISO(firstActivity.date))
-const weeks = groupByWeeks(activities, weekStart)
+const activityYear = firstActivity ? getYear(parseISO(firstActivity.date)) : undefined
+const weeks = activities.length ? groupByWeeks(activities, weekStart) : []
 const labels = {
   months: [
     'Jan',
@@ -213,95 +224,98 @@ const width = weeks.length * (blockSize + blockMargin) - blockMargin
 const height = labelHeight + (blockSize + blockMargin) * 7 - blockMargin
 ---
 
-<article
-  id="github-activity-calendar"
-  class="w-max max-w-full flex flex-col gap-2 text-sm"
->
-  <div
-    class="max-w-full overflow-x-auto pt-0.5"
-    style={{
-      // Don't cover the calendar with the scrollbar.
-      scrollbarGutter: 'stable',
-    }}
-  >
-    <svg
-      class="block visible"
-      width={width}
-      height={height}
-      viewBox={`0 0 ${width} ${height}`}
+{
+  data ? (
+    <article
+      id="github-activity-calendar"
+      class="w-max max-w-full flex flex-col gap-2 text-sm"
     >
-      {
-        !hideMonthLabels && (
-          <g>
-            {getMonthLabels(weeks, labels.months).map(({ label, weekIndex }) => (
-              <text
-                x={(blockSize + blockMargin) * weekIndex}
-                y={0}
-                dominant-baseline="hanging"
-                fill="currentColor"
-              >
-                {label}
-              </text>
-            ))}
-          </g>
-        )
-      }
-      {
-        weeks.map((week, weekIndex) => (
-          <g transform={`translate(${(blockSize + blockMargin) * weekIndex}, 0)`}>
-            {week.map((activity, dayIndex) => {
-              if (!activity) return null
-              return (
-                <rect
-                  class="stroke-foreground/10"
-                  x={0}
-                  y={labelHeight + (blockSize + blockMargin) * dayIndex}
-                  width={blockSize}
-                  height={blockSize}
-                  rx={blockRadius}
-                  ry={blockRadius}
-                  fill={colorScale[activity.level]}
-                  data-date={activity.date}
-                  data-level={activity.level}
-                />
-              )
-            })}
-          </g>
-        ))
-      }
-    </svg>
-  </div>
-  {
-    !(hideTotalCount && hideColorLegend) && (
-      <footer class="flex flex-col sm:flex-row sm:justify-between gap-x-1 gap-y-2">
-        {!hideTotalCount && (
-          <div>
-            {labels.totalCount
-              ? labels.totalCount
-                  .replace('{{count}}', String(totalCount))
-                  .replace('{{year}}', String(activityYear))
-              : `${totalCount} activities in ${activityYear}`}
-          </div>
-        )}
-        {!hideColorLegend && (
-          <div class="flex items-center gap-[3px]">
-            <span class="mr-1.5">{labels.legend.less}</span>
-            {range(maxLevel + 1).map((level) => (
-              <svg width={blockSize} height={blockSize}>
-                <rect
-                  class="stroke-foreground/10"
-                  width={blockSize}
-                  height={blockSize}
-                  fill={colorScale[level]}
-                  rx={blockRadius}
-                  ry={blockRadius}
-                />
-              </svg>
-            ))}
-            <span class="ml-1.5">{labels.legend.more}</span>
-          </div>
-        )}
-      </footer>
-    )
-  }
-</article>
+      <div
+        class="max-w-full overflow-x-auto pt-0.5"
+        style={{
+          // Don't cover the calendar with the scrollbar.
+          scrollbarGutter: 'stable',
+        }}
+      >
+        <svg
+          class="block visible"
+          width={width}
+          height={height}
+          viewBox={`0 0 ${width} ${height}`}
+        >
+          {!hideMonthLabels && (
+            <g>
+              {getMonthLabels(weeks, labels.months).map(({ label, weekIndex }) => (
+                <text
+                  x={(blockSize + blockMargin) * weekIndex}
+                  y={0}
+                  dominant-baseline="hanging"
+                  fill="currentColor"
+                >
+                  {label}
+                </text>
+              ))}
+            </g>
+          )}
+          {weeks.map((week, weekIndex) => (
+            <g transform={`translate(${(blockSize + blockMargin) * weekIndex}, 0)`}>
+              {week.map((activity, dayIndex) => {
+                if (!activity) return null
+                return (
+                  <rect
+                    class="stroke-foreground/10"
+                    x={0}
+                    y={labelHeight + (blockSize + blockMargin) * dayIndex}
+                    width={blockSize}
+                    height={blockSize}
+                    rx={blockRadius}
+                    ry={blockRadius}
+                    fill={colorScale[activity.level]}
+                    data-date={activity.date}
+                    data-level={activity.level}
+                  />
+                )
+              })}
+            </g>
+          ))}
+        </svg>
+      </div>
+      {!(hideTotalCount && hideColorLegend) && (
+        <footer class="flex flex-col sm:flex-row sm:justify-between gap-x-1 gap-y-2">
+          {!hideTotalCount && (
+            <div>
+              {labels.totalCount
+                ? labels.totalCount
+                    .replace('{{count}}', String(totalCount))
+                    .replace('{{year}}', String(activityYear))
+                : `${totalCount} activities in ${activityYear}`}
+            </div>
+          )}
+          {!hideColorLegend && (
+            <div class="flex items-center gap-[3px]">
+              <span class="mr-1.5">{labels.legend.less}</span>
+              {range(maxLevel + 1).map((level) => (
+                <svg width={blockSize} height={blockSize}>
+                  <rect
+                    class="stroke-foreground/10"
+                    width={blockSize}
+                    height={blockSize}
+                    fill={colorScale[level]}
+                    rx={blockRadius}
+                    ry={blockRadius}
+                  />
+                </svg>
+              ))}
+              <span class="ml-1.5">{labels.legend.more}</span>
+            </div>
+          )}
+        </footer>
+      )}
+    </article>
+  ) : (
+    <p class="page-note">
+      贡献日历暂时没连上，
+      <a href={`https://github.com/${username}`}>直接去 GitHub 看看 ↗</a>
+    </p>
+  )
+}

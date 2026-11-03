@@ -1,31 +1,86 @@
 [
-    {
-      "name": "Deadliner",
-      "short": "一款轻量级的日程提醒 & Deadline 管理工具。",
-      "long": "",
-      "url": "/deadliner",
-      "images": [
-        "/res/apps/deadliner/遇见焕然一新的Deadliner.jpg",
-        "/res/apps/deadliner/遇见熟悉的Deadliner.jpg",
-        "/res/apps/deadliner/遇见互联的Deadliner.jpg",
-        "/res/apps/deadliner/遇见智能的Deadliner.jpg",
-        "/res/apps/deadliner/遇见懂你的Deadliner.jpg"
-      ]
-    },
-    {
-      "name": "Ableton Live主题编辑器",
-      "short": "自定义你的Ableton Live 12！",
-      "long": "Music Lab 是我为电子音乐爱好者设计的小站，支持在线预览作品、展示专辑封面，以及社交分享。",
-      "url": "/apps/theme-editor",
-      "images": [
-        "/res/apps/ableton-live-theme-editor.JPG"
-      ]
-    },
-    {
-      "name": "其他应用",
-      "short": "一句话介绍",
-      "long": "长介绍",
-      "url": "https://example.com",
-      "images": []
-    }
-  ]
+  {
+    "id": "deadliner",
+    "name": "Deadliner",
+    "short": "Deadline 不会自己消失，但至少可以安排得明明白白。",
+    "description": "原生体验的多端待办日历，覆盖 Android、iOS 与 HarmonyOS，支持任务管理与 AI 助手。",
+    "url": "/deadliner",
+    "category": "效率工具",
+    "platform": "Android · iOS · HarmonyOS",
+    "kind": "独立开发",
+    "mark": "D",
+    "image": "deadliner"
+  },
+  {
+    "id": "hypermodifier",
+    "name": "HyperModifier",
+    "short": "给 HyperOS 再拧几颗体验上的小螺丝。",
+    "description": "面向 HyperOS 的 LSPosed 模块，调整通知与控制中心材质、圆角、媒体卡片，以及应用浮动导航。",
+    "url": "https://github.com/AritxOnly/HyperModifier",
+    "category": "系统定制",
+    "platform": "Android · LSPosed",
+    "kind": "独立项目",
+    "mark": "H",
+    "image": "/res/projects/hypermodifier.png"
+  },
+  {
+    "id": "f1info",
+    "name": "F1Info",
+    "short": "比赛几点开始？下一站跑哪儿？打开就知道。",
+    "description": "非官方 F1 信息应用：赛程、积分榜、比赛结果、Live 动态与桌面小组件。",
+    "url": "https://github.com/AritxOnly/F1Info",
+    "category": "赛车",
+    "platform": "Android 13+",
+    "kind": "独立项目",
+    "mark": "F1",
+    "image": "/res/projects/f1info.png"
+  },
+  {
+    "id": "ableton",
+    "name": "Ableton Live 主题编辑器",
+    "short": "做音乐之前，先给工作台换件喜欢的衣服。",
+    "description": "与 Future Tomorrow 合作开发的 Qt 主题编辑器，用于编辑和生成 Ableton Live 12 主题，目前处于 Alpha 阶段。",
+    "url": "https://github.com/AritxOnly/Qt-AbletonLive_ThemeEditor",
+    "category": "音乐工具",
+    "platform": "Qt · Ableton Live 12",
+    "kind": "合作项目 · Alpha",
+    "mark": "♫",
+    "image": "/res/apps/ableton-live-theme-editor.JPG"
+  },
+  {
+    "id": "video2music",
+    "name": "Video2Music",
+    "short": "让画面找到合拍的背景音乐。",
+    "description": "自主配乐智能体研究：以分层规划、受限搜索与显式评价，为长视频组织语义、节奏与乐理一致的配乐。",
+    "url": "https://github.com/AritxOnly/Video2Music",
+    "category": "智能体",
+    "platform": "Python · 多模态",
+    "kind": "独立研究",
+    "mark": "V2M",
+    "image": ""
+  },
+  {
+    "id": "hyperpiliplus",
+    "name": "Hyper-PiliPlus",
+    "short": "在开源播放器上，继续折腾一点自己的偏好。",
+    "description": "基于 PiliPlus 的 Bilibili 第三方客户端分支，使用 Flutter 开发。原项目与上游贡献者信息见仓库。",
+    "url": "https://github.com/AritxOnly/Hyper-PiliPlus",
+    "category": "开源改造",
+    "platform": "Flutter",
+    "kind": "基于 PiliPlus",
+    "mark": "P+",
+    "image": ""
+  },
+  {
+    "id": "hypermusiccover",
+    "name": "HyperMusicCover",
+    "short": "正在听的专辑，也可以成为锁屏的主角。",
+    "description": "基于 zyl6932/HyperMusicCover 的开源分支：在 HyperOS 4 播放音乐时，将专辑封面用于锁屏壁纸并缩小时间显示。",
+    "url": "https://github.com/AritxOnly/HyperMusicCover",
+    "category": "开源改造",
+    "platform": "HyperOS 4 · LSPosed",
+    "kind": "开源分支",
+    "mark": "♫",
+    "image": ""
+  }
+]

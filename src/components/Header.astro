@@ -1,114 +1,101 @@
 ---
 import siteConfig from '~/site.config'
-import LightDarkAutoButton from '~/components/LightDarkAutoButton.astro'
-import Search from '~/components/Search.astro'
-import SelectTheme from '~/components/SelectTheme.astro'
-import NavLink from '~/components/NavLink.astro'
-
-const lightDarkAutoTheme = siteConfig.themes.mode === 'light-dark-auto'
-const selectTheme =
-  siteConfig.themes.mode === 'select' && siteConfig.themes.include.length > 1
+import LightDarkAutoButton from './LightDarkAutoButton.astro'
+import Search from './Search.astro'
+import NavLink from './NavLink.astro'
 ---
 
-<header>
-  <div class="relative flex items-center justify-between bg-accent/10 rounded-2xl
-              bg-accent/10 backdrop-blur supports-[backdrop-filter]:backdrop-blur
-              px-2 py-2">
-    <a
-      id="logo"
-      href="/"
-      class="block px-4 py-1.5 max-w-full no-underline items-center bg-accent text-background font-bold rounded-xl"
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label="音唯的个人小站首页"
+    ><span class="brand-symbol" aria-hidden="true">a.</span><span
+      >音唯<span class="brand-en"> / Aritx</span></span
+    ></a
+  >
+  <nav class="desktop-nav" aria-label="主导航">
+    {siteConfig.navLinks.map((link) => <NavLink link={link} />)}
+  </nav>
+  <div class="header-tools">
+    <Search trailingSlashes={siteConfig.trailingSlashes} />
+    <LightDarkAutoButton />
+    <button
+      id="nav-mobile-button"
+      aria-label="展开导航"
+      aria-expanded="false"
+      aria-controls="nav-mobile-list"
+      type="button"
+      ><span class="menu-glyph" aria-hidden="true"><i></i><i></i></span></button
     >
-      <!-- {siteConfig.title} -->
-      <img 
-        src="/logo-trimmed.webp" 
-        alt="Aritx Logo" 
-        class="h-6 w-auto inline-block m-1 logo-img"
-      />
-    </a>
-
-    <nav class="hidden sm:flex items-center gap-3 ml-2" aria-label="Primary">
-      {siteConfig.navLinks.map((link) => <NavLink link={link} />)}
-    </nav>
-
-    <div class="flex items-center gap-3 sm:mr-3">
-      <Search trailingSlashes={siteConfig.trailingSlashes} />
-      <!-- {lightDarkAutoTheme && <LightDarkAutoButton />}
-      {selectTheme && <SelectTheme />} -->
-      <nav id="nav-mobile" aria-label="Menu" class="p-0 text-accent sm:hidden">
-        <button
-          id="nav-mobile-button"
-          class="px-3 py-1 h-full cursor-pointer rounded-xl bg-background/50"
-          type="button"
-          aria-expanded="false"
-          aria-controls="nav-menu-list"
-        >
-          ▾
-        </button>
-        <ul
-          id="nav-mobile-list"
-          class="invisible absolute flex flex-col bg-background shadow text-accent border-2 m-0 p-2.5 top-11.5 left-auto right-0 z-50 rounded-xl"
-        >
-          {
-            siteConfig.navLinks.map((link) => (
-              <li class="p-1" aria-expanded="false">
-                <NavLink link={link} />
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-    </div>
   </div>
-  <!-- <nav aria-label="Menu" class="p-0 mt-4 ml-0.5 text-accent hidden sm:block">
-    <ul class="flex flex-row text-accent">
-      {
-        siteConfig.navLinks.map((link) => (
-          <li class="mr-5" aria-expanded="true">
-            <NavLink link={link} />
-          </li>
-        ))
-      }
-    </ul>
-  </nav> -->
+  <nav id="nav-mobile-list" aria-label="移动端导航" hidden>
+    <p class="mobile-nav-caption">去哪里逛逛？<span>ARITX / 音唯</span></p>
+    <div class="mobile-nav-links">
+      {siteConfig.navLinks.map((link) => <NavLink link={link} />)}
+    </div>
+  </nav>
 </header>
-
 <script>
-  const navMobileButton = document.getElementById('nav-mobile-button')
-  const navMobileList = document.getElementById('nav-mobile-list')
-  const navMobileListItems = navMobileList?.querySelectorAll('li')
-  const toggleNavMobileMenu = (action: 'on' | 'off' | 'toggle') => {
-    let isNowOpen: boolean = false
-    if (action === 'on') {
-      isNowOpen = true
-      navMobileList?.classList.remove('invisible')
-    } else if (action === 'off') {
-      isNowOpen = false
-      navMobileList?.classList.add('invisible')
-    } else {
-      isNowOpen = !navMobileList?.classList.toggle('invisible')
+  const button = document.getElementById('nav-mobile-button')!
+  const menu = document.getElementById('nav-mobile-list')!
+  const motion = matchMedia('(prefers-reduced-motion: reduce)')
+  let menuAnimation: Animation | undefined
+  let menuVersion = 0
+  const setOpen = (open: boolean) => {
+    const version = ++menuVersion
+    menuAnimation?.cancel()
+    button.setAttribute('aria-expanded', String(open))
+    button.setAttribute('aria-label', open ? '收起导航' : '展开导航')
+    menu.inert = !open
+    if (open) menu.hidden = false
+    if (motion.matches) {
+      menu.hidden = !open
+      return
     }
-    navMobileButton?.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false')
-    navMobileListItems?.forEach((listItem) => {
-      listItem.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false')
-    })
+    menuAnimation = menu.animate(
+      open
+        ? [
+            { opacity: 0, translate: '0px -10px', scale: '.97' },
+            { opacity: 1, translate: '0px 0px', scale: '1' },
+          ]
+        : [
+            { opacity: 1, translate: '0px 0px', scale: '1' },
+            { opacity: 0, translate: '0px -6px', scale: '.98' },
+          ],
+      {
+        duration: open ? 280 : 160,
+        easing: 'cubic-bezier(.22, 1, .36, 1)',
+        fill: 'both',
+      },
+    )
+    void menuAnimation.finished
+      .then(() => {
+        if (version !== menuVersion) return
+        menu.hidden = !open
+        menuAnimation?.cancel()
+      })
+      .catch(() => {})
   }
-  navMobileButton?.addEventListener('click', (_ev) => {
-    toggleNavMobileMenu('toggle')
+  const close = () => {
+    if (button.getAttribute('aria-expanded') === 'true') setOpen(false)
+  }
+  button.addEventListener('click', () => {
+    setOpen(button.getAttribute('aria-expanded') !== 'true')
   })
+  button.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setOpen(true)
+      menu.querySelector<HTMLAnchorElement>('a')?.focus()
+    }
+  })
+  document.addEventListener('click', (event) => {
+    if (!menu.contains(event.target as Node) && !button.contains(event.target as Node))
+      close()
+  })
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !menu.hidden) {
+      close()
+      button.focus()
+    }
+  })
+  window.matchMedia('(min-width: 900px)').addEventListener('change', close)
 </script>
-
-<style>
-  /* 默认浅色模式：白色 logo */
-.logo-img {
-  filter: none;
-}
-
-/* 深色模式：用 filter 变为深色 */
-@media (prefers-color-scheme: dark) {
-  .logo-img {
-    filter: brightness(0) saturate(100%) invert(16%) sepia(10%) 
-            saturate(503%) hue-rotate(174deg) brightness(96%) contrast(92%);
-  }
-}
-</style>

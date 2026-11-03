@@ -1,7 +1,13 @@
 ---
 import Layout from '~/layouts/Layout.astro'
+import SectionIntro from '~/components/SectionIntro.astro'
 ---
 
-<Layout>
-  <h1 class="inline-block m-auto p-4 text-accent text-4xl">404 Not Found!</h1>
-</Layout>
+<Layout title="页面走丢了"
+  ><SectionIntro
+    label="404"
+    title="咦，走到没有路的地方了。"
+    description="这页可能搬家了，也可能还没写。先回首页，或者用右上角搜索找找看。"
+    ><a class="md-button filled" href="/">回到首页 →</a></SectionIntro
+  ></Layout
+>

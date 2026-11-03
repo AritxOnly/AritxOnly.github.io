@@ -1,0 +1,340 @@
+---
+import { getSortedPosts } from '~/utils'
+import music from '~/data/music.json'
+import { Image } from 'astro:assets'
+import poster from '~/assets/deadliner/home-poster.png'
+const posts = (await getSortedPosts()).slice(-3).reverse()
+const labels = ['你好，音唯', '我的应用', '最近写的', '戴上耳机', '走过的路']
+---
+
+<section class="story-view" aria-label="音唯的个人故事" aria-roledescription="轮播">
+  <div class="story-stage">
+    <div
+      class="story-scene story-opening"
+      data-scene
+      role="group"
+      aria-roledescription="幻灯片"
+      aria-label="1 / 5：你好，音唯"
+    >
+      <slot />
+    </div>
+    <div
+      class="story-scene"
+      data-scene
+      hidden
+      role="group"
+      aria-roledescription="幻灯片"
+      aria-label="2 / 5：我的应用"
+    >
+      <div class="scene-copy">
+        <p class="eyebrow">02 / 有点用的小东西</p><h2>忍不住，<br />又写了个 App。</h2><p>
+          从 Deadliner 到 HyperModifier，再到 F1Info。自己想用的东西，总想亲手试试。
+        </p><a href="/app" class="md-button filled">打开我的工具箱 ↗</a>
+      </div><div class="scene-visual scene-product">
+        <Image
+          src={poster}
+          alt="Deadliner 手机、平板与手表界面"
+          widths={[600, 1000]}
+          format="webp"
+          loading="lazy"
+        /><div class="scene-project-names">
+          <span>Deadliner</span><span>HyperModifier</span><span>F1Info</span>
+        </div>
+      </div>
+    </div>
+    <div
+      class="story-scene"
+      data-scene
+      hidden
+      role="group"
+      aria-roledescription="幻灯片"
+      aria-label="3 / 5：最近写的"
+    >
+      <div class="scene-copy">
+        <p class="eyebrow">03 / 写下来才算数</p><h2>踩过的坑，<br />想过的事。</h2><p>
+          有些是给未来的自己留的小抄，有些只是当时很想说的话。
+        </p><a href="/posts" class="md-button filled">翻翻博客 ↗</a>
+      </div><div class="scene-reading">
+        {
+          posts.map((post, index) => (
+            <a href={`/posts/${post.id}`}>
+              <>
+                <span>0{index + 1}</span>
+                <h3>{post.data.title}</h3>
+                <span aria-hidden="true">↗</span>
+              </>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+    <div
+      class="story-scene"
+      data-scene
+      hidden
+      role="group"
+      aria-roledescription="幻灯片"
+      aria-label="4 / 5：戴上耳机"
+    >
+      <div class="scene-copy">
+        <p class="eyebrow">04 / 换个频道</p><h2>这一段，<br />留给耳朵。</h2><p>
+          旋律、低频，还有一点私心。写代码之外，我也做 Melodic Dubstep 和 Colour Bass。
+        </p><a href="/music" class="md-button filled">挑一首听听 ↗</a>
+      </div><a
+        class="scene-record"
+        href={music.recent[0].link}
+        target="_blank"
+        rel="noopener noreferrer"
+        ><img
+          src={music.recent[0].cover}
+          alt={`${music.recent[0].title}专辑封面`}
+          loading="lazy"
+        /><span>{music.recent[0].title} <span aria-hidden="true">↗</span></span></a
+      >
+    </div>
+    <div
+      class="story-scene"
+      data-scene
+      hidden
+      role="group"
+      aria-roledescription="幻灯片"
+      aria-label="5 / 5：走过的路"
+    >
+      <div class="scene-copy">
+        <p class="eyebrow">05 / 未完待续</p><h2>一路折腾，<br />也一路认识你们。</h2><p>
+          从南大校园到第一份实习，从一个小工具到多端应用。路上遇到的朋友，也都在这里。
+        </p><div class="intro-actions">
+          <a href="/about#journey" class="md-button filled">我的时间轴 ↗</a><a
+            href="/friends"
+            class="md-button tonal">去朋友家串门 ↗</a
+          >
+        </div>
+      </div><div class="scene-milestones">
+        <div><span>2023</span><p>在南京大学，开启新一章。</p></div><div>
+          <span>2024</span><p>开始做 Deadliner。</p>
+        </div><div><span>2026</span><p>后端实习、多端应用与智能体。</p></div><a
+          href="/about#journey">中间的故事，也慢慢讲给你听 →</a
+        >
+      </div>
+    </div>
+  </div>
+  <div class="story-controls" hidden>
+    <div class="story-tabs" role="group" aria-label="选择故事章节">
+      {
+        labels.map((label, i) => (
+          <button
+            type="button"
+            data-story-index={i}
+            aria-pressed={i === 0}
+            aria-label={`第 ${i + 1} 幕：${label}`}
+          >
+            <>
+              <span class="story-tab-number">0{i + 1}</span>
+              <span class="story-tab-label">{label}</span>
+              <i aria-hidden="true" />
+            </>
+          </button>
+        ))
+      }
+    </div><button class="story-play" type="button" aria-label="暂停自动播放"
+      >暂停 <span aria-hidden="true">Ⅱ</span></button
+    >
+  </div>
+  <div class="story-foot">
+    <span class="story-hint">五幕小故事，也可以直接往下逛。</span><a href="#writing"
+      >往下看看 ↓</a
+    >
+  </div>
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('.story-view')!
+  const stage = root.querySelector<HTMLElement>('.story-stage')!
+  const scenes = [...root.querySelectorAll<HTMLElement>('[data-scene]')]
+  const tabs = [...root.querySelectorAll<HTMLButtonElement>('[data-story-index]')]
+  const play = root.querySelector<HTMLButtonElement>('.story-play')!
+  const motion = matchMedia('(prefers-reduced-motion: reduce)')
+  let index = 0,
+    elapsed = 0,
+    paused = motion.matches
+  let hovered = false,
+    focused = false,
+    visible = true,
+    transitioning = false
+  let animations: Animation[] = []
+  let transitionId = 0
+  const duration = 10000
+  root.querySelector<HTMLElement>('.story-controls')!.hidden = false
+  scenes.forEach((scene, i) => {
+    scene.inert = i !== index
+  })
+
+  const updatePlay = () => {
+    play.innerHTML = paused
+      ? '播放 <span aria-hidden="true">▶</span>'
+      : '暂停 <span aria-hidden="true">Ⅱ</span>'
+    play.setAttribute('aria-label', paused ? '开启自动播放' : '暂停自动播放')
+  }
+  const animate = (element: HTMLElement, frames: Keyframe[], ms: number, delay = 0) => {
+    const animation = element.animate(frames, {
+      duration: ms,
+      delay,
+      easing: 'cubic-bezier(.22, 1, .36, 1)',
+      fill: 'both',
+    })
+    animations.push(animation)
+    return animation
+  }
+  const settle = () => {
+    transitionId++
+    animations.forEach((animation) => animation.cancel())
+    animations = []
+    scenes.forEach((scene, i) => {
+      scene.hidden = i !== index
+    })
+    transitioning = false
+  }
+
+  function select(next: number, manual = false, direction = 1) {
+    const target = (next + scenes.length) % scenes.length
+    if (manual) paused = true
+    updatePlay()
+    if (target === index) return
+    const outgoing = scenes[index]
+    // Read the current fade before cancelling, so rapid selections remain continuous.
+    const outgoingOpacity = getComputedStyle(outgoing).opacity
+    settle()
+    const incoming = scenes[target]
+    index = target
+    elapsed = 0
+    scenes.forEach((scene, i) => {
+      scene.inert = i !== index
+      scene.setAttribute('aria-hidden', String(i !== index))
+    })
+    tabs.forEach((tab, i) => {
+      tab.setAttribute('aria-pressed', String(i === index))
+      tab.style.setProperty('--progress', '0')
+    })
+    incoming.hidden = false
+    if (motion.matches) {
+      settle()
+      return
+    }
+    transitioning = true
+    const currentTransition = transitionId
+    // The outgoing scene remains visible during the handover, but cannot receive focus.
+    animate(
+      outgoing,
+      [
+        { opacity: outgoingOpacity, translate: '0px 0px', scale: '1' },
+        { opacity: 0, translate: `${-direction * 24}px 0px`, scale: '.985' },
+      ],
+      280,
+    )
+    animate(incoming, [{ opacity: 0 }, { opacity: 1 }], 450)
+    const copy = incoming.querySelector<HTMLElement>('.scene-copy, .intro-copy')
+    if (copy)
+      [...copy.children].forEach((child, i) => {
+        animate(
+          child as HTMLElement,
+          [
+            { opacity: 0, translate: `${direction * 22}px 10px` },
+            { opacity: 1, translate: '0px 0px' },
+          ],
+          480,
+          70 + i * 40,
+        )
+      })
+    const visual = incoming.querySelector<HTMLElement>(
+      '.portrait-panel, .scene-visual, .scene-reading, .scene-record, .scene-milestones',
+    )
+    if (visual)
+      animate(
+        visual,
+        [
+          { opacity: 0, translate: `${direction * 52}px 8px`, scale: '.96' },
+          { opacity: 1, translate: '0px 0px', scale: '1' },
+        ],
+        680,
+        90,
+      )
+    void Promise.allSettled(animations.map((animation) => animation.finished)).then(
+      () => {
+        if (currentTransition === transitionId) settle()
+      },
+    )
+  }
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(i, true, i >= index ? 1 : -1))
+    tab.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+        event.preventDefault()
+        const direction = event.key === 'ArrowRight' ? 1 : -1
+        const next = (i + direction + tabs.length) % tabs.length
+        select(next, true, direction)
+        tabs[next].focus()
+      }
+    })
+  })
+  play.addEventListener('click', () => {
+    paused = !paused
+    updatePlay()
+  })
+  stage.addEventListener('pointerenter', (event) => {
+    if (event.pointerType !== 'touch') hovered = true
+  })
+  stage.addEventListener('pointerleave', () => {
+    hovered = false
+  })
+  stage.addEventListener('focusin', () => {
+    focused = true
+  })
+  stage.addEventListener('focusout', () => {
+    queueMicrotask(() => {
+      focused = stage.contains(document.activeElement)
+    })
+  })
+  new IntersectionObserver(
+    (entries) => {
+      visible = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.4
+    },
+    { threshold: [0, 0.4] },
+  ).observe(root)
+  motion.addEventListener('change', () => {
+    if (motion.matches) {
+      paused = true
+      settle()
+      updatePlay()
+    }
+  })
+  updatePlay()
+  let lastTick = performance.now()
+  let frame: number
+  function tick(now: number) {
+    const delta = Math.min(now - lastTick, 100)
+    lastTick = now
+    if (
+      !paused &&
+      !hovered &&
+      !focused &&
+      visible &&
+      !document.hidden &&
+      !transitioning
+    ) {
+      elapsed += delta
+      tabs[index].style.setProperty('--progress', String(Math.min(1, elapsed / duration)))
+      if (elapsed >= duration) select(index + 1)
+    }
+    frame = requestAnimationFrame(tick)
+  }
+  frame = requestAnimationFrame(tick)
+  window.addEventListener('pagehide', () => {
+    cancelAnimationFrame(frame)
+    settle()
+  })
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      lastTick = performance.now()
+      frame = requestAnimationFrame(tick)
+    }
+  })
+</script>

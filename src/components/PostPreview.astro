@@ -24,23 +24,27 @@ const samePage = Astro.url.pathname === `/posts/${post.id}`
 const articleLink = samePage ? `#${post.id}` : `/posts/${post.id}`
 ---
 
-<article class="w-full py-5 my-1 md:my-4 border-accent/10">
-  <h1 class="mb-3 text-2xl text-heading1 font-semibold">
-    <a href={articleLink}># {post.data.title}</a>
-  </h1>
-  <PostInfo post={post} class="mb-3 mt-4" />
-  {description && <p class="pl-0.5 my-4 text-base/7 text-foreground">{description}</p>}
-  {
-    tags && (
-      <div class="mb-6">
-        <Tags tags={tags} />
-      </div>
-    )
-  }
-  <div>
-    <a class="button flex items-center !pl-3.5" href={articleLink}>
+<article class="post-preview">
+  <h2 class="post-card-title">
+    <a href={articleLink}>{post.data.title}</a>
+  </h2>
+  <PostInfo post={post} class="post-card-meta" />
+  {description && <p class="post-card-description">{description}</p>}
+  <div class="post-card-footer">
+    {
+      tags && (
+        <div class="post-card-tags">
+          <Tags tags={tags} />
+        </div>
+      )
+    }
+    <a
+      class="post-card-read"
+      href={articleLink}
+      aria-label={`${samePage ? '继续阅读' : '阅读'}：${post.data.title}`}
+    >
       {samePage ? '继续' : '阅读'}
-      <IconChevronsRight class="size-5 ml-2" />
+      <span aria-hidden="true"><IconChevronsRight /></span>
     </a>
   </div>
 </article>

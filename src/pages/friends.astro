@@ -1,48 +1,31 @@
 ---
 import Layout from '~/layouts/Layout.astro'
-import BlockHeader from '~/components/BlockHeader.astro'
+import SectionIntro from '~/components/SectionIntro.astro'
 import FriendCard from '~/components/FriendCard.astro'
 import friends from '~/data/friends.json'
-import { fetchLatest } from '~/utils'
-
-const sorted = (friends as any[]).slice().sort((a, b) => {
-  const pa = a.priority ?? 0
-  const pb = b.priority ?? 0
-
-  if (pa !== pb) return pb - pa
-
-  if ((b.reciprocal ? 1 : 0) !== (a.reciprocal ? 1 : 0)) {
-    return (b.reciprocal ? 1 : 0) - (a.reciprocal ? 1 : 0)
-  }
-  return String(a.name).localeCompare(String(b.name), 'zh-Hans-CN')
-})
-
-const enriched = await Promise.all(
-  sorted.map(async (f) => ({
-    ...f,
-    latest: f.rss ? await fetchLatest(f.rss, 2) : []
-  }))
+const sorted = [...friends].sort(
+  (a, b) =>
+    (b.priority ?? 0) - (a.priority ?? 0) ||
+    Number(b.reciprocal ?? false) - Number(a.reciprocal ?? false) ||
+    a.name.localeCompare(b.name, 'zh-Hans-CN'),
 )
 ---
 
-<Layout title="朋友们" description="互相链接，彼此增光 ✨">
-  <section>
-    <div class="grid gap-4 sm:grid-cols-2 mt-4 auto-rows-fr items-stretch">
-      {enriched.map((f) => <FriendCard friend={f} />)}
-    </div>
-  </section>
-
-  <section class="mt-8">
-    <BlockHeader>友链收录要求</BlockHeader>
-    <p class="mt-2 text-[var(--ec-foreground-muted)]">
-      想交换友链？给我发邮件：<a class="underline" href="mailto:aritxonly@outlook.com">aritxonly@outlook.com</a>。
-      支持展示 RSS。
-    </p>
-
-    <ul class="list-disc pl-5 text-[var(--ec-foreground-muted)]">
-      <li>原创内容为主，主题不限；</li>
-      <li>站点稳定可访问；</li>
-      <li>请在你的网站中添加指向本博客的链接（互链更佳）。</li>
-    </ul>
+<Layout title="朋友们" description="互联网很大，能互相串门的小站很珍贵。">
+  <SectionIntro
+    label="朋友们"
+    title="来都来了，再串个门？"
+    description="有一起写代码的伙伴，也有生活里的老朋友。每个头像后面，都是一个有趣的人。"
+  />
+  <div class="friends-grid">{sorted.map((friend) => <FriendCard friend={friend} />)}</div>
+  <section class="exchange-panel">
+    <div>
+      <p class="eyebrow">给你留个位置</p><h2>交换一下友链吧。</h2><p>
+        原创内容为主、网站能稳定打开就好，写什么都欢迎。带上你的小站名字、链接、头像和一句介绍，给我发封邮件吧。也欢迎把我加进你的友链，RSS
+        链接可以一起带上。
+      </p>
+    </div><a
+      class="md-button filled"
+      href="mailto:aritxonly@outlook.com?subject=来交换友链吧">敲敲邮箱 ↗</a>
   </section>
 </Layout>

@@ -1,0 +1,61 @@
+---
+import { fallbackStyles, paletteCacheKey, profile } from '~/lib/material-theme'
+---
+
+<style is:inline set:html={fallbackStyles}></style>
+<style is:inline id="avatar-palette"></style>
+<script is:inline define:vars={{ paletteCacheKey }}>
+  try {
+    const cache = JSON.parse(localStorage.getItem(paletteCacheKey) || 'null')
+    if (cache && typeof cache.css === 'string' && Date.now() - cache.time < 86400000) {
+      document.getElementById('avatar-palette').textContent = cache.css
+    }
+  } catch {
+    /* Storage can be unavailable in private contexts. */
+  }
+</script>
+<meta name="profile-avatar" content={profile.avatar} />
+<script>
+  import { sourceColorFromImage } from '@material/material-color-utilities'
+  import { materialStyles, paletteCacheKey } from '~/lib/material-theme'
+  async function loadAvatarPalette() {
+    try {
+      const cache = JSON.parse(localStorage.getItem(paletteCacheKey) || 'null')
+      if (cache && typeof cache.css === 'string' && Date.now() - cache.time < 86400000)
+        return
+    } catch {
+      /* Continue without storage. */
+    }
+    const avatar = new Image(96, 96)
+    avatar.crossOrigin = 'anonymous'
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const timeout = window.setTimeout(
+          () => reject(new Error('Avatar timed out')),
+          8000,
+        )
+        avatar.onload = () => {
+          clearTimeout(timeout)
+          resolve()
+        }
+        avatar.onerror = () => {
+          clearTimeout(timeout)
+          reject(new Error('Avatar unavailable'))
+        }
+        avatar.src = document.querySelector<HTMLMetaElement>(
+          'meta[name="profile-avatar"]',
+        )!.content
+      })
+      const css = materialStyles(await sourceColorFromImage(avatar))
+      document.getElementById('avatar-palette')!.textContent = css
+      try {
+        localStorage.setItem(paletteCacheKey, JSON.stringify({ css, time: Date.now() }))
+      } catch {
+        /* Optional cache. */
+      }
+    } catch {
+      /* Keep the complete default palette on offline/CORS/image failures. */
+    }
+  }
+  void loadAvatarPalette()
+</script>

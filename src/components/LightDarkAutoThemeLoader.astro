@@ -1,48 +1,36 @@
----
-
----
-
 <script is:inline>
-  ;(function loadTheme() {
-    const pageDefaultTheme = document.documentElement.getAttribute('data-theme')
-    const pageDarkTheme = document.documentElement.getAttribute('data-dark-theme')
-    const pageLightTheme = document.documentElement.getAttribute('data-light-theme')
-    const pageThemeHash = document.documentElement.getAttribute('data-theme-hash')
-    if (!pageDefaultTheme || !pageDarkTheme || !pageLightTheme || !pageThemeHash) {
-      throw new Error('Theme attributes are required.')
-    }
-    const getStoredTheme = () => localStorage.getItem('data-theme')
-    let storedTheme = getStoredTheme()
-    const storedThemeHash = localStorage.getItem('data-theme-hash')
-    const themeHashMatches = storedThemeHash === pageThemeHash
-
-    if (!storedTheme || !storedThemeHash || !themeHashMatches) {
-      // Should be the first time loading the website
-      localStorage.setItem('data-theme', pageDefaultTheme)
-      localStorage.setItem('data-theme-hash', pageThemeHash)
-    }
-
-    if (
-      themeHashMatches &&
-      storedTheme &&
-      storedTheme !== 'auto' &&
-      storedTheme !== pageDefaultTheme
-    ) {
-      // The stored theme is different from the default theme, apply it
-      document.documentElement.setAttribute('data-theme', storedTheme)
-    } else if (pageDefaultTheme === 'auto' || storedTheme === 'auto') {
-      // If the default or stored theme is 'auto', apply the system preference
-      const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
-      document.documentElement.setAttribute(
-        'data-theme',
-        prefersDarkScheme.matches ? pageDarkTheme : pageLightTheme,
+  ;(() => {
+    const root = document.documentElement
+    const light = root.dataset.lightTheme
+    const dark = root.dataset.darkTheme
+    const hash = root.dataset.themeHash
+    const fallback = root.dataset.theme || 'auto'
+    const media = window.matchMedia('(prefers-color-scheme: dark)')
+    let preference = fallback
+    try {
+      const stored = localStorage.getItem('data-theme')
+      if (
+        localStorage.getItem('data-theme-hash') === hash &&
+        [light, dark, 'auto'].includes(stored)
       )
-      prefersDarkScheme.addEventListener('change', (e) => {
-        if (getStoredTheme() === 'auto') {
-          const newTheme = e.matches ? pageDarkTheme : pageLightTheme
-          document.documentElement.setAttribute('data-theme', newTheme)
-        }
-      })
+        preference = stored
+      localStorage.setItem('data-theme', preference)
+      localStorage.setItem('data-theme-hash', hash)
+    } catch {}
+    const apply = () => {
+      root.dataset.theme =
+        preference === 'auto' ? (media.matches ? dark : light) : preference
     }
+    apply()
+    media.addEventListener('change', () => {
+      try {
+        preference = localStorage.getItem('data-theme') || preference
+      } catch {}
+      if (preference === 'auto') apply()
+    })
+    window.addEventListener('site-theme-preference', (event) => {
+      preference = event.detail
+      apply()
+    })
   })()
 </script>

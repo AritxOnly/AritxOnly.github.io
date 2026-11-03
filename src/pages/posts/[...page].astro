@@ -5,7 +5,7 @@ import { getSortedPosts } from '~/utils'
 import Pagination from '~/components/Pagination.astro'
 import siteConfig from '~/site.config'
 import PostPreview from '~/components/PostPreview.astro'
-import PageHeader from '~/components/PageHeader.astro'
+import SectionIntro from '~/components/SectionIntro.astro'
 
 // Note: Pagination like '/', '/2', '/3' only works with spread param like [...page]
 export const getStaticPaths = (async ({ paginate }) => {
@@ -17,10 +17,19 @@ const { page } = Astro.props
 const pageTitle = '博客' + (page.currentPage > 1 ? ` - Page ${page.currentPage}` : '')
 ---
 
-<Layout title={pageTitle} description="All posts in the archive">
-  <div class="mt-2 sm:mt-0">
-    <PageHeader />
-    {page.data.map((post) => <PostPreview post={post} />)}
+<Layout title={pageTitle} description="开发笔记、生活切片，还有一些想到就写的碎碎念。">
+  <div class="blog-archive">
+    <div class="archive-intro">
+      <SectionIntro
+        label="博客 / FIELD NOTES"
+        title="想到了，就记下来。"
+        description="踩过的坑，听过的歌，偶尔较真的一些小事。欢迎随便翻翻。"
+      />
+      <div class="archive-stamp" aria-label={`共 ${page.total} 篇文章`}>
+        <strong>{String(page.total).padStart(2, '0')}</strong><span>篇随手记</span>
+      </div>
+    </div>
+    <div class="journal-list">{page.data.map((post) => <PostPreview post={post} />)}</div>
     <Pagination
       prevLink={page.url.prev ? page.url.prev : undefined}
       prevText="更新的帖子"

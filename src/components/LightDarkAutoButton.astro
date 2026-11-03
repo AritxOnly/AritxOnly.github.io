@@ -9,6 +9,8 @@ let darkTheme = siteConfig.themes.include[1]
 
 <button
   id="theme-change-button"
+  aria-label="切换浅色、深色或跟随系统"
+  title="切换浅色、深色或跟随系统"
   class="block ml-auto"
   data-light={lightTheme}
   data-dark={darkTheme}
@@ -26,6 +28,10 @@ let darkTheme = siteConfig.themes.include[1]
   const moonIcon = themeButton?.querySelector('#icon-dark')
   const sunMoonIcon = themeButton?.querySelector('#icon-auto')
   const updateIcons = (theme: string) => {
+    const label =
+      theme === lightThemeId ? '浅色' : theme === darkThemeId ? '深色' : '跟随系统'
+    themeButton?.setAttribute('aria-label', `当前${label}，点击切换主题`)
+    themeButton?.setAttribute('title', `当前${label}，点击切换主题`)
     if (theme === lightThemeId) {
       sunIcon?.classList.remove('hidden')
       moonIcon?.classList.add('hidden')
@@ -40,12 +46,20 @@ let darkTheme = siteConfig.themes.include[1]
       sunMoonIcon?.classList.remove('hidden')
     }
   }
-  let currentTheme = localStorage.getItem('data-theme') || 'auto'
+  const readTheme = () => {
+    try {
+      return localStorage.getItem('data-theme') || 'auto'
+    } catch {
+      return 'auto'
+    }
+  }
+  let currentTheme = readTheme()
+  let currentThemeValue = currentTheme
   updateIcons(currentTheme)
   themeButton?.addEventListener('click', () => {
     // Toggle between light, dark, and auto themes
     // Only need to update localStorage because there should be a listener in Layout.astro
-    const currentTheme = localStorage.getItem('data-theme') || darkThemeId
+    const currentTheme = currentThemeValue
     let newTheme
     if (currentTheme === lightThemeId) {
       newTheme = darkThemeId
@@ -56,7 +70,11 @@ let darkTheme = siteConfig.themes.include[1]
     }
     if (newTheme) {
       updateIcons(newTheme)
-      localStorage.setItem('data-theme', newTheme)
+      window.dispatchEvent(new CustomEvent('site-theme-preference', { detail: newTheme }))
+      currentThemeValue = newTheme
+      try {
+        localStorage.setItem('data-theme', newTheme)
+      } catch {}
       if (newTheme === 'auto') {
         const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)')
         document.documentElement.setAttribute(

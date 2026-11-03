@@ -1,0 +1,18 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import SectionIntro from '~/components/SectionIntro.astro'
+import ProjectShowcase from '~/components/ProjectShowcase.astro'
+---
+
+<Layout title="应用与项目" description="音唯折腾过的应用、音乐工具和开源项目。">
+  <SectionIntro
+    label="应用与项目"
+    title="自己想用，就动手做了。"
+    description="从待办日历到系统定制，从赛车到音乐。这里有认真做的产品，也有越折腾越上头的小工具。"
+  />
+  <ProjectShowcase />
+  <div class="page-note">
+    还有一些实验和课程项目，放在 <a href="https://github.com/AritxOnly">GitHub ↗</a
+    >。欢迎翻翻，也欢迎提 Issue。
+  </div>
+</Layout>

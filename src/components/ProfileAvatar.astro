@@ -1,0 +1,26 @@
+---
+import { profile } from '~/lib/material-theme'
+import fallback from '~/content/avatar.jpg'
+---
+
+<img
+  src={profile.avatar}
+  data-profile-avatar
+  data-fallback={fallback.src}
+  width="256"
+  height="256"
+  alt="Aritx 音唯的 GitHub 头像"
+  decoding="async"
+  fetchpriority="high"
+/>
+<script>
+  document
+    .querySelectorAll<HTMLImageElement>('[data-profile-avatar]')
+    .forEach((image) => {
+      const fallback = () => {
+        image.src = image.dataset.fallback!
+      }
+      image.addEventListener('error', fallback, { once: true })
+      if (image.complete && image.naturalWidth === 0) fallback()
+    })
+</script>
