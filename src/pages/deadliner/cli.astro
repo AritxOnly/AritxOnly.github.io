@@ -1,0 +1,20 @@
+---
+export const prerender = true;
+
+import DeadlinerLayout from "../../components/deadliner/DeadlinerLayout.astro";
+import Nav from "../../components/deadliner/Nav.astro";
+import DeadlinerCli from "../../components/deadliner/DeadlinerCli.astro";
+import Footer from "../../components/deadliner/Footer.astro";
+
+import content from "../../data/deadliner.json";
+
+const page = content.pages.cli;
+---
+
+<DeadlinerLayout meta={{ ...content.meta, ...page.meta }} theme={content.theme} assets={content.assets} nav={page.nav} footer={content.footer}>
+  <Nav assets={content.assets} nav={page.nav} />
+  <main>
+    <DeadlinerCli />
+    <Footer footer={content.footer} />
+  </main>
+</DeadlinerLayout>

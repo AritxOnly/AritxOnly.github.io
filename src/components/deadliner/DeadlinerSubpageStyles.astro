@@ -1,0 +1,758 @@
+---
+// Shared visual language for Deadliner sub-product pages (macOS, CLI).
+// Mirrors the tokens used by DeadlinerHome / DeadlinerHero / DeadlinerArchitecture.
+---
+
+<style is:global>
+  .dls {
+    --ink: #1d1d1f;
+    --sub: #6e6e73;
+    --blue: #1976d2;
+    --hair: rgba(29, 29, 31, 0.1);
+    color: var(--ink);
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+      'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+  }
+  .dls * {
+    box-sizing: border-box;
+  }
+  .dls .wrap {
+    max-width: 1120px;
+    margin-inline: auto;
+    padding-inline: 28px;
+  }
+  .dls .section {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    scroll-margin-top: 64px;
+  }
+  .dls .eyebrow {
+    margin: 0 0 20px;
+    color: #6e6e73;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 650;
+  }
+  .dls .section-heading {
+    max-width: 680px;
+    margin-bottom: 42px;
+  }
+  .dls .section-heading.centered {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .dls .section-heading h2 {
+    margin: 0;
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1.14;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+  }
+  .dls .section-heading > p:last-child {
+    margin: 15px 0 0;
+    color: var(--sub);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .dls .text-link {
+    color: #1671cf !important;
+    font-size: 13px;
+    font-weight: 520;
+  }
+  .dls .text-link span {
+    margin-left: 4px;
+  }
+  .dls .mobile-break {
+    display: none;
+  }
+  .dls code,
+  .dls kbd,
+  .dls pre {
+    font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+  }
+
+  /* ---------- Hero (black stage, same as home) ---------- */
+  .dls-hero {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100svh - 64px);
+    padding: 0 clamp(24px, 3.85vw, 100px) 30px;
+    overflow: hidden;
+    background: #000;
+    color: #f5f5f7;
+  }
+  .dls-stage {
+    position: relative;
+    flex: 1;
+    min-height: 340px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    place-items: center;
+    padding: 48px 0 28px;
+  }
+  .dls-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    padding-top: 16px;
+  }
+  .dls-name {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    margin: 0 0 12px;
+    font-size: clamp(17px, 1.35vw, 22px);
+    line-height: 1.4;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+  }
+  .dls-kind {
+    color: #b3b3b8;
+    font-weight: 450;
+    letter-spacing: 0.02em;
+  }
+  .dls-bottom h1 {
+    margin: 0;
+    font-size: clamp(32px, 3.2vw, 56px);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+  }
+  .dls-slogan {
+    margin: 16px 0 0;
+    color: #a1a1a6;
+    font-size: clamp(13px, 1.05vw, 16px);
+    line-height: 1.6;
+    letter-spacing: 0.035em;
+  }
+  .dls-action {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 22px;
+    padding: 10px 10px 10px 26px;
+    border-radius: 999px;
+    background: #232325;
+  }
+  .dls-action-meta {
+    color: #a1a1a6;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .dls-action-meta b {
+    display: block;
+    color: #f5f5f7;
+    font-weight: 550;
+  }
+  .dls-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0 26px;
+    border-radius: 999px;
+    background: #0071e3;
+    color: #fff !important;
+    font-size: 17px;
+    transition: background 0.2s;
+  }
+  .dls-cta:hover {
+    background: #0077ed;
+  }
+  .dls-rise {
+    animation: dls-arrive 1.05s cubic-bezier(0.16, 1, 0.3, 1) var(--enter-delay, 0s) both;
+  }
+  @keyframes dls-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* ---------- Feature cards (platform-card language) ---------- */
+  .dls-gray {
+    background: #f5f5f7;
+  }
+  .dls-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .dls-feature {
+    padding: 28px 26px 30px;
+    border-radius: 22px;
+    background: #fff;
+  }
+  .dls-feature-label {
+    color: #747980;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+  .dls-feature h3 {
+    margin: 10px 0;
+    font-size: 23px;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+  .dls-feature p {
+    margin: 0;
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.75;
+  }
+  .dls-feature sup {
+    margin-left: 2px;
+    font-size: 9px;
+  }
+  .dls-footnote {
+    margin: 22px 0 0;
+    color: #86868b;
+    font-size: 10px;
+    line-height: 1.6;
+    scroll-margin-top: 80px;
+  }
+
+  /* ---------- Showcase rows ---------- */
+  .dls-row {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .dls-row + .dls-row {
+    margin-top: 90px;
+  }
+  .dls-row.reverse {
+    grid-template-columns: 1.22fr 0.78fr;
+  }
+  .dls-row.reverse .dls-row-copy {
+    order: 2;
+  }
+  .dls-row-copy {
+    max-width: 360px;
+  }
+  .dls-step {
+    color: #77777c;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+  .dls-row-copy h3 {
+    margin: 13px 0 10px;
+    font-size: 35px;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+  }
+  .dls-row-copy p {
+    margin: 0 0 17px;
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .dls-visual {
+    overflow: hidden;
+    border-radius: 22px;
+  }
+  .dls-visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .dls-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  /* ---------- Dark band (architecture language) ---------- */
+  .dls-dark {
+    background: #101013;
+    color: #f5f5f7;
+  }
+  .dls-dark .eyebrow {
+    color: #a1a1a6;
+  }
+  .dls-dark .section-heading > p:last-child {
+    color: #a1a1a6;
+  }
+  .dls-stack {
+    padding: 30px 36px 36px;
+    border-radius: 28px;
+    background: #242427;
+  }
+  .dls-stack-top {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), 1fr);
+    gap: 26px;
+  }
+  .dls-stack-top > div {
+    position: relative;
+    padding: 20px 8px 35px;
+    text-align: center;
+  }
+  .dls-stack-top > div::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    height: 22px;
+    border-left: 1px solid #494954;
+  }
+  .dls-stack-top span,
+  .dls-stack-top b {
+    display: block;
+  }
+  .dls-stack-top span {
+    color: #a1a1a6;
+    font-size: 12px;
+  }
+  .dls-stack-top b {
+    margin-top: 10px;
+    font-size: 21px;
+    font-weight: 550;
+  }
+  .dls-core {
+    padding: 30px 16px;
+    border: 1px solid #414652;
+    border-radius: 18px;
+    background: linear-gradient(130deg, #17232e, #1d1c28);
+    text-align: center;
+  }
+  .dls-core > span {
+    color: #8cc5f3;
+    font-size: 12px;
+  }
+  .dls-core b {
+    display: block;
+    margin: 12px 0;
+    font-size: 22px;
+    font-weight: 550;
+  }
+  .dls-core small {
+    color: #a1a1a6;
+    font-size: 11px;
+  }
+  .dls-points {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px;
+    margin: 60px 0 0;
+    padding: 40px 0 0;
+    border-top: 1px solid #34343b;
+    list-style: none;
+  }
+  .dls-points b {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 550;
+  }
+  .dls-points p {
+    margin: 0;
+    color: #a1a1a6;
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .dls-dark .text-link {
+    color: #83bafa !important;
+  }
+
+  /* ---------- Terminal ---------- */
+  .dls-terminal {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    background: #161618;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    color: #e8e8ed;
+    text-align: left;
+  }
+  .dls-terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 34px;
+    padding: 0 14px;
+    background: #222225;
+  }
+  .dls-terminal-bar i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #3d3d42;
+  }
+  .dls-terminal-bar span {
+    margin: auto;
+    padding-right: 40px;
+    color: #86868b;
+    font-size: 12px;
+  }
+  .dls-terminal pre {
+    margin: 0;
+    padding: 20px 22px 24px;
+    overflow-x: auto;
+    font-size: 13px;
+    line-height: 1.75;
+    white-space: pre;
+  }
+  .dls-terminal .p {
+    color: #6e6e73;
+    user-select: none;
+  }
+  .dls-terminal .c {
+    color: #6e6e73;
+  }
+  .dls-terminal .k {
+    color: #8cc5f3;
+  }
+  .dls-terminal .s {
+    color: #a6e3b4;
+  }
+  .dls-terminal .o {
+    color: #c2c2c7;
+  }
+
+  /* ---------- Code block (light) ---------- */
+  .dls-code {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--hair);
+    border-radius: 14px;
+    background: #fff;
+  }
+  .dls-code pre {
+    margin: 0;
+    padding: 18px 92px 18px 20px;
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .dls-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid var(--hair);
+    border-radius: 999px;
+    background: #f5f5f7;
+    color: var(--ink);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.18s;
+  }
+  .dls-copy:hover {
+    background: #e8e8ed;
+  }
+
+  /* ---------- Download list ---------- */
+  .dls-download {
+    padding: 92px 0 87px;
+    background: #f5f5f7;
+    text-align: center;
+    scroll-margin-top: 64px;
+  }
+  .dls-download h2 {
+    margin: 0;
+    font-size: clamp(37px, 5vw, 55px);
+    line-height: 1.14;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+  }
+  .dls-download > .wrap > p:not(.eyebrow):not(.dls-download-note) {
+    margin: 15px 0 0;
+    color: var(--sub);
+    font-size: 14px;
+  }
+  .dls-download-list {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+    max-width: 800px;
+    margin: 38px auto 0;
+    border-top: 1px solid rgba(29, 29, 31, 0.13);
+    border-bottom: 1px solid rgba(29, 29, 31, 0.13);
+  }
+  .dls-download-item {
+    min-height: 124px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 20px 14px;
+    text-align: center;
+  }
+  .dls-download-item + .dls-download-item {
+    border-left: 1px solid rgba(29, 29, 31, 0.1);
+  }
+  .dls-download-item b {
+    font-size: 13px;
+    font-weight: 570;
+  }
+  .dls-download-item small {
+    color: #767b80;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  .dls-download-item small span {
+    padding-left: 3px;
+    color: #1976d2;
+  }
+  a.dls-download-item:hover small {
+    color: #1976d2;
+  }
+  .dls-download-note {
+    max-width: 640px;
+    margin: 23px auto 0;
+    color: #86868b;
+    font-size: 11px;
+    line-height: 1.75;
+  }
+
+  /* ---------- FAQ ---------- */
+  .dls-faq {
+    padding-top: 80px;
+    padding-bottom: 90px;
+    scroll-margin-top: 64px;
+  }
+  .dls-faq .section-heading {
+    margin-bottom: 28px;
+  }
+  .dls-faq-list {
+    border-top: 1px solid var(--hair);
+  }
+  .dls-faq-list details {
+    border-bottom: 1px solid var(--hair);
+  }
+  .dls-faq-list summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 19px 3px;
+    list-style: none;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .dls-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .dls-faq-list summary span {
+    color: #77777c;
+    transition: transform 0.2s;
+  }
+  .dls-faq-list details[open] summary span {
+    transform: rotate(45deg);
+  }
+  .dls-faq-list details p {
+    max-width: 730px;
+    margin: 0;
+    padding: 0 35px 19px 3px;
+    color: var(--sub);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+  .dls-faq-list code {
+    font-size: 11px;
+  }
+
+  /* ---------- Sibling products ---------- */
+  .dls-siblings {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 23px;
+  }
+  .dls-siblings a {
+    color: #1976d2 !important;
+    font-size: 11px;
+  }
+
+  @media (max-width: 900px) {
+    .dls-feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .dls-row,
+    .dls-row.reverse {
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 28px;
+    }
+    .dls-row.reverse .dls-row-copy {
+      order: 0;
+    }
+    .dls-row-copy h3 {
+      font-size: 30px;
+    }
+    .dls-points {
+      gap: 26px;
+    }
+    .dls-bottom {
+      gap: 20px;
+    }
+    .dls-action {
+      gap: 16px;
+      padding-left: 18px;
+    }
+    .dls-cta {
+      padding-inline: 22px;
+      font-size: 15px;
+    }
+  }
+  @media (max-width: 650px) {
+    .dls .wrap {
+      padding-inline: 22px;
+    }
+    .dls .section {
+      padding-top: 74px;
+      padding-bottom: 74px;
+    }
+    .dls .section-heading {
+      margin-bottom: 29px;
+    }
+    .dls .section-heading h2 {
+      font-size: 36px;
+    }
+    .dls .section-heading > p:last-child {
+      font-size: 13px;
+    }
+    .dls .mobile-break {
+      display: block;
+    }
+    .dls-hero {
+      padding: 0 22px 34px;
+    }
+    .dls-stage {
+      min-height: 260px;
+      padding: 28px 0 20px;
+    }
+    .dls-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 22px;
+    }
+    .dls-name {
+      gap: 7px;
+      margin-bottom: 11px;
+      font-size: 15px;
+    }
+    .dls-bottom h1 {
+      font-size: clamp(26px, 7vw, 32px);
+    }
+    .dls-slogan {
+      margin-top: 13px;
+      font-size: 13px;
+    }
+    .dls-action {
+      padding: 6px 6px 6px 17px;
+    }
+    .dls-cta {
+      min-height: 39px;
+      padding: 0 22px;
+      font-size: 14px;
+    }
+    .dls-feature-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .dls-feature {
+      padding: 22px 22px 24px;
+    }
+    .dls-feature h3 {
+      font-size: 21px;
+    }
+    .dls-row,
+    .dls-row.reverse {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .dls-row + .dls-row {
+      margin-top: 64px;
+    }
+    .dls-pair {
+      gap: 10px;
+    }
+    .dls-stack {
+      padding: 18px 16px 20px;
+      border-radius: 22px;
+    }
+    .dls-stack-top {
+      gap: 8px;
+    }
+    .dls-stack-top b {
+      font-size: 15px;
+    }
+    .dls-core b {
+      font-size: 17px;
+    }
+    .dls-points {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 40px;
+      padding-top: 30px;
+    }
+    .dls-terminal pre {
+      padding: 16px 16px 20px;
+      font-size: 11.5px;
+    }
+    .dls-download {
+      padding: 72px 0;
+    }
+    .dls-download h2 {
+      font-size: 38px;
+    }
+    .dls-download-list {
+      max-width: 380px;
+      grid-template-columns: 1fr;
+    }
+    .dls-download-item {
+      min-height: 80px;
+      align-items: flex-start;
+      padding: 17px 10px;
+      text-align: left;
+    }
+    .dls-download-item + .dls-download-item {
+      border-left: 0;
+      border-top: 1px solid rgba(29, 29, 31, 0.1);
+    }
+    .dls-faq {
+      padding-top: 66px;
+      padding-bottom: 70px;
+    }
+    .dls-faq-list summary {
+      font-size: 12px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .dls-rise {
+      animation: none;
+    }
+    .dls-faq-list summary span,
+    .dls-cta {
+      transition: none;
+    }
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('click', (event) => {
+    const button = event.target.closest && event.target.closest('[data-copy]')
+    if (!button) return
+    const source = document.getElementById(button.getAttribute('data-copy'))
+    if (!source || !navigator.clipboard) return
+    navigator.clipboard.writeText(source.innerText.trim()).then(() => {
+      const label = button.textContent
+      button.textContent = '已复制'
+      window.setTimeout(() => (button.textContent = label), 1600)
+    })
+  })
+</script>

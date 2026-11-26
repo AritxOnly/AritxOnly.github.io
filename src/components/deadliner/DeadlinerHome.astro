@@ -7,6 +7,7 @@ import DeadlinerMotion from './DeadlinerMotion.astro'
 import androidPlatform from '../../assets/deadliner/android-platform.png'
 import iosPlatform from '../../assets/deadliner/ios-platform.png'
 import harmonyPlatform from '../../assets/deadliner/harmony-platform.png'
+import macTasks from '../../assets/deadliner/macos/tasks-light.png'
 import aritxAvatar from '../../assets/deadliner/team/aritxonly.jpg'
 import qiaoAvatar from '../../assets/deadliner/team/qiao411.jpg'
 import xiaoAvatar from '../../assets/deadliner/team/xiaochennnng.jpg'
@@ -136,30 +137,25 @@ const repositories = {
           <span class="step-label">也在桌面上</span><h3>
             留出空间，<br />把计划放大来看。
           </h3><p>
-            Deadliner Client 采用 Electron 与 React 构建，面向 Windows、macOS 和 Linux。
-          </p><a
-            class="platform-link"
-            href={repositories.client}
-            target="_blank"
-            rel="noreferrer">查看桌面端项目 <span>↗</span></a
-          >
-        </div><div class="desktop-visual">
-          <div class="desktop-window">
-            <div class="window-bar">
-              <i></i><i></i><i></i><span>Deadliner · 本周</span>
-            </div><div class="window-body">
-              <aside>概览<br /><br />收件箱<br /><br />习惯<br /><br />已归档</aside><div
-                class="window-tasks"
-              >
-                <small>周二 · 10 月 6 日</small><h4>本周，循序渐进。</h4><div>
-                  ◯　整理分享材料 <span>今天</span>
-                </div><div>✓　完成第一次评审 <span>已完成</span></div><div>
-                  ◯　每晚阅读 20 分钟 <span>习惯</span>
-                </div>
-              </div><div class="placeholder-tag">桌面端界面示意占位</div>
-            </div>
+            Deadliner for macOS 基于 SwiftUI 原生打造，与手机共用同一个核心；终端里还有为 Agent 准备的
+            Deadliner CLI。
+          </p><div class="desktop-links">
+            <a class="platform-link" href="/deadliner/macos">了解 Mac 版 <span>›</span></a><a
+              class="platform-link"
+              href="/deadliner/cli">了解 CLI 与 Agent Skills <span>›</span></a
+            >
           </div>
-        </div>
+        </div><a class="desktop-visual" href="/deadliner/macos" aria-label="了解 Deadliner for macOS">
+          <Image
+            class="desktop-shot"
+            src={macTasks}
+            alt="Deadliner for macOS 任务列表"
+            widths={[640, 1024, 1600]}
+            sizes="(max-width: 650px) calc(100vw - 44px), 640px"
+            format="webp"
+            loading="lazy"
+          />
+        </a>
       </div>
     </div>
   </section>
@@ -239,8 +235,10 @@ const repositories = {
         </a>
       </div>
       <div class="more-platforms">
+        <a href="/deadliner/macos">macOS 版 <span>›</span></a>
+        <a href="/deadliner/cli">CLI 与 Agent Skills <span>›</span></a>
         <a href={repositories.client} target="_blank" rel="noreferrer"
-          >桌面端项目 <span>↗</span></a
+          >桌面端（Electron） <span>↗</span></a
         >
       </div>
     </div>
@@ -743,80 +741,25 @@ const repositories = {
   }
   .desktop-visual {
     position: relative;
-    min-height: 300px;
-    display: grid;
-    place-items: center;
-    border-radius: 22px;
-    background: linear-gradient(145deg, #e9edf0, #f8f9fa);
-  }
-  .desktop-window {
-    width: 83%;
-    height: 240px;
+    display: block;
     overflow: hidden;
-    border: 1px solid rgba(29, 29, 31, 0.12);
-    border-radius: 12px;
-    background: #fff;
-    box-shadow: 0 18px 44px rgba(35, 51, 62, 0.13);
-    transform: perspective(900px) rotateY(-5deg) rotateX(2deg);
+    border-radius: 22px;
   }
-  .window-bar {
-    height: 29px;
+  .desktop-shot {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.4s ease;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .desktop-visual:hover .desktop-shot {
+      transform: scale(1.015);
+    }
+  }
+  .desktop-links {
     display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 0 10px;
-    background: #f5f5f6;
-  }
-  .window-bar i {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #d4d6d8;
-  }
-  .window-bar span {
-    margin: auto;
-    font-size: 8px;
-    color: #82868a;
-  }
-  .window-body {
-    position: relative;
-    height: calc(100% - 29px);
-    display: flex;
-    padding: 15px;
-  }
-  .window-body aside {
-    width: 25%;
-    border-right: 1px solid #eee;
-    color: #8b9095;
-    font-size: 8px;
-  }
-  .window-tasks {
-    flex: 1;
-    padding-left: 19px;
-  }
-  .window-tasks small {
-    color: #969a9e;
-    font-size: 8px;
-  }
-  .window-tasks h4 {
-    margin: 9px 0 16px;
-    font-size: 14px;
-  }
-  .window-tasks div {
-    padding: 10px 0;
-    border-top: 1px solid #f0f1f2;
-    font-size: 9px;
-  }
-  .window-tasks div span {
-    float: right;
-    color: #92969a;
-    font-size: 8px;
-  }
-  .window-body .placeholder-tag {
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    font-size: 7px;
+    flex-direction: column;
+    gap: 8px;
   }
   .more-platforms a {
     color: #1976d2 !important;
@@ -1035,19 +978,6 @@ const repositories = {
     }
     .desktop-copy h3 {
       font-size: 30px;
-    }
-    .desktop-visual {
-      min-height: 240px;
-    }
-    .desktop-window {
-      height: 205px;
-      width: 88%;
-    }
-    .window-body {
-      padding: 11px;
-    }
-    .window-tasks {
-      padding-left: 12px;
     }
     .download-section {
       padding: 72px 0;

@@ -1,0 +1,395 @@
+---
+import { Image } from 'astro:assets'
+import DeadlinerSubpageStyles from './DeadlinerSubpageStyles.astro'
+import tasksLight from '../../assets/deadliner/macos/tasks-light.png'
+import habitsDark from '../../assets/deadliner/macos/habits-dark.png'
+import menubarLight from '../../assets/deadliner/macos/menubar-light.png'
+import menubarDark from '../../assets/deadliner/macos/menubar-dark.png'
+
+const repo = 'https://github.com/DeadlinerStudio/Deadliner-macOS'
+const releases = `${repo}/releases`
+
+const features = [
+  {
+    label: '任务',
+    title: '一眼看清，<br />每件事走到哪了。',
+    body: '新建、编辑、完成、放弃、归档、延期与标星；子任务和分类。单列、双列、三列随心切换，按住 ⌘ 点按卡片即可批量操作。',
+  },
+  {
+    label: '习惯',
+    title: '每天一点，<br />看得见的坚持。',
+    body: '今日完成度与一周日期条，勾选型与计量型打卡，还有按艾宾浩斯曲线安排的复习。',
+  },
+  {
+    label: '概览',
+    title: '时间花在哪，<br />心里有数。',
+    body: '总览与趋势可选全部时间、任意月份或自定义日期；专注时长、时间投入、较上月同期，一目了然。',
+  },
+  {
+    label: '专注',
+    title: '开始计时，<br />其余的交给菜单栏。',
+    body: '在任务或习惯中开始倒计时或正计时，计时窗可置顶，菜单栏实时显示；各设备的专注记录同步汇总。',
+  },
+  {
+    label: 'Lifi AI',
+    title: '一句话，<br />把想法变成计划。',
+    body: '⌘L 唤起对话助手安排任务、建立习惯；⌥⌘N 快速添加，一句话识别任务或习惯<sup><a href="#lifi-note" aria-label="查看 Lifi AI 备注">1</a></sup>。',
+  },
+  {
+    label: '系统集成',
+    title: '融进 macOS，<br />而不只是放在上面。',
+    body: '系统日历双向导入、快捷指令、到期与打卡通知、每日摘要；⇧⌘V 直接导入别人分享的任务链接。',
+  },
+]
+
+const shortcuts = [
+  ['⌘N', '新建任务'],
+  ['⌥⌘N', '快速添加'],
+  ['⌘L', 'Lifi AI'],
+  ['⌘F', '搜索'],
+  ['⌘R', '立即同步'],
+  ['⇧⌘V', '导入分享链接'],
+  ['⌘1 – ⌘7', '切换页面'],
+  ['⌘,', '设置'],
+]
+---
+
+<DeadlinerSubpageStyles />
+
+<div class="dls deadliner-mac">
+  <section class="dls-hero" aria-labelledby="mac-title">
+    <div class="dls-stage">
+      <div class="mac-hero-visual dls-rise" style="--enter-delay:.04s">
+        <Image
+          class="mac-hero-main"
+          src={tasksLight}
+          alt="Deadliner for macOS 任务列表，双列卡片展示进度、分类与截止时间"
+          widths={[768, 1280, 1600]}
+          sizes="(max-width: 650px) 92vw, 76vw"
+          format="webp"
+          quality={88}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <Image
+          class="mac-hero-menubar"
+          src={menubarDark}
+          alt="Deadliner 菜单栏面板（深色），显示习惯完成度、即将到期任务与专注图表"
+          widths={[320, 640]}
+          sizes="(max-width: 650px) 30vw, 22vw"
+          format="webp"
+          quality={88}
+          loading="eager"
+        />
+      </div>
+    </div>
+    <div class="dls-bottom">
+      <div class="dls-rise" style="--enter-delay:.12s">
+        <p class="dls-name">
+          <span>Deadliner</span><span class="dls-kind">for macOS</span>
+        </p>
+        <h1 id="mac-title">为 Mac 重新打造</h1>
+        <p class="dls-slogan">原生 SwiftUI，与手机共享同一个核心</p>
+      </div>
+      <div class="dls-action dls-rise" style="--enter-delay:.24s">
+        <span class="dls-action-meta"><b>Apple Silicon</b>macOS 14 及以上</span>
+        <a class="dls-cta" href="#download">下载</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-gray" id="features">
+    <div class="wrap section">
+      <div class="section-heading centered">
+        <p class="eyebrow">手机上有的，Mac 上都在</p>
+        <h2>熟悉的 Deadliner，<br class="mobile-break" />更大的舞台。</h2>
+        <p>任务、习惯、灵感、概览与专注，一个都不少，并为键盘、指针和菜单栏重新设计。</p>
+      </div>
+      <div class="dls-feature-grid">
+        {
+          features.map((feature) => (
+            <article class="dls-feature">
+              <span class="dls-feature-label">{feature.label}</span>
+              <h3 set:html={feature.title} />
+              <p set:html={feature.body} />
+            </article>
+          ))
+        }
+      </div>
+      <p class="dls-footnote" id="lifi-note">
+        1. Lifi AI 需要包含 Lifi 的构建；公开发布的 v0.1.0 安装包暂未提供 AI 功能。
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="showcase">
+    <div class="wrap">
+      <div class="dls-row">
+        <div class="dls-row-copy">
+          <span class="dls-step">菜单栏</span>
+          <h3>不打开窗口，<br />也知道今天怎么样。</h3>
+          <p>
+            四种显示样式，面板里就能看任务、习惯与专注。概况数据、即将到期的范围、专注图表方向，全都可以自定义。
+          </p>
+        </div>
+        <div class="dls-pair mac-menubar-pair">
+          <div class="dls-visual">
+            <Image
+              src={menubarLight}
+              alt="Deadliner 菜单栏面板（浅色）"
+              widths={[320, 640, 904]}
+              sizes="(max-width: 650px) 44vw, 300px"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+          <div class="dls-visual">
+            <Image
+              src={menubarDark}
+              alt="Deadliner 菜单栏面板（深色）"
+              widths={[320, 640, 904]}
+              sizes="(max-width: 650px) 44vw, 300px"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="dls-row reverse">
+        <div class="dls-row-copy">
+          <span class="dls-step">外观</span>
+          <h3>浅色、深色，<br />都是你的颜色。</h3>
+          <p>
+            跟随系统切换外观，15 种主题色、顶部浮光、衬线字体与显示大小可调。macOS 26
+            上使用 Liquid Glass，更早的系统使用毛玻璃，功能完全相同。
+          </p>
+        </div>
+        <div class="dls-visual">
+          <Image
+            src={habitsDark}
+            alt="Deadliner for macOS 习惯页面（深色），显示今日完成度、一周日期条与习惯卡片"
+            widths={[640, 1024, 1600]}
+            sizes="(max-width: 650px) calc(100vw - 44px), 640px"
+            format="webp"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div class="mac-shortcuts">
+        <div class="dls-row-copy">
+          <span class="dls-step">键盘优先</span>
+          <h3>手不离键盘，<br />计划已经排好。</h3>
+        </div>
+        <ul class="mac-keys" aria-label="常用快捷键">
+          {
+            shortcuts.map(([key, label]) => (
+              <li>
+                <kbd>{key}</kbd>
+                <span>{label}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-dark" id="core">
+    <div class="wrap section">
+      <div class="section-heading">
+        <p class="eyebrow">跨平台混合原生开发</p>
+        <h2>Mac 的界面，<br />同一颗核心。</h2>
+        <p>
+          数据库、同步与业务规则都由 DeadlinerCore 负责，与 Android、iOS、鸿蒙端保持一致；界面则完全用
+          SwiftUI 为 Mac 编写。
+        </p>
+      </div>
+      <div class="dls-stack" style="--cols:4">
+        <div class="dls-stack-top">
+          <div><span>macOS</span><b>SwiftUI</b></div>
+          <div><span>Android</span><b>Compose</b></div>
+          <div><span>iOS</span><b>SwiftUI</b></div>
+          <div><span>HarmonyOS</span><b>ArkUI</b></div>
+        </div>
+        <div class="dls-core">
+          <span>Kotlin Multiplatform</span><b>DeadlinerCore · 数据 · 同步 · 通知计划 · 统计</b><small
+            >以 macOS framework 链接 · Swift 6 · Swift Charts</small
+          >
+        </div>
+      </div>
+      <ul class="dls-points">
+        <li>
+          <b>与手机同一份同步文件</b>
+          <p>
+            WebDAV 双向同步，后台间隔可选。启用前先把云端同步文件备份到本机；云端为空时会先询问，避免填错地址覆盖数据。
+          </p>
+        </li>
+        <li>
+          <b>数据只留在你的 Mac</b>
+          <p>
+            启用 App Sandbox，数据保存在应用容器内；WebDAV 应用密码只存进钥匙串，不写入数据库或日志。
+          </p>
+        </li>
+        <li>
+          <b>备份格式全端通用</b>
+          <p>导出与导入和手机端同一格式的完整备份，换设备、换平台都能接着用。</p>
+        </li>
+      </ul>
+      <p style="margin:48px 0 0">
+        <a class="text-link" href="https://github.com/DeadlinerStudio/DeadlinerCore" target="_blank" rel="noreferrer"
+          >了解 DeadlinerCore <span>↗</span></a
+        >
+      </p>
+    </div>
+  </section>
+
+  <section class="dls-download" id="download">
+    <div class="wrap">
+      <p class="eyebrow">下载</p>
+      <h2>把 Deadliner 放上 Mac。</h2>
+      <p>适用于 Apple Silicon Mac，macOS 14 及以上。</p>
+      <div class="dls-download-list" aria-label="Deadliner for macOS 获取方式">
+        <a class="dls-download-item" href={releases} target="_blank" rel="noreferrer">
+          <b>DMG 安装包</b><small>GitHub Releases <span aria-hidden="true">↗</span></small>
+        </a>
+        <a class="dls-download-item" href={`${repo}#从源码构建`} target="_blank" rel="noreferrer">
+          <b>从源码构建</b><small>Xcode · XcodeGen · JDK 21 <span aria-hidden="true">↗</span></small>
+        </a>
+        <a class="dls-download-item" href={repo} target="_blank" rel="noreferrer">
+          <b>源代码</b><small>LGPL-2.1-or-later <span aria-hidden="true">↗</span></small>
+        </a>
+      </div>
+      <p class="dls-download-note">
+        应用暂未经过 Apple 公证，首次打开会提示「无法验证开发者」：到 系统设置 → 隐私与安全性
+        中点「仍要打开」即可，每台 Mac 只需放行一次。
+      </p>
+      <div class="dls-siblings">
+        <a href="/deadliner">Deadliner 手机与平板版</a>
+        <a href="/deadliner/cli">Deadliner CLI 与 Agent Skills</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-faq section wrap" id="faq">
+    <div class="section-heading">
+      <p class="eyebrow">大家常问的</p>
+      <h2>常见问题。</h2>
+    </div>
+    <div class="dls-faq-list">
+      <details>
+        <summary>和旧版 Deadliner Client 有什么区别？<span>＋</span></summary>
+        <p>
+          Deadliner Client 基于 Electron 与 React，面向 Windows、macOS 和 Linux。Deadliner for macOS
+          是基于 SwiftUI 的原生应用，直接链接 DeadlinerCore，行为与手机端一致；两者数据完全隔离。
+        </p>
+      </details>
+      <details>
+        <summary>第一次打开为什么没有数据？<span>＋</span></summary>
+        <p>
+          数据库初始为空。到 设置 → WebDAV 同步 填写与手机端相同的服务器地址、用户名和应用密码，点「检测服务器」确认后启用，即可把手机上的任务同步过来。
+        </p>
+      </details>
+      <details>
+        <summary>支持 Intel Mac 吗？<span>＋</span></summary>
+        <p>目前只提供 Apple Silicon（arm64）版本，需要 macOS 14 及以上。</p>
+      </details>
+      <details>
+        <summary>没有 macOS 26 能用吗？<span>＋</span></summary>
+        <p>可以。Liquid Glass 与侧栏下的顶部浮光需要 macOS 26，更早的系统使用毛玻璃效果，功能相同。</p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<style>
+  .mac-hero-visual {
+    position: relative;
+    width: min(100%, 1180px);
+    padding-right: 9%;
+  }
+  .mac-hero-main {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: clamp(12px, 1.6vw, 22px);
+  }
+  .mac-hero-menubar {
+    position: absolute;
+    right: 0;
+    bottom: -8%;
+    width: 22%;
+    height: auto;
+    border-radius: clamp(10px, 1.2vw, 18px);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55);
+  }
+  .mac-menubar-pair {
+    max-width: 620px;
+    justify-self: end;
+  }
+  .mac-shortcuts {
+    display: grid;
+    grid-template-columns: 0.78fr 1.22fr;
+    gap: 50px;
+    align-items: center;
+    margin-top: 90px;
+    padding-top: 60px;
+    border-top: 1px solid var(--hair);
+  }
+  .mac-keys {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mac-keys li {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px 16px;
+    border-radius: 16px;
+    background: #f5f5f7;
+  }
+  .mac-keys kbd {
+    padding: 4px 9px;
+    border: 1px solid rgba(29, 29, 31, 0.14);
+    border-bottom-width: 2px;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 550;
+  }
+  .mac-keys span {
+    color: var(--sub);
+    font-size: 12px;
+  }
+  @media (max-width: 900px) {
+    .mac-shortcuts {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+  @media (max-width: 650px) {
+    .mac-hero-visual {
+      padding-right: 14%;
+    }
+    .mac-hero-menubar {
+      width: 30%;
+    }
+    .mac-menubar-pair {
+      justify-self: stretch;
+    }
+    .mac-shortcuts {
+      margin-top: 64px;
+      padding-top: 44px;
+    }
+    .mac-keys {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+  }
+</style>
