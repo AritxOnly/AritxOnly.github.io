@@ -1,16 +1,16 @@
 ---
-import { Image } from 'astro:assets'
 import ProductShowcase from '~/components/products/ProductShowcase.astro'
-import heroHome from '~/assets/products/overtone/overtone-hero-home.png'
-import heroLyrics from '~/assets/products/overtone/overtone-hero-lyrics.png'
-import heroIPad from '~/assets/products/overtone/overtone-hero-ipad.png'
-import pagerHome from '~/assets/products/overtone/overtone-pager-home.png'
-import pagerGlass from '~/assets/products/overtone/overtone-pager-glass.png'
-import pagerLibrary from '~/assets/products/overtone/overtone-pager-library.png'
-import pagerSongs from '~/assets/products/overtone/overtone-pager-songs.png'
-import pagerLibraryOptions from '~/assets/products/overtone/overtone-pager-library-options.png'
-import pagerArtist from '~/assets/products/overtone/overtone-pager-artist.png'
-import pagerPlaying from '~/assets/products/overtone/overtone-pager-playing.png'
+import heroHome from '~/assets/products/overtone/overtone-hero-home.webp'
+import heroLyrics from '~/assets/products/overtone/overtone-hero-lyrics.webp'
+import heroIPad from '~/assets/products/overtone/overtone-hero-ipad.webp'
+import pagerHome from '~/assets/products/overtone/overtone-pager-home.webp'
+import pagerGlass from '~/assets/products/overtone/overtone-pager-glass.webp'
+import pagerLibrary from '~/assets/products/overtone/overtone-pager-library.webp'
+import pagerSongs from '~/assets/products/overtone/overtone-pager-songs.webp'
+import pagerLibraryOptions from '~/assets/products/overtone/overtone-pager-library-options.webp'
+import pagerArtist from '~/assets/products/overtone/overtone-pager-artist.webp'
+import pagerPlaying from '~/assets/products/overtone/overtone-pager-playing.webp'
+import pagerComments from '~/assets/products/overtone/overtone-pager-comments.webp'
 import IconMagnifyingGlass from '~/assets/products/overtone/symbols/magnifyingglass.svg'
 import IconPlay from '~/assets/products/overtone/symbols/play.svg'
 import IconWaveform from '~/assets/products/overtone/symbols/waveform.svg'
@@ -67,6 +67,11 @@ const interfaceChanges = [
     image: pagerPlaying,
     alt: '专辑详情中用波形标记正在播放的歌曲',
     description: '正在播放，一眼就懂。更多细节等你体验',
+  },
+  {
+    image: pagerComments,
+    alt: '歌曲评论区的热门评论和回复入口',
+    description: '在评论区里，找到旋律以外更多的共鸣。',
   },
 ]
 
@@ -254,7 +259,14 @@ const inheritedFeatures = [
             interfaceChanges.map(({ image, alt, description }) => (
               <li class="pager-slide">
                 <figure>
-                  <Image src={image} width={920} format="webp" quality={85} alt={alt} />
+                  <img
+                    src={image.src}
+                    width={image.width}
+                    height={image.height}
+                    alt={alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <figcaption>{description}</figcaption>
                 </figure>
               </li>
