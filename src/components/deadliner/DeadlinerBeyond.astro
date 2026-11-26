@@ -18,73 +18,191 @@ const macHighlights = [
   ['外观', '15 种主题色；macOS 26 上使用 Liquid Glass。'],
 ]
 
+const macKeypoints = [
+  ['菜单栏', '四种显示样式，不打开窗口也能看进度、到期与专注。'],
+  ['专注', '计时窗可置顶，各设备的专注记录同步汇总。'],
+  ['键盘优先', '⌘N 新建、⌥⌘N 快速添加、⌘R 立即同步。'],
+  ['WebDAV 同步', '与手机共用同一份同步文件，启用前自动备份。'],
+]
+
+const cliKeypoints = [
+  ['两种读者', '终端里显示中文列表与详情；--json 时 stdout 只有一个对象。'],
+  ['安全重试', '稳定 uid 不会重复创建，--if-updated-at 防止覆盖修改。'],
+  ['Agent Skills', 'deadliner-tasks 与 deadliner-webdav，复制进 skills 目录即可。'],
+]
+
 const cliHighlights = [
   ['同一颗核心', 'Kotlin/Native 直接接入 DeadlinerCore，不依赖 JVM。'],
   ['离线可用', '本地 SQLite profile，没有网络也能管理任务。'],
   ['安全重试', '稳定 uid 让重试不重复创建，--if-updated-at 防止覆盖别人的修改。'],
   ['WebDAV V3', '显式双向同步，与各端共用 kmp-changelog-v1.json。'],
 ]
+
+// Tiny shell / JSON highlighter for the illustrative terminals (build time only).
+const escapeHtml = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const token = (kind: string, text: string) => `<span class="t-${kind}">${escapeHtml(text)}</span>`
+
+function highlightJson(line: string) {
+  const pattern = /("(?:[^"\\]|\\.)*")(\s*:)?|\b(true|false|null)\b|(-?\d+(?:\.\d+)?)|([{}\[\],:]|…)/g
+  let html = ''
+  let last = 0
+  for (const match of line.matchAll(pattern)) {
+    html += escapeHtml(line.slice(last, match.index))
+    const [whole, str, colon, keyword, number, punct] = match
+    if (str && colon) html += token('key', str) + token('punct', colon)
+    else if (str) html += token('str', str)
+    else if (keyword) html += token('bool', keyword)
+    else if (number) html += token('num', number)
+    else if (punct) html += token('punct', punct)
+    last = (match.index ?? 0) + whole.length
+  }
+  return html + escapeHtml(line.slice(last))
+}
+
+function highlightShell(line: string) {
+  if (!line) return ''
+  if (line.startsWith('#')) return token('comment', line)
+  if (line.startsWith('{')) return highlightJson(line)
+  const parts = line.match(/"[^"]*"|\s+|\S+/g) ?? []
+  let seenCommand = false
+  const body = parts
+    .map((part) => {
+      if (/^\s+$/.test(part)) return part
+      if (!seenCommand) {
+        seenCommand = true
+        return token('cmd', part)
+      }
+      if (part.startsWith('--')) return token('flag', part)
+      if (part.startsWith('"')) return token('str', part)
+      if (/^<.+>$/.test(part)) return token('ph', part)
+      if (/^[\d][\d:T+\-.]*$/.test(part)) return token('num', part)
+      return token('sub', part)
+    })
+    .join('')
+  return `${token('prompt', '$')} ${body}`
+}
+const terminal = (lines: string[]) => lines.map(highlightShell).join('\n')
+
+const heroTerminal = terminal([
+  'deadliner task add --title "提交周报"',
+  'deadliner task list',
+  'deadliner task complete <ID>',
+  '',
+  '# Agent 显式要求 JSON',
+  'deadliner --json task list --limit 20',
+  '{"ok":true,"version":1,"data":{"items":[…],"total":1}}',
+])
+
+const panelTerminal = terminal([
+  'deadliner task add --title "提交周报" --due 2026-11-11T18:00:00+08:00',
+  'deadliner task complete <ID>',
+  '',
+  '# Agent：只看 ok 与退出码',
+  'deadliner --json task get <ID>',
+  '{"ok":false,"version":1,"error":{"code":"NOT_FOUND","message":"Task not found"}}',
+  '# exit 3 · 0 成功 · 2 参数 · 4 冲突 · 5 同步失败',
+])
 ---
 
 <div class="beyond">
-  <div class="section-heading centered beyond-heading">
-    <p class="eyebrow">也在桌面上，也在终端里</p>
-    <h2>不止于手机。</h2>
-    <p>在 Mac 上用原生应用把计划放大来看，或者让 Agent 通过命令行替你打理任务。</p>
-  </div>
-
-  <div class="beyond-grid">
-    <article class="beyond-card is-mac" data-beyond-card="beyond-mac">
-      <div class="beyond-card-copy">
-        <span class="beyond-label">Deadliner for macOS</span>
-        <h3>在 Mac 上，<br />原生登场。</h3>
-        <p>SwiftUI 打造，菜单栏随时可见，与手机共用同一个核心。</p>
-      </div>
-      <div class="beyond-card-visual">
+  <section class="beyond-section beyond-mac" id="mac" aria-labelledby="mac-section-title">
+    <div class="wrap">
+      <header class="beyond-head">
+        <p class="eyebrow">Deadliner for macOS</p>
+        <h2 id="mac-section-title">在 Mac 上，<br />原生登场。</h2>
+        <p>SwiftUI 打造，与手机共用同一个核心。菜单栏随时可见，键盘就能完成一切。</p>
+        <div class="beyond-links">
+          <a href="/deadliner/macos">进一步了解 <span aria-hidden="true">›</span></a>
+          <a href={`${macRepo}/releases`} target="_blank" rel="noreferrer"
+            >下载 DMG <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </header>
+      <div class="beyond-mac-stage">
         <Image
+          class="beyond-mac-main"
           src={tasksLight}
-          alt="Deadliner for macOS 任务列表"
-          widths={[640, 1024, 1600]}
-          sizes="(max-width: 900px) calc(100vw - 44px), 560px"
+          alt="Deadliner for macOS 双列任务列表"
+          widths={[768, 1280, 1600]}
+          sizes="(max-width: 650px) 88vw, 900px"
+          format="webp"
+          loading="lazy"
+        />
+        <Image
+          class="beyond-mac-menubar"
+          src={menubarDark}
+          alt="Deadliner 菜单栏面板（深色）"
+          widths={[320, 640]}
+          sizes="(max-width: 650px) 28vw, 220px"
           format="webp"
           loading="lazy"
         />
       </div>
-      <button
-        class="beyond-open"
-        type="button"
-        aria-haspopup="dialog"
-        aria-controls="beyond-mac"
-        aria-label="展开了解 Deadliner for macOS"
-        ><span aria-hidden="true"></span></button
-      >
-    </article>
-
-    <article class="beyond-card is-cli" data-beyond-card="beyond-cli">
-      <div class="beyond-card-copy">
-        <span class="beyond-label">Deadliner CLI · Agent Skills</span>
-        <h3>人读得懂，<br />Agent 也用得稳。</h3>
-        <p>中文易读输出、稳定的 JSON 协议，配套 Skill 让 Agent 直接上手。</p>
+      <div class="beyond-tile is-mac" data-beyond-card="beyond-mac">
+        <ul class="beyond-keypoints">
+          {
+            macKeypoints.map(([title, body]) => (
+              <li>
+                <b>{title}</b>
+                <p>{body}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <button
+          class="beyond-open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="beyond-mac"
+          aria-label="展开查看更多 Mac 功能"
+          ><span aria-hidden="true"></span></button
+        >
       </div>
-      <div class="beyond-card-visual">
-        <div class="beyond-term" aria-hidden="true">
-          <div class="beyond-term-bar"><i></i><i></i><i></i></div>
-          <pre><span class="p">$</span> deadliner task add --title <span class="s">"提交周报"</span>
-<span class="p">$</span> deadliner task list
-<span class="p">$</span> deadliner --json task get <span class="o">&lt;ID&gt;</span>
-<span class="o">&#123;"ok":true,"version":1,"data":&#123;…&#125;&#125;</span></pre>
+    </div>
+  </section>
+
+  <section class="beyond-section beyond-cli" id="cli" aria-labelledby="cli-section-title">
+    <div class="wrap">
+      <div class="beyond-cli-grid">
+        <header class="beyond-head is-left">
+          <p class="eyebrow">Deadliner CLI · Agent Skills</p>
+          <h2 id="cli-section-title">为 Agent 而生的<br />命令行。</h2>
+          <p>
+            终端里是易读的中文，交给 Agent 时是稳定的 JSON。配套 Skill 让 Agent 直接上手管理你的任务。
+          </p>
+          <div class="beyond-links">
+            <a href="/deadliner/cli">进一步了解 <span aria-hidden="true">›</span></a>
+            <a href="#cli-install">安装命令 <span aria-hidden="true">↓</span></a>
+          </div>
+        </header>
+        <div class="beyond-term is-hero" aria-hidden="true">
+          <div class="beyond-term-bar"><i></i><i></i><i></i><span>deadliner — zsh</span></div>
+          <pre set:html={heroTerminal} />
         </div>
       </div>
-      <button
-        class="beyond-open"
-        type="button"
-        aria-haspopup="dialog"
-        aria-controls="beyond-cli"
-        aria-label="展开了解 Deadliner CLI 与 Agent Skills"
-        ><span aria-hidden="true"></span></button
-      >
-    </article>
-  </div>
+      <div class="beyond-tile is-cli" data-beyond-card="beyond-cli">
+        <ul class="beyond-keypoints is-three">
+          {
+            cliKeypoints.map(([title, body]) => (
+              <li>
+                <b>{title}</b>
+                <p>{body}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <button
+          class="beyond-open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="beyond-cli"
+          aria-label="展开查看更多 CLI 与 Agent Skills 内容"
+          ><span aria-hidden="true"></span></button
+        >
+      </div>
+    </div>
+  </section>
 
   <dialog class="beyond-dialog is-mac" id="beyond-mac" aria-labelledby="beyond-mac-title">
     <div class="beyond-scrim" data-beyond-close></div>
@@ -179,13 +297,7 @@ const cliHighlights = [
         </header>
         <div class="beyond-term is-large">
           <div class="beyond-term-bar"><i></i><i></i><i></i><span>deadliner — zsh</span></div>
-          <pre><span class="p">$</span> deadliner task add --title <span class="s">"提交周报"</span> --due <span class="s">2026-11-11T18:00:00+08:00</span>
-<span class="p">$</span> deadliner task complete <span class="o">&lt;ID&gt;</span>
-
-<span class="c"># Agent：只看 ok 与退出码</span>
-<span class="p">$</span> deadliner --json task get <span class="o">&lt;ID&gt;</span>
-<span class="o">&#123;"ok":false,"version":1,"error":&#123;"code":"NOT_FOUND","message":"Task not found"&#125;&#125;</span>
-<span class="c"># exit 3 · 0 成功 · 2 参数 · 4 冲突 · 5 同步失败</span></pre>
+          <pre set:html={panelTerminal} />
         </div>
         <ul class="beyond-highlights is-four">
           {
@@ -349,142 +461,202 @@ const cliHighlights = [
     dialog.querySelectorAll('[data-beyond-close]').forEach((element) => {
       element.addEventListener('click', close)
     })
-    dialog.querySelectorAll<HTMLButtonElement>('[data-beyond-copy]').forEach((button) => {
-      button.addEventListener('click', () => {
-        const source = document.getElementById(button.dataset.beyondCopy ?? '')
-        if (!source || !navigator.clipboard) return
-        navigator.clipboard.writeText(source.innerText.trim()).then(() => {
+  }
+
+  function setupCopy(button: HTMLButtonElement) {
+    if (button.dataset.ready) return
+    button.dataset.ready = 'true'
+    const label = button.textContent
+    button.addEventListener('click', () => {
+      const source = document.getElementById(button.dataset.beyondCopy ?? '')
+      if (!source) return
+      const selectSource = () => window.getSelection()?.selectAllChildren(source)
+      if (!navigator.clipboard) return selectSource()
+      navigator.clipboard
+        .writeText(source.innerText.trim())
+        .then(() => {
           button.textContent = '已复制'
-          window.setTimeout(() => (button.textContent = '复制'), 1600)
+          window.setTimeout(() => (button.textContent = label), 1600)
         })
-      })
+        .catch(selectSource)
     })
   }
 
-  const init = () => document.querySelectorAll<HTMLDialogElement>('.beyond-dialog').forEach(setup)
+  const init = () => {
+    document.querySelectorAll<HTMLDialogElement>('.beyond-dialog').forEach(setup)
+    document.querySelectorAll<HTMLButtonElement>('[data-beyond-copy]').forEach(setupCopy)
+  }
   init()
   document.addEventListener('astro:page-load', init)
 </script>
 
 <style>
-  .beyond {
-    margin-top: 110px;
+  /* ---------- Sections ---------- */
+  .beyond-section {
+    padding: 110px 0;
+    scroll-margin-top: 64px;
   }
-  .beyond-heading {
+  .beyond-mac {
+    background: #fff;
+  }
+  .beyond-cli {
+    background: #1d1d1f;
+    color: #f5f5f7;
+  }
+  .beyond-cli .beyond-head .eyebrow,
+  .beyond-cli .beyond-head > p:not(.eyebrow) {
+    color: #a1a1a6;
+  }
+  .beyond-cli .beyond-links a {
+    color: #2997ff !important;
+  }
+  .beyond-cli .beyond-term.is-hero {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: #0f0f11;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+  .beyond-cli .beyond-term.is-hero .beyond-term-bar {
+    background: #1a1a1d;
+  }
+  .beyond-cli .beyond-tile.is-cli {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .beyond-head {
     max-width: 760px;
-    margin: 0 auto 42px;
+    margin: 0 auto 56px;
     text-align: center;
   }
-  .beyond-heading .eyebrow {
+  .beyond-head.is-left {
+    margin: 0;
+    text-align: left;
+  }
+  .beyond-head .eyebrow {
     margin: 0 0 20px;
     color: #6e6e73;
     font-size: 11px;
     letter-spacing: 0.12em;
     font-weight: 650;
   }
-  .beyond-heading h2 {
+  .beyond-head h2 {
     margin: 0;
-    font-size: clamp(34px, 4vw, 48px);
-    line-height: 1.14;
+    font-size: clamp(40px, 5.2vw, 64px);
+    line-height: 1.1;
     letter-spacing: -0.055em;
     font-weight: 640;
   }
-  .beyond-heading > p:last-child {
-    margin: 15px 0 0;
+  .beyond-head > p:not(.eyebrow) {
+    margin: 18px 0 0;
     color: var(--sub);
-    font-size: 15px;
-    line-height: 1.75;
+    font-size: 17px;
+    line-height: 1.7;
   }
-  .beyond-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+  .beyond-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 26px;
+    margin-top: 22px;
+  }
+  .is-left .beyond-links {
+    justify-content: flex-start;
+  }
+  .beyond-links a {
+    color: #1671cf !important;
+    font-size: 15px;
+  }
+  .beyond-links a span {
+    margin-left: 3px;
+  }
+  .beyond-links a:hover {
+    text-decoration: underline !important;
+    text-underline-offset: 3px;
   }
 
-  /* ---------- Cards ---------- */
-  .beyond-card {
+  .beyond-mac-stage {
     position: relative;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    border-radius: 28px;
-    background: #fff;
-    cursor: pointer;
-    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+    max-width: 960px;
+    margin: 0 auto;
+    padding-right: 8%;
   }
-  .beyond-card.is-cli {
+  .beyond-mac-main {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: clamp(12px, 1.6vw, 22px);
+  }
+  .beyond-mac-menubar {
+    position: absolute;
+    right: 0;
+    bottom: -10%;
+    width: 21%;
+    height: auto;
+    border-radius: clamp(10px, 1.2vw, 18px);
+    box-shadow: 0 28px 60px rgba(29, 29, 31, 0.28);
+  }
+
+  .beyond-cli-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .beyond-term.is-hero {
+    min-width: 0;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.22);
+  }
+
+  /* ---------- Expandable tiles ---------- */
+  .beyond-tile {
+    position: relative;
+    margin-top: 90px;
+    padding: 36px 96px 36px 40px;
+    border-radius: 28px;
+    background: #f5f5f7;
+    cursor: pointer;
+  }
+  .beyond-cli .beyond-tile {
+    margin-top: 64px;
+  }
+  .beyond-tile.is-cli {
     background: #000;
     color: #f5f5f7;
   }
-  .beyond-card-copy {
-    padding: 40px 40px 0;
+  .beyond-keypoints {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  .beyond-label {
-    color: #747980;
-    font-size: 12px;
-    font-weight: 550;
-    letter-spacing: 0.02em;
+  .beyond-keypoints.is-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .is-cli .beyond-label {
-    color: #a1a1a6;
+  .beyond-keypoints b {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
-  .beyond-card h3 {
-    margin: 12px 0;
-    font-size: clamp(28px, 3vw, 38px);
-    line-height: 1.18;
-    letter-spacing: -0.045em;
-    font-weight: 620;
-  }
-  .beyond-card-copy p {
-    max-width: 380px;
+  .beyond-keypoints p {
     margin: 0;
     color: var(--sub);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.7;
   }
-  .is-cli .beyond-card-copy p {
+  .is-cli .beyond-keypoints p {
     color: #a1a1a6;
   }
-  .beyond-card-visual {
-    position: relative;
-    flex: 1;
-    min-height: 260px;
-    margin-top: 32px;
-  }
-  .is-mac .beyond-card-visual img {
-    position: absolute;
-    left: 40px;
-    bottom: 0;
-    width: 150%;
-    max-width: none;
-    height: auto;
-    border-radius: 16px 0 0 0;
-    transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
-    transform-origin: left bottom;
-  }
-  .is-cli .beyond-card-visual {
-    display: flex;
-    align-items: flex-end;
-    padding: 0 0 0 40px;
-  }
-  .is-cli .beyond-card-visual .beyond-term {
-    width: calc(100% + 40px);
-    border-radius: 14px 0 0 0;
-    border-right: 0;
-    border-bottom: 0;
-    transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
-    transform-origin: left bottom;
-  }
-  .beyond-card.is-expanding .beyond-card-visual > * {
-    transition: none;
+  .beyond-tile .beyond-open {
+    top: 50%;
+    right: 28px;
+    bottom: auto;
+    margin-top: -20px;
   }
   @media (hover: hover) and (pointer: fine) {
-    .beyond-card:hover .beyond-card-visual > * {
-      transform: scale(1.025);
-    }
-    .beyond-card:hover .beyond-open {
-      transform: scale(1.08);
+    .beyond-tile:hover .beyond-open {
+      transform: scale(1.1);
     }
   }
 
@@ -586,15 +758,44 @@ const cliHighlights = [
     line-height: 1.8;
     white-space: pre;
   }
-  .beyond-term .p,
-  .beyond-term .c {
-    color: #6e6e73;
+  /* Syntax colours (Xcode Default Dark inspired) */
+  .beyond-term pre :global(.t-prompt) {
+    color: #30d158;
+    user-select: none;
   }
-  .beyond-term .s {
-    color: #a6e3b4;
+  .beyond-term pre :global(.t-cmd) {
+    color: #5dd8ff;
+    font-weight: 600;
   }
-  .beyond-term .o {
-    color: #c2c2c7;
+  .beyond-term pre :global(.t-sub) {
+    color: #dabaff;
+  }
+  .beyond-term pre :global(.t-flag) {
+    color: #ffa14f;
+  }
+  .beyond-term pre :global(.t-str) {
+    color: #fc6a5d;
+  }
+  .beyond-term pre :global(.t-num) {
+    color: #d0bf69;
+  }
+  .beyond-term pre :global(.t-ph) {
+    color: #a1a1a6;
+    font-style: italic;
+  }
+  .beyond-term pre :global(.t-comment) {
+    color: #6c7986;
+    font-style: italic;
+  }
+  .beyond-term pre :global(.t-key) {
+    color: #67b7a4;
+  }
+  .beyond-term pre :global(.t-bool) {
+    color: #ff7ab2;
+    font-weight: 600;
+  }
+  .beyond-term pre :global(.t-punct) {
+    color: #8e8e93;
   }
 
   /* ---------- Dialog ---------- */
@@ -631,10 +832,20 @@ const cliHighlights = [
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
     border-radius: 28px;
     background: #fff;
     color: var(--ink, #1d1d1f);
     will-change: clip-path;
+  }
+  .beyond-panel::-webkit-scrollbar {
+    display: none;
+  }
+  .is-mac .beyond-panel {
+    background: #f5f5f7;
+  }
+  .is-mac .beyond-split {
+    background: #fff;
   }
   .is-cli .beyond-panel {
     background: #000;
@@ -859,18 +1070,24 @@ const cliHighlights = [
     color: #83bafa !important;
   }
 
+  /* Lock through <body>: its overflow propagates to the viewport, which keeps the
+     scroll position. Hiding overflow on <html> would turn the 100%-tall body into
+     its own scroller and jump the page to the top. */
   :global(html.beyond-locked) {
+    scrollbar-gutter: stable;
+  }
+  :global(html.beyond-locked body) {
     overflow: hidden;
   }
 
   @media (max-width: 900px) {
-    .beyond-grid {
+    .beyond-cli-grid {
       grid-template-columns: 1fr;
-      max-width: 560px;
-      margin-inline: auto;
+      gap: 40px;
     }
-    .beyond-card {
-      min-height: 540px;
+    .beyond-keypoints,
+    .beyond-keypoints.is-three {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .beyond-content {
       padding: 64px 40px 48px;
@@ -888,46 +1105,42 @@ const cliHighlights = [
     }
   }
   @media (max-width: 650px) {
-    .beyond {
-      margin-top: 74px;
+    .beyond-section {
+      padding: 76px 0;
     }
-    .beyond-heading {
-      margin-bottom: 29px;
+    .beyond-head {
+      margin-bottom: 36px;
     }
-    .beyond-heading h2 {
-      font-size: 36px;
+    .beyond-head h2 {
+      font-size: 38px;
     }
-    .beyond-heading > p:last-child {
-      font-size: 13px;
+    .beyond-head > p:not(.eyebrow) {
+      font-size: 14px;
     }
-    .beyond-card {
-      min-height: 0;
+    .beyond-mac-stage {
+      padding-right: 12%;
+    }
+    .beyond-mac-menubar {
+      width: 28%;
+    }
+    .beyond-tile {
+      margin-top: 64px;
+      padding: 26px 22px 80px;
       border-radius: 22px;
     }
-    .beyond-card-visual {
-      min-height: 230px;
-      margin-top: 28px;
+    .beyond-cli .beyond-tile {
+      margin-top: 40px;
     }
-    .is-cli .beyond-card-visual {
-      min-height: 0;
+    .beyond-keypoints,
+    .beyond-keypoints.is-three {
+      grid-template-columns: 1fr;
+      gap: 20px;
     }
-    .beyond-card-copy {
-      padding: 28px 26px 0;
-    }
-    .beyond-card h3 {
-      font-size: 28px;
-    }
-    .beyond-card-copy p {
-      font-size: 13px;
-    }
-    .is-mac .beyond-card-visual img {
-      left: 26px;
-    }
-    .is-cli .beyond-card-visual {
-      padding-left: 26px;
-    }
-    .is-cli .beyond-card-visual .beyond-term {
-      width: calc(100% + 26px);
+    .beyond-tile .beyond-open {
+      top: auto;
+      right: 18px;
+      bottom: 18px;
+      margin-top: 0;
     }
     .beyond-term pre {
       font-size: 11.5px;
@@ -976,13 +1189,10 @@ const cliHighlights = [
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .beyond-card,
-    .beyond-card-visual > *,
     .beyond-open {
       transition: none;
     }
-    .beyond-card:hover .beyond-card-visual > *,
-    .beyond-card:hover .beyond-open {
+    .beyond-tile:hover .beyond-open {
       transform: none;
     }
   }
