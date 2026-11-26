@@ -1,0 +1,989 @@
+---
+import { Image } from 'astro:assets'
+import tasksLight from '../../assets/deadliner/macos/tasks-light.png'
+import menubarLight from '../../assets/deadliner/macos/menubar-light.png'
+import menubarDark from '../../assets/deadliner/macos/menubar-dark.png'
+
+const macRepo = 'https://github.com/DeadlinerStudio/Deadliner-macOS'
+const cliRepo = 'https://github.com/DeadlinerStudio/DeadlinerCli'
+const skillsRepo = 'https://github.com/DeadlinerStudio/DeadlinerCli-Skills'
+const cliInstall = `npm install -g ${cliRepo}/releases/download/v0.2.0/deadlinerstudio-cli-0.2.0.tgz`
+
+const macHighlights = [
+  ['任务与习惯', '单列、双列、三列布局，⌘ 点按批量操作；勾选、计量打卡与艾宾浩斯复习。'],
+  ['菜单栏', '四种显示样式，不打开窗口也能看任务、习惯与专注。'],
+  ['专注', '倒计时或正计时，计时窗可置顶，各设备记录同步汇总。'],
+  ['系统集成', '系统日历、快捷指令、到期提醒与每日摘要。'],
+  ['WebDAV 同步', '与手机共用同一份同步文件，启用前自动备份云端数据。'],
+  ['外观', '15 种主题色；macOS 26 上使用 Liquid Glass。'],
+]
+
+const cliHighlights = [
+  ['同一颗核心', 'Kotlin/Native 直接接入 DeadlinerCore，不依赖 JVM。'],
+  ['离线可用', '本地 SQLite profile，没有网络也能管理任务。'],
+  ['安全重试', '稳定 uid 让重试不重复创建，--if-updated-at 防止覆盖别人的修改。'],
+  ['WebDAV V3', '显式双向同步，与各端共用 kmp-changelog-v1.json。'],
+]
+---
+
+<div class="beyond">
+  <div class="section-heading centered beyond-heading">
+    <p class="eyebrow">也在桌面上，也在终端里</p>
+    <h2>不止于手机。</h2>
+    <p>在 Mac 上用原生应用把计划放大来看，或者让 Agent 通过命令行替你打理任务。</p>
+  </div>
+
+  <div class="beyond-grid">
+    <article class="beyond-card is-mac" data-beyond-card="beyond-mac">
+      <div class="beyond-card-copy">
+        <span class="beyond-label">Deadliner for macOS</span>
+        <h3>在 Mac 上，<br />原生登场。</h3>
+        <p>SwiftUI 打造，菜单栏随时可见，与手机共用同一个核心。</p>
+      </div>
+      <div class="beyond-card-visual">
+        <Image
+          src={tasksLight}
+          alt="Deadliner for macOS 任务列表"
+          widths={[640, 1024, 1600]}
+          sizes="(max-width: 900px) calc(100vw - 44px), 560px"
+          format="webp"
+          loading="lazy"
+        />
+      </div>
+      <button
+        class="beyond-open"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="beyond-mac"
+        aria-label="展开了解 Deadliner for macOS"
+        ><span aria-hidden="true"></span></button
+      >
+    </article>
+
+    <article class="beyond-card is-cli" data-beyond-card="beyond-cli">
+      <div class="beyond-card-copy">
+        <span class="beyond-label">Deadliner CLI · Agent Skills</span>
+        <h3>人读得懂，<br />Agent 也用得稳。</h3>
+        <p>中文易读输出、稳定的 JSON 协议，配套 Skill 让 Agent 直接上手。</p>
+      </div>
+      <div class="beyond-card-visual">
+        <div class="beyond-term" aria-hidden="true">
+          <div class="beyond-term-bar"><i></i><i></i><i></i></div>
+          <pre><span class="p">$</span> deadliner task add --title <span class="s">"提交周报"</span>
+<span class="p">$</span> deadliner task list
+<span class="p">$</span> deadliner --json task get <span class="o">&lt;ID&gt;</span>
+<span class="o">&#123;"ok":true,"version":1,"data":&#123;…&#125;&#125;</span></pre>
+        </div>
+      </div>
+      <button
+        class="beyond-open"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="beyond-cli"
+        aria-label="展开了解 Deadliner CLI 与 Agent Skills"
+        ><span aria-hidden="true"></span></button
+      >
+    </article>
+  </div>
+
+  <dialog class="beyond-dialog is-mac" id="beyond-mac" aria-labelledby="beyond-mac-title">
+    <div class="beyond-scrim" data-beyond-close></div>
+    <div class="beyond-panel">
+      <button class="beyond-close" type="button" data-beyond-close aria-label="关闭"
+        ><span aria-hidden="true"></span></button
+      >
+      <div class="beyond-content">
+        <header class="beyond-intro">
+          <span class="beyond-label">Deadliner for macOS</span>
+          <h2 id="beyond-mac-title">为 Mac 重新打造。</h2>
+          <p>
+            原生 SwiftUI 界面，数据库、同步与业务规则交给 DeadlinerCore，与 Android、iOS、鸿蒙端保持一致。
+          </p>
+        </header>
+        <div class="beyond-shot">
+          <Image
+            src={tasksLight}
+            alt="Deadliner for macOS 双列任务列表"
+            widths={[768, 1280, 1600]}
+            sizes="(max-width: 1040px) calc(100vw - 72px), 920px"
+            format="webp"
+            loading="lazy"
+          />
+        </div>
+        <ul class="beyond-highlights">
+          {
+            macHighlights.map(([title, body]) => (
+              <li>
+                <b>{title}</b>
+                <p>{body}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="beyond-split">
+          <div>
+            <h3>不打开窗口，<br />也知道今天怎么样。</h3>
+            <p>
+              菜单栏面板汇总进度、即将到期与最近 7 天专注。⌘N 新建、⌥⌘N 快速添加、⌘R 立即同步，手不离键盘。
+            </p>
+          </div>
+          <div class="beyond-pair">
+            <Image
+              src={menubarLight}
+              alt="菜单栏面板（浅色）"
+              widths={[320, 640]}
+              sizes="(max-width: 650px) 40vw, 220px"
+              format="webp"
+              loading="lazy"
+            />
+            <Image
+              src={menubarDark}
+              alt="菜单栏面板（深色）"
+              widths={[320, 640]}
+              sizes="(max-width: 650px) 40vw, 220px"
+              format="webp"
+              loading="lazy"
+            />
+          </div>
+        </div>
+        <ul class="beyond-specs" aria-label="系统要求与许可">
+          <li>Apple Silicon</li>
+          <li>macOS 14 及以上</li>
+          <li>macOS 26 支持 Liquid Glass</li>
+          <li>LGPL-2.1-or-later</li>
+        </ul>
+        <div class="beyond-actions">
+          <a class="beyond-primary" href="/deadliner/macos">进一步了解 Mac 版</a>
+          <a class="beyond-secondary" href={`${macRepo}/releases`} target="_blank" rel="noreferrer"
+            >下载 DMG <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="beyond-dialog is-cli" id="beyond-cli" aria-labelledby="beyond-cli-title">
+    <div class="beyond-scrim" data-beyond-close></div>
+    <div class="beyond-panel">
+      <button class="beyond-close" type="button" data-beyond-close aria-label="关闭"
+        ><span aria-hidden="true"></span></button
+      >
+      <div class="beyond-content">
+        <header class="beyond-intro">
+          <span class="beyond-label">Deadliner CLI · Agent Skills</span>
+          <h2 id="beyond-cli-title">为 Agent 而生的命令行。</h2>
+          <p>
+            直接在终端运行，看到的是中文帮助与任务列表；交给 Agent 时，显式 --json 保证 stdout 只有一个
+            JSON 对象。
+          </p>
+        </header>
+        <div class="beyond-term is-large">
+          <div class="beyond-term-bar"><i></i><i></i><i></i><span>deadliner — zsh</span></div>
+          <pre><span class="p">$</span> deadliner task add --title <span class="s">"提交周报"</span> --due <span class="s">2026-11-11T18:00:00+08:00</span>
+<span class="p">$</span> deadliner task complete <span class="o">&lt;ID&gt;</span>
+
+<span class="c"># Agent：只看 ok 与退出码</span>
+<span class="p">$</span> deadliner --json task get <span class="o">&lt;ID&gt;</span>
+<span class="o">&#123;"ok":false,"version":1,"error":&#123;"code":"NOT_FOUND","message":"Task not found"&#125;&#125;</span>
+<span class="c"># exit 3 · 0 成功 · 2 参数 · 4 冲突 · 5 同步失败</span></pre>
+        </div>
+        <ul class="beyond-highlights is-four">
+          {
+            cliHighlights.map(([title, body]) => (
+              <li>
+                <b>{title}</b>
+                <p>{body}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="beyond-split">
+          <div>
+            <h3>装上技能，<br />Agent 就会用 Deadliner。</h3>
+            <p>
+              两个配套 Skill 把协议、重试与安全规则写成 Agent 能遵循的说明，复制到 Agent 的 skills
+              目录即可，支持 SKILL.md 的 Agent 都能用。
+            </p>
+          </div>
+          <ul class="beyond-skills">
+            <li><code>deadliner-tasks</code><span>任务增删改查、状态动作与条件更新</span></li>
+            <li><code>deadliner-webdav</code><span>WebDAV 配置、双向同步与故障诊断</span></li>
+          </ul>
+        </div>
+        <div class="beyond-install">
+          <button class="beyond-copy" type="button" data-beyond-copy="beyond-cli-install">复制</button>
+          <pre id="beyond-cli-install">{cliInstall}</pre>
+        </div>
+        <ul class="beyond-specs" aria-label="平台与许可">
+          <li>macOS Apple Silicon</li>
+          <li>v0.2.0</li>
+          <li>CLI · GPL-3.0</li>
+          <li>Skills · MIT</li>
+        </ul>
+        <div class="beyond-actions">
+          <a class="beyond-primary" href="/deadliner/cli">进一步了解 CLI</a>
+          <a class="beyond-secondary" href={skillsRepo} target="_blank" rel="noreferrer"
+            >Agent Skills <span aria-hidden="true">↗</span></a
+          >
+        </div>
+      </div>
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const EASE = 'cubic-bezier(0.32, 0.72, 0, 1)'
+  const root = document.documentElement
+
+  function radiusOf(element: Element) {
+    return parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0
+  }
+
+  // clip-path inset that makes the full panel look exactly like the card.
+  function insetFor(card: Element, panel: Element) {
+    const c = card.getBoundingClientRect()
+    const p = panel.getBoundingClientRect()
+    const v = [c.top - p.top, p.right - c.right, p.bottom - c.bottom, c.left - p.left].map(
+      (n) => `${Math.max(0, n).toFixed(1)}px`,
+    )
+    return `inset(${v.join(' ')} round ${radiusOf(card)}px)`
+  }
+
+  function setup(dialog: HTMLDialogElement) {
+    if (dialog.dataset.ready) return
+    dialog.dataset.ready = 'true'
+    const card = document.querySelector<HTMLElement>(`[data-beyond-card="${dialog.id}"]`)
+    const opener = card?.querySelector<HTMLButtonElement>('.beyond-open')
+    const panel = dialog.querySelector<HTMLElement>('.beyond-panel')!
+    const scrim = dialog.querySelector<HTMLElement>('.beyond-scrim')!
+    const content = dialog.querySelector<HTMLElement>('.beyond-content')!
+    const closeButton = dialog.querySelector<HTMLElement>('.beyond-close')!
+    if (!card || !opener) return
+    let busy = false
+
+    const open = () => {
+      if (busy || dialog.open) return
+      busy = true
+      root.classList.add('beyond-locked')
+      dialog.showModal()
+      panel.scrollTop = 0
+      closeButton.focus({ preventScroll: true })
+      if (reduceMotion.matches) {
+        busy = false
+        return
+      }
+      const fullRadius = radiusOf(panel)
+      card.classList.add('is-expanding')
+      scrim.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 420, easing: 'ease', fill: 'both' })
+      const grow = panel.animate(
+        [
+          { clipPath: insetFor(card, panel) },
+          { clipPath: `inset(0px 0px 0px 0px round ${fullRadius}px)` },
+        ],
+        { duration: 640, easing: EASE },
+      )
+      closeButton.animate([{ opacity: 0, transform: 'scale(.6)' }, { opacity: 1, transform: 'none' }], {
+        duration: 360,
+        delay: 300,
+        easing: EASE,
+        fill: 'backwards',
+      })
+      Array.from(content.children).forEach((child, index) => {
+        child.animate(
+          [
+            { opacity: 0, transform: 'translateY(36px)' },
+            { opacity: 1, transform: 'none' },
+          ],
+          { duration: 700, delay: 220 + Math.min(index, 6) * 60, easing: EASE, fill: 'backwards' },
+        )
+      })
+      grow.finished.finally(() => {
+        busy = false
+      })
+    }
+
+    const finishClose = () => {
+      dialog.close()
+      root.classList.remove('beyond-locked')
+      card.classList.remove('is-expanding')
+      scrim.getAnimations().forEach((animation) => animation.cancel())
+      busy = false
+      opener.focus({ preventScroll: true })
+    }
+
+    const close = () => {
+      if (busy || !dialog.open) return
+      if (reduceMotion.matches) {
+        finishClose()
+        return
+      }
+      busy = true
+      content.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 180, easing: 'ease', fill: 'forwards' })
+      closeButton.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 160, fill: 'forwards' })
+      scrim.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 460, delay: 80, easing: 'ease', fill: 'forwards' })
+      const shrink = panel.animate(
+        [
+          { clipPath: `inset(0px 0px 0px 0px round ${radiusOf(panel)}px)` },
+          { clipPath: insetFor(card, panel) },
+        ],
+        { duration: 520, delay: 60, easing: EASE, fill: 'forwards' },
+      )
+      shrink.finished.finally(() => {
+        finishClose()
+        panel.getAnimations().forEach((animation) => animation.cancel())
+        content.getAnimations().forEach((animation) => animation.cancel())
+        closeButton.getAnimations().forEach((animation) => animation.cancel())
+      })
+    }
+
+    opener.addEventListener('click', open)
+    card.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a, button')) return
+      open()
+    })
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault()
+      close()
+    })
+    dialog.querySelectorAll('[data-beyond-close]').forEach((element) => {
+      element.addEventListener('click', close)
+    })
+    dialog.querySelectorAll<HTMLButtonElement>('[data-beyond-copy]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const source = document.getElementById(button.dataset.beyondCopy ?? '')
+        if (!source || !navigator.clipboard) return
+        navigator.clipboard.writeText(source.innerText.trim()).then(() => {
+          button.textContent = '已复制'
+          window.setTimeout(() => (button.textContent = '复制'), 1600)
+        })
+      })
+    })
+  }
+
+  const init = () => document.querySelectorAll<HTMLDialogElement>('.beyond-dialog').forEach(setup)
+  init()
+  document.addEventListener('astro:page-load', init)
+</script>
+
+<style>
+  .beyond {
+    margin-top: 110px;
+  }
+  .beyond-heading {
+    max-width: 760px;
+    margin: 0 auto 42px;
+    text-align: center;
+  }
+  .beyond-heading .eyebrow {
+    margin: 0 0 20px;
+    color: #6e6e73;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    font-weight: 650;
+  }
+  .beyond-heading h2 {
+    margin: 0;
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1.14;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+  }
+  .beyond-heading > p:last-child {
+    margin: 15px 0 0;
+    color: var(--sub);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .beyond-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  /* ---------- Cards ---------- */
+  .beyond-card {
+    position: relative;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 28px;
+    background: #fff;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .beyond-card.is-cli {
+    background: #000;
+    color: #f5f5f7;
+  }
+  .beyond-card-copy {
+    padding: 40px 40px 0;
+  }
+  .beyond-label {
+    color: #747980;
+    font-size: 12px;
+    font-weight: 550;
+    letter-spacing: 0.02em;
+  }
+  .is-cli .beyond-label {
+    color: #a1a1a6;
+  }
+  .beyond-card h3 {
+    margin: 12px 0;
+    font-size: clamp(28px, 3vw, 38px);
+    line-height: 1.18;
+    letter-spacing: -0.045em;
+    font-weight: 620;
+  }
+  .beyond-card-copy p {
+    max-width: 380px;
+    margin: 0;
+    color: var(--sub);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .is-cli .beyond-card-copy p {
+    color: #a1a1a6;
+  }
+  .beyond-card-visual {
+    position: relative;
+    flex: 1;
+    min-height: 260px;
+    margin-top: 32px;
+  }
+  .is-mac .beyond-card-visual img {
+    position: absolute;
+    left: 40px;
+    bottom: 0;
+    width: 150%;
+    max-width: none;
+    height: auto;
+    border-radius: 16px 0 0 0;
+    transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+    transform-origin: left bottom;
+  }
+  .is-cli .beyond-card-visual {
+    display: flex;
+    align-items: flex-end;
+    padding: 0 0 0 40px;
+  }
+  .is-cli .beyond-card-visual .beyond-term {
+    width: calc(100% + 40px);
+    border-radius: 14px 0 0 0;
+    border-right: 0;
+    border-bottom: 0;
+    transition: transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+    transform-origin: left bottom;
+  }
+  .beyond-card.is-expanding .beyond-card-visual > * {
+    transition: none;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .beyond-card:hover .beyond-card-visual > * {
+      transform: scale(1.025);
+    }
+    .beyond-card:hover .beyond-open {
+      transform: scale(1.08);
+    }
+  }
+
+  /* Plus / close buttons */
+  .beyond-open,
+  .beyond-close {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      transform 0.25s ease,
+      background 0.2s ease;
+  }
+  .beyond-open {
+    right: 24px;
+    bottom: 24px;
+    z-index: 2;
+    background: #1d1d1f;
+    color: #fff;
+  }
+  .is-cli .beyond-open {
+    background: #f5f5f7;
+    color: #1d1d1f;
+  }
+  .beyond-open span,
+  .beyond-close span {
+    position: relative;
+    width: 14px;
+    height: 14px;
+  }
+  .beyond-open span::before,
+  .beyond-open span::after,
+  .beyond-close span::before,
+  .beyond-close span::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+    width: 14px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
+  }
+  .beyond-open span::after {
+    transform: rotate(90deg);
+  }
+  .beyond-close span::before {
+    transform: rotate(45deg);
+  }
+  .beyond-close span::after {
+    transform: rotate(-45deg);
+  }
+  .beyond-open:focus-visible,
+  .beyond-close:focus-visible {
+    outline: 2px solid #1976d2;
+    outline-offset: 3px;
+  }
+
+  /* Terminal */
+  .beyond-term {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    background: #161618;
+    color: #e8e8ed;
+  }
+  .beyond-term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    height: 32px;
+    padding: 0 14px;
+    background: #222225;
+  }
+  .beyond-term-bar i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3d3d42;
+  }
+  .beyond-term-bar span {
+    margin: auto;
+    padding-right: 40px;
+    color: #86868b;
+    font-size: 12px;
+  }
+  .beyond-term pre {
+    margin: 0;
+    padding: 20px 22px 26px;
+    overflow-x: auto;
+    font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre;
+  }
+  .beyond-term .p,
+  .beyond-term .c {
+    color: #6e6e73;
+  }
+  .beyond-term .s {
+    color: #a6e3b4;
+  }
+  .beyond-term .o {
+    color: #c2c2c7;
+  }
+
+  /* ---------- Dialog ---------- */
+  .beyond-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+  .beyond-dialog::backdrop {
+    background: transparent;
+  }
+  .beyond-scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+  .beyond-panel {
+    position: absolute;
+    top: 40px;
+    bottom: 40px;
+    left: 50%;
+    width: min(1000px, calc(100% - 48px));
+    translate: -50% 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 28px;
+    background: #fff;
+    color: var(--ink, #1d1d1f);
+    will-change: clip-path;
+  }
+  .is-cli .beyond-panel {
+    background: #000;
+    color: #f5f5f7;
+  }
+  .beyond-close {
+    position: sticky;
+    top: 20px;
+    z-index: 3;
+    float: right;
+    margin: 20px 20px -60px 0;
+    background: rgba(29, 29, 31, 0.08);
+    color: #1d1d1f;
+  }
+  .is-cli .beyond-close {
+    background: rgba(245, 245, 247, 0.14);
+    color: #f5f5f7;
+  }
+  .beyond-close:hover {
+    background: rgba(29, 29, 31, 0.14);
+  }
+  .is-cli .beyond-close:hover {
+    background: rgba(245, 245, 247, 0.22);
+  }
+  .beyond-content {
+    padding: 72px 72px 64px;
+  }
+  .beyond-content > * + * {
+    margin-top: 48px;
+  }
+  .beyond-intro {
+    max-width: 640px;
+  }
+  .beyond-intro h2 {
+    margin: 12px 0 0;
+    font-size: clamp(36px, 4.4vw, 54px);
+    line-height: 1.12;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+  }
+  .beyond-intro p {
+    margin: 18px 0 0;
+    color: var(--sub, #6e6e73);
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  .is-cli .beyond-intro p,
+  .is-cli .beyond-split p {
+    color: #a1a1a6;
+  }
+  .beyond-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 18px;
+  }
+  .beyond-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 34px 32px;
+    margin-bottom: 0;
+    padding: 40px 0 0;
+    border-top: 1px solid rgba(29, 29, 31, 0.1);
+    list-style: none;
+  }
+  .beyond-highlights.is-four {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .is-cli .beyond-highlights {
+    border-color: #34343b;
+  }
+  .beyond-highlights b {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .beyond-highlights p {
+    margin: 0;
+    color: var(--sub, #6e6e73);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .is-cli .beyond-highlights p {
+    color: #a1a1a6;
+  }
+  .beyond-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 40px;
+    border-radius: 22px;
+    background: #f5f5f7;
+  }
+  .is-cli .beyond-split {
+    background: #1c1c1f;
+  }
+  .beyond-split h3 {
+    margin: 0 0 12px;
+    font-size: 28px;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+  }
+  .beyond-split p {
+    margin: 0;
+    color: var(--sub, #6e6e73);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+  .beyond-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    max-width: 380px;
+    justify-self: end;
+  }
+  .beyond-pair img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+  .beyond-skills {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .beyond-skills li {
+    padding: 18px 20px;
+    border-radius: 16px;
+    background: #000;
+  }
+  .beyond-skills code {
+    display: block;
+    margin-bottom: 6px;
+    color: #8cc5f3;
+    font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 13px;
+  }
+  .beyond-skills span {
+    color: #c2c2c7;
+    font-size: 13px;
+  }
+  .beyond-install {
+    position: relative;
+    border: 1px solid #34343b;
+    border-radius: 14px;
+  }
+  .beyond-install pre {
+    margin: 0;
+    padding: 18px 96px 18px 20px;
+    font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .beyond-copy {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid #3a3a40;
+    border-radius: 999px;
+    background: #1c1c1f;
+    color: #f5f5f7;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .beyond-specs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .beyond-specs li {
+    padding: 7px 13px;
+    border: 1px solid rgba(29, 29, 31, 0.12);
+    border-radius: 999px;
+    color: var(--sub, #6e6e73);
+    font-size: 12px;
+  }
+  .is-cli .beyond-specs li {
+    border-color: #3a3a40;
+    color: #a1a1a6;
+  }
+  .beyond-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 22px;
+  }
+  .beyond-content > .beyond-specs + .beyond-actions {
+    margin-top: 28px;
+  }
+  .beyond-primary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: #0071e3;
+    color: #fff !important;
+    font-size: 15px;
+    transition: background 0.2s;
+  }
+  .beyond-primary:hover {
+    background: #0077ed;
+  }
+  .beyond-secondary {
+    color: #1671cf !important;
+    font-size: 15px;
+  }
+  .is-cli .beyond-secondary {
+    color: #83bafa !important;
+  }
+
+  :global(html.beyond-locked) {
+    overflow: hidden;
+  }
+
+  @media (max-width: 900px) {
+    .beyond-grid {
+      grid-template-columns: 1fr;
+      max-width: 560px;
+      margin-inline: auto;
+    }
+    .beyond-card {
+      min-height: 540px;
+    }
+    .beyond-content {
+      padding: 64px 40px 48px;
+    }
+    .beyond-highlights,
+    .beyond-highlights.is-four {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .beyond-split {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+    .beyond-pair {
+      justify-self: start;
+    }
+  }
+  @media (max-width: 650px) {
+    .beyond {
+      margin-top: 74px;
+    }
+    .beyond-heading {
+      margin-bottom: 29px;
+    }
+    .beyond-heading h2 {
+      font-size: 36px;
+    }
+    .beyond-heading > p:last-child {
+      font-size: 13px;
+    }
+    .beyond-card {
+      min-height: 0;
+      border-radius: 22px;
+    }
+    .beyond-card-visual {
+      min-height: 230px;
+      margin-top: 28px;
+    }
+    .is-cli .beyond-card-visual {
+      min-height: 0;
+    }
+    .beyond-card-copy {
+      padding: 28px 26px 0;
+    }
+    .beyond-card h3 {
+      font-size: 28px;
+    }
+    .beyond-card-copy p {
+      font-size: 13px;
+    }
+    .is-mac .beyond-card-visual img {
+      left: 26px;
+    }
+    .is-cli .beyond-card-visual {
+      padding-left: 26px;
+    }
+    .is-cli .beyond-card-visual .beyond-term {
+      width: calc(100% + 26px);
+    }
+    .beyond-term pre {
+      font-size: 11.5px;
+      padding: 16px 16px 20px;
+    }
+    .beyond-open {
+      right: 18px;
+      bottom: 18px;
+    }
+    .beyond-panel {
+      top: 12px;
+      bottom: 0;
+      width: 100%;
+      border-radius: 22px 22px 0 0;
+    }
+    .beyond-close {
+      top: 14px;
+      margin: 14px 14px -54px 0;
+    }
+    .beyond-content {
+      padding: 60px 22px 40px;
+    }
+    .beyond-content > * + * {
+      margin-top: 36px;
+    }
+    .beyond-intro h2 {
+      font-size: 32px;
+    }
+    .beyond-intro p {
+      font-size: 15px;
+    }
+    .beyond-highlights,
+    .beyond-highlights.is-four {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      padding-top: 30px;
+    }
+    .beyond-split {
+      padding: 26px 22px;
+    }
+    .beyond-split h3 {
+      font-size: 24px;
+    }
+    .beyond-install pre {
+      padding: 50px 18px 18px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .beyond-card,
+    .beyond-card-visual > *,
+    .beyond-open {
+      transition: none;
+    }
+    .beyond-card:hover .beyond-card-visual > *,
+    .beyond-card:hover .beyond-open {
+      transform: none;
+    }
+  }
+</style>

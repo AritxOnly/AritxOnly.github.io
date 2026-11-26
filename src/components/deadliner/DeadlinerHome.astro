@@ -4,10 +4,10 @@ import DeadlinerHero from './DeadlinerHero.astro'
 import DeadlinerFeatures from './DeadlinerFeatures.astro'
 import DeadlinerArchitecture from './DeadlinerArchitecture.astro'
 import DeadlinerMotion from './DeadlinerMotion.astro'
+import DeadlinerBeyond from './DeadlinerBeyond.astro'
 import androidPlatform from '../../assets/deadliner/android-platform.png'
 import iosPlatform from '../../assets/deadliner/ios-platform.png'
 import harmonyPlatform from '../../assets/deadliner/harmony-platform.png'
-import macTasks from '../../assets/deadliner/macos/tasks-light.png'
 import aritxAvatar from '../../assets/deadliner/team/aritxonly.jpg'
 import qiaoAvatar from '../../assets/deadliner/team/qiao411.jpg'
 import xiaoAvatar from '../../assets/deadliner/team/xiaochennnng.jpg'
@@ -132,31 +132,7 @@ const repositories = {
           </div>
         </article>
       </div>
-      <div class="desktop-row">
-        <div class="desktop-copy">
-          <span class="step-label">也在桌面上</span><h3>
-            留出空间，<br />把计划放大来看。
-          </h3><p>
-            Deadliner for macOS 基于 SwiftUI 原生打造，与手机共用同一个核心；终端里还有为 Agent 准备的
-            Deadliner CLI。
-          </p><div class="desktop-links">
-            <a class="platform-link" href="/deadliner/macos">了解 Mac 版 <span>›</span></a><a
-              class="platform-link"
-              href="/deadliner/cli">了解 CLI 与 Agent Skills <span>›</span></a
-            >
-          </div>
-        </div><a class="desktop-visual" href="/deadliner/macos" aria-label="了解 Deadliner for macOS">
-          <Image
-            class="desktop-shot"
-            src={macTasks}
-            alt="Deadliner for macOS 任务列表"
-            widths={[640, 1024, 1600]}
-            sizes="(max-width: 650px) calc(100vw - 44px), 640px"
-            format="webp"
-            loading="lazy"
-          />
-        </a>
-      </div>
+      <DeadlinerBeyond />
     </div>
   </section>
 
@@ -470,23 +446,6 @@ const repositories = {
     font-size: 15px;
     line-height: 1.75;
   }
-  .step-label {
-    color: #77777c;
-    font-size: 10px;
-    letter-spacing: 0.08em;
-  }
-  .desktop-copy h3 {
-    margin: 13px 0 10px;
-    font-size: 29px;
-    line-height: 1.22;
-    letter-spacing: -0.04em;
-  }
-  .desktop-copy p {
-    margin: 0;
-    color: var(--sub);
-    font-size: 13px;
-    line-height: 1.75;
-  }
   .centered {
     max-width: 760px;
     margin-inline: auto;
@@ -722,45 +681,6 @@ const repositories = {
     line-height: 1.6;
     scroll-margin-top: 80px;
   }
-  .desktop-row {
-    display: grid;
-    grid-template-columns: 0.78fr 1.22fr;
-    gap: 50px;
-    align-items: center;
-    margin-top: 75px;
-    padding: 30px 35px 30px 10px;
-  }
-  .desktop-copy {
-    max-width: 330px;
-  }
-  .desktop-copy h3 {
-    font-size: 35px;
-  }
-  .desktop-copy p {
-    margin-bottom: 17px;
-  }
-  .desktop-visual {
-    position: relative;
-    display: block;
-    overflow: hidden;
-    border-radius: 22px;
-  }
-  .desktop-shot {
-    display: block;
-    width: 100%;
-    height: auto;
-    transition: transform 0.4s ease;
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .desktop-visual:hover .desktop-shot {
-      transform: scale(1.015);
-    }
-  }
-  .desktop-links {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
   .more-platforms a {
     color: #1976d2 !important;
     font-size: 11px;
@@ -912,10 +832,6 @@ const repositories = {
     .platform-copy p {
       min-height: 0;
     }
-    .desktop-row {
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 25px;
-    }
   }
   @media (max-width: 650px) {
     .wrap {
@@ -966,18 +882,6 @@ const repositories = {
     }
     .platform-copy p {
       margin-bottom: 12px;
-    }
-    .desktop-row {
-      grid-template-columns: 1fr;
-      gap: 23px;
-      margin-top: 38px;
-      padding: 10px 0 0;
-    }
-    .desktop-copy {
-      max-width: 370px;
-    }
-    .desktop-copy h3 {
-      font-size: 30px;
     }
     .download-section {
       padding: 72px 0;
