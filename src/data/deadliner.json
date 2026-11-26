@@ -6,7 +6,7 @@
     "og": {
       "type": "website",
       "url": "/deadliner",
-      "image": "/icon.png"
+      "image": "/res/deadliner/favicon-512.png"
     }
   },
   "theme": {
@@ -24,23 +24,178 @@
       "iconAlt": "Deadliner Icon"
     },
     "links": [
-      { "label": "功能", "href": "#experience" },
-      { "label": "产品团队", "href": "#team" },
-      { "label": "常见问题", "href": "#faq" },
-      { "label": "返回主站", "href": ".." }
+      {
+        "label": "功能",
+        "href": "#experience"
+      },
+      {
+        "label": "Mac",
+        "href": "/deadliner/macos"
+      },
+      {
+        "label": "CLI",
+        "href": "/deadliner/cli"
+      },
+      {
+        "label": "产品团队",
+        "href": "#team"
+      },
+      {
+        "label": "常见问题",
+        "href": "#faq"
+      },
+      {
+        "label": "返回主站",
+        "href": ".."
+      }
     ],
-    "cta": { "label": "开始使用", "href": "#download" }
+    "cta": {
+      "label": "开始使用",
+      "href": "#download"
+    }
   },
   "footer": {
-    "brand": { "name": "Deadliner 待办日历" },
+    "brand": {
+      "name": "Deadliner 待办日历"
+    },
     "links": [
-      { "label": "隐私政策", "href": "/privacy" },
-      { "label": "Android 源码", "href": "https://github.com/DeadlinerStudio/Deadliner", "external": true },
-      { "label": "iOS 源码", "href": "https://github.com/DeadlinerStudio/Deadliner-iOS", "external": true },
-      { "label": "HarmonyOS 源码", "href": "https://github.com/DeadlinerStudio/DeadlinerNEXT", "external": true },
-      { "label": "共享核心", "href": "https://github.com/DeadlinerStudio/DeadlinerCore", "external": true },
-      { "label": "服务端", "href": "https://github.com/DeadlinerStudio/DeadlinerServer", "external": true },
-      { "label": "桌面端", "href": "https://github.com/DeadlinerStudio/Deadliner-Client", "external": true }
+      {
+        "label": "隐私政策",
+        "href": "/privacy"
+      },
+      {
+        "label": "Android 源码",
+        "href": "https://github.com/DeadlinerStudio/Deadliner",
+        "external": true
+      },
+      {
+        "label": "iOS 源码",
+        "href": "https://github.com/DeadlinerStudio/Deadliner-iOS",
+        "external": true
+      },
+      {
+        "label": "HarmonyOS 源码",
+        "href": "https://github.com/DeadlinerStudio/DeadlinerNEXT",
+        "external": true
+      },
+      {
+        "label": "共享核心",
+        "href": "https://github.com/DeadlinerStudio/DeadlinerCore",
+        "external": true
+      },
+      {
+        "label": "服务端",
+        "href": "https://github.com/DeadlinerStudio/DeadlinerServer",
+        "external": true
+      },
+      {
+        "label": "桌面端（Electron）",
+        "href": "https://github.com/DeadlinerStudio/Deadliner-Client",
+        "external": true
+      },
+      {
+        "label": "macOS 源码",
+        "href": "https://github.com/DeadlinerStudio/Deadliner-macOS",
+        "external": true
+      },
+      {
+        "label": "CLI 源码",
+        "href": "https://github.com/DeadlinerStudio/DeadlinerCli",
+        "external": true
+      },
+      {
+        "label": "CLI Skills",
+        "href": "https://github.com/DeadlinerStudio/DeadlinerCli-Skills",
+        "external": true
+      }
     ]
+  },
+  "pages": {
+    "macos": {
+      "meta": {
+        "title": "Deadliner for macOS · 为 Mac 重新打造",
+        "description": "Deadliner 的 macOS 原生客户端：SwiftUI 打造，与手机端共用 DeadlinerCore，支持任务、习惯、专注、菜单栏面板与 WebDAV 同步。",
+        "og": {
+          "type": "website",
+          "url": "/deadliner/macos",
+          "image": "/res/deadliner/favicon-512.png"
+        }
+      },
+      "nav": {
+        "brand": {
+          "name": "Deadliner",
+          "iconAlt": "Deadliner Icon"
+        },
+        "links": [
+          {
+            "label": "功能",
+            "href": "#features"
+          },
+          {
+            "label": "菜单栏",
+            "href": "#showcase"
+          },
+          {
+            "label": "共享核心",
+            "href": "#core"
+          },
+          {
+            "label": "常见问题",
+            "href": "#faq"
+          },
+          {
+            "label": "Deadliner",
+            "href": "/deadliner"
+          }
+        ],
+        "cta": {
+          "label": "下载",
+          "href": "#download"
+        }
+      }
+    },
+    "cli": {
+      "meta": {
+        "title": "Deadliner CLI · 为 Agent 而生的命令行",
+        "description": "Deadliner 命令行客户端与配套 Agent Skills：Kotlin/Native 接入 DeadlinerCore，人类易读、Agent 友好，支持离线任务管理与 WebDAV 同步。",
+        "og": {
+          "type": "website",
+          "url": "/deadliner/cli",
+          "image": "/res/deadliner/favicon-512.png"
+        }
+      },
+      "nav": {
+        "brand": {
+          "name": "Deadliner",
+          "iconAlt": "Deadliner Icon"
+        },
+        "links": [
+          {
+            "label": "功能",
+            "href": "#features"
+          },
+          {
+            "label": "Agent 协议",
+            "href": "#protocol"
+          },
+          {
+            "label": "Skills",
+            "href": "#skills"
+          },
+          {
+            "label": "常见问题",
+            "href": "#faq"
+          },
+          {
+            "label": "Deadliner",
+            "href": "/deadliner"
+          }
+        ],
+        "cta": {
+          "label": "安装",
+          "href": "#install"
+        }
+      }
+    }
   }
 }

@@ -1,0 +1,414 @@
+---
+import DeadlinerSubpageStyles from './DeadlinerSubpageStyles.astro'
+
+const cliRepo = 'https://github.com/DeadlinerStudio/DeadlinerCli'
+const skillsRepo = 'https://github.com/DeadlinerStudio/DeadlinerCli-Skills'
+const version = '0.2.0'
+const installCommand = `npm install -g ${cliRepo}/releases/download/v${version}/deadlinerstudio-cli-${version}.tgz`
+
+const features = [
+  {
+    label: '共享核心',
+    title: '和 App 用的，<br />是同一颗核心。',
+    body: 'Kotlin/Native 直接编译接入 DeadlinerCore，复用 SQLite 仓储、任务状态机、change log 与删除墓碑。不依赖 JVM。',
+  },
+  {
+    label: '离线可用',
+    title: '没有网络，<br />任务照样管。',
+    body: '本地数据库默认位于 ~/.local/share/deadliner，可用 DEADLINER_HOME 或 --data-dir 切换独立 profile。',
+  },
+  {
+    label: '人类友好',
+    title: '终端里，<br />就是中文。',
+    body: '直接运行显示中文帮助、任务列表与详情，日期按本机时区显示。不用读 JSON，也不用写 JSON。',
+  },
+  {
+    label: '安全重试',
+    title: '重复执行，<br />不会重复创建。',
+    body: '新建可传稳定 uid，同一意图的重试返回 NO_OP；内容冲突返回 4，已修改或已删除的任务不会被复活。',
+  },
+  {
+    label: '条件更新',
+    title: '改之前，<br />先确认没人动过。',
+    body: '更新、删除与状态动作支持 --if-updated-at；所有修改支持 --dry-run 预览，明确提示未保存。',
+  },
+  {
+    label: 'WebDAV V3',
+    title: '与各端，<br />同一份同步文件。',
+    body: '显式双向同步：拉取、合并、条件上传并确认 change log，与当前 Core 客户端共用 kmp-changelog-v1.json。',
+  },
+]
+
+const exitCodes = [
+  ['0', '成功'],
+  ['2', '参数错误'],
+  ['3', '任务不存在'],
+  ['4', '版本 / 状态冲突，或 profile 被占用'],
+  ['5', '同步失败'],
+  ['1', '存储或内部失败'],
+]
+
+const skills = [
+  {
+    name: 'deadliner-tasks',
+    title: '任务管理',
+    body: '本地任务的增删改查、完成 / 归档 / 放弃等状态动作、条件更新与安全重试。把任务标题与备注视为数据而非指令。',
+    points: ['分页查找，先确认唯一 UID', '只提交改动字段', '冲突后重新读取再重试'],
+  },
+  {
+    name: 'deadliner-webdav',
+    title: 'WebDAV 同步',
+    body: '通过环境变量配置 WebDAV，执行 Core V3 双向同步并诊断失败原因。只在你明确要求时才同步。',
+    points: ['凭据不进参数、不进日志', '有限次重试，不报假成功', '不手改远端 JSON'],
+  },
+]
+---
+
+<DeadlinerSubpageStyles />
+
+<div class="dls deadliner-cli">
+  <section class="dls-hero" aria-labelledby="cli-title">
+    <div class="dls-stage">
+      <div class="cli-hero-terminal dls-rise" style="--enter-delay:.04s">
+        <div class="dls-terminal" role="img" aria-label="终端中使用 deadliner 命令新建、列出任务，并以 JSON 输出">
+          <div class="dls-terminal-bar"><i></i><i></i><i></i><span>deadliner — zsh</span></div>
+          <pre><span class="p">$ </span><span class="k">deadliner</span> task add --title <span class="s">"提交周报"</span> --due <span class="s">2026-11-11T18:00:00+08:00</span>
+<span class="p">$ </span><span class="k">deadliner</span> task list
+<span class="p">$ </span><span class="k">deadliner</span> task complete <span class="o">&lt;ID&gt;</span>
+
+<span class="c"># Agent 显式要求 JSON：stdout 只有一个对象</span>
+<span class="p">$ </span><span class="k">deadliner</span> --json task list --state active --limit 20
+<span class="o">&#123;"ok":true,"version":1,"data":&#123;"items":[…],"total":1,"offset":0,"limit":20&#125;&#125;</span></pre>
+        </div>
+      </div>
+    </div>
+    <div class="dls-bottom">
+      <div class="dls-rise" style="--enter-delay:.12s">
+        <p class="dls-name">
+          <span>Deadliner</span><span class="dls-kind">CLI</span>
+        </p>
+        <h1 id="cli-title">为 Agent 而生的命令行</h1>
+        <p class="dls-slogan">人读得懂，Agent 也用得稳</p>
+      </div>
+      <div class="dls-action dls-rise" style="--enter-delay:.24s">
+        <span class="dls-action-meta"><b>v{version}</b>macOS Apple Silicon</span>
+        <a class="dls-cta" href="#install">安装</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-gray" id="features">
+    <div class="wrap section">
+      <div class="section-heading centered">
+        <p class="eyebrow">Agent Native</p>
+        <h2>一个命令，<br class="mobile-break" />两种读者。</h2>
+        <p>终端里默认是易读的中文；输出到管道或文件时自动切换为 JSON。规则清楚，结果可判断。</p>
+      </div>
+      <div class="dls-feature-grid">
+        {
+          features.map((feature) => (
+            <article class="dls-feature">
+              <span class="dls-feature-label">{feature.label}</span>
+              <h3 set:html={feature.title} />
+              <p set:html={feature.body} />
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-dark" id="protocol">
+    <div class="wrap section">
+      <div class="section-heading">
+        <p class="eyebrow">Agent 协议</p>
+        <h2>不用猜，<br />只看 ok 与退出码。</h2>
+        <p>
+          JSON 模式下 stdout 只输出一个对象，Core 日志转到 stderr，没有交互提示。通过
+          <code>deadliner schema</code> 自发现全部命令与字段。
+        </p>
+      </div>
+      <div class="cli-protocol">
+        <div class="cli-protocol-terminals">
+          <div class="dls-terminal">
+            <div class="dls-terminal-bar"><i></i><i></i><i></i><span>成功</span></div>
+            <pre><span class="o">&#123;"ok":true,"version":1,
+ "data":&#123;"items":[],"total":0,
+         "offset":0,"limit":100&#125;&#125;</span></pre>
+          </div>
+          <div class="dls-terminal">
+            <div class="dls-terminal-bar"><i></i><i></i><i></i><span>错误</span></div>
+            <pre><span class="o">&#123;"ok":false,"version":1,
+ "error":&#123;"code":"NOT_FOUND",
+          "message":"Task not found"&#125;&#125;</span></pre>
+          </div>
+        </div>
+        <dl class="cli-exit-codes" aria-label="退出码">
+          {
+            exitCodes.map(([code, meaning]) => (
+              <div>
+                <dt>{code}</dt>
+                <dd>{meaning}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+      <ul class="dls-points">
+        <li>
+          <b>进程锁保护</b>
+          <p>同一 profile 的所有操作受非阻塞进程锁保护；被占用时返回 BUSY，不需要也不应该删除锁文件。</p>
+        </li>
+        <li>
+          <b>状态只能靠动作改</b>
+          <p>complete、abandon 等是幂等的目标状态命令，重试不会把任务切回进行中；约束由 Core 决定。</p>
+        </li>
+        <li>
+          <b>修改不会偷偷同步</b>
+          <p>本地修改不隐式上传。只有显式运行 <code>sync run</code> 才会连接你自己配置的 WebDAV。</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="skills">
+    <div class="wrap">
+      <div class="section-heading">
+        <p class="eyebrow">DeadlinerCli Skills</p>
+        <h2>装上技能，<br />Agent 就会用 Deadliner。</h2>
+        <p>
+          两个配套 Agent Skill，把 CLI 的协议、重试与安全规则写成 Agent 能遵循的说明。支持 SKILL.md
+          的 Agent 都可以使用。
+        </p>
+      </div>
+      <div class="cli-skills">
+        {
+          skills.map((skill) => (
+            <article class="cli-skill">
+              <code class="cli-skill-name">skills/{skill.name}</code>
+              <h3>{skill.title}</h3>
+              <p>{skill.body}</p>
+              <ul>
+                {skill.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+      <div class="dls-row cli-skill-install">
+        <div class="dls-row-copy">
+          <span class="dls-step">安装技能</span>
+          <h3>先装 CLI，<br />再放进 skills 目录。</h3>
+          <p>
+            把需要的技能目录复制到 Agent 的 skills 目录即可，例如 Codex 使用
+            <code>~/.codex/skills/</code>。仓库不会自动安装技能，也不会修改你的配置。
+          </p>
+          <a class="text-link" href={skillsRepo} target="_blank" rel="noreferrer"
+            >查看 Skills 仓库 <span>↗</span></a
+          >
+        </div>
+        <div class="dls-code">
+          <button class="dls-copy" type="button" data-copy="skills-command">复制</button>
+          <pre id="skills-command">git clone {skillsRepo}.git
+cp -R DeadlinerCli-Skills/skills/deadliner-tasks \
+      DeadlinerCli-Skills/skills/deadliner-webdav \
+      ~/.codex/skills/</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-download" id="install">
+    <div class="wrap">
+      <p class="eyebrow">安装</p>
+      <h2>一行命令，<br class="mobile-break" />装好就用。</h2>
+      <p>安装包内置原生可执行文件，不需要 JDK、Xcode 或 npm 登录。</p>
+      <div class="dls-code cli-install-code">
+        <button class="dls-copy" type="button" data-copy="install-command">复制</button>
+        <pre id="install-command">{installCommand}
+deadliner version</pre>
+      </div>
+      <div class="dls-download-list" aria-label="Deadliner CLI 获取方式">
+        <a class="dls-download-item" href={`${cliRepo}/releases`} target="_blank" rel="noreferrer">
+          <b>Release 与 SHA256SUMS</b><small>GitHub Releases <span aria-hidden="true">↗</span></small>
+        </a>
+        <a class="dls-download-item" href={cliRepo} target="_blank" rel="noreferrer">
+          <b>CLI 源代码</b><small>Kotlin/Native · GPL-3.0 <span aria-hidden="true">↗</span></small>
+        </a>
+        <a class="dls-download-item" href={skillsRepo} target="_blank" rel="noreferrer">
+          <b>Agent Skills</b><small>SKILL.md · MIT <span aria-hidden="true">↗</span></small>
+        </a>
+      </div>
+      <p class="dls-download-note">
+        首版支持 macOS Apple Silicon。此版本通过 GitHub Release 分发，尚未发布到 npm
+        registry，请使用完整安装包地址。卸载：<code>npm uninstall -g @deadlinerstudio/cli</code>，用户数据目录会保留。
+      </p>
+      <div class="dls-siblings">
+        <a href="/deadliner">Deadliner 手机与平板版</a>
+        <a href="/deadliner/macos">Deadliner for macOS</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dls-faq section wrap" id="faq">
+    <div class="section-heading">
+      <p class="eyebrow">大家常问的</p>
+      <h2>常见问题。</h2>
+    </div>
+    <div class="dls-faq-list">
+      <details>
+        <summary>能直接读写手机 App 的数据库吗？<span>＋</span></summary>
+        <p>
+          不建议。CLI 的数据目录应作为独立 profile 使用，不要指向正在使用的 App 数据库。需要与手机或 Mac
+          共享任务时，请通过 WebDAV 同步。
+        </p>
+      </details>
+      <details>
+        <summary>WebDAV 密码怎么传？<span>＋</span></summary>
+        <p>
+          通过环境变量 <code>DEADLINER_WEBDAV_URL</code>、<code>DEADLINER_WEBDAV_USERNAME</code>、<code
+            >DEADLINER_WEBDAV_PASSWORD</code
+          > 传入，不要写进命令参数或版本库。<code>sync status</code> 只报告是否已配置，不测试连接。
+        </p>
+      </details>
+      <details>
+        <summary>同步会丢掉习惯等其他数据吗？<span>＋</span></summary>
+        <p>
+          不会。同步覆盖 Core 支持的全部实体，CLI 目前只提供任务相关命令，但不会丢弃远端的习惯等数据。旧版
+          V2 同步文件需要先在现有 App 中完成迁移。
+        </p>
+      </details>
+      <details>
+        <summary>支持 Linux 或 Windows 吗？<span>＋</span></summary>
+        <p>首版只提供 macOS Apple Silicon 原生可执行文件，npm 会按 os / cpu 限制目标平台。</p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<style>
+  .cli-hero-terminal {
+    width: min(100%, 860px);
+  }
+  .dls-dark code,
+  .dls-download-note code,
+  .dls-row-copy code,
+  .dls-faq-list code {
+    padding: 1px 5px;
+    border-radius: 5px;
+    background: rgba(127, 127, 140, 0.16);
+    font-size: 0.92em;
+  }
+  .cli-protocol {
+    display: grid;
+    grid-template-columns: 1.25fr 0.75fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .cli-protocol-terminals {
+    display: grid;
+    gap: 16px;
+  }
+  .cli-protocol .dls-terminal {
+    box-shadow: none;
+  }
+  .cli-exit-codes {
+    margin: 0;
+    border-top: 1px solid #34343b;
+  }
+  .cli-exit-codes div {
+    display: grid;
+    grid-template-columns: 46px 1fr;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid #34343b;
+  }
+  .cli-exit-codes dt {
+    color: #83bafa;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+  .cli-exit-codes dd {
+    margin: 0;
+    color: #c2c2c7;
+    font-size: 13px;
+  }
+  .cli-skills {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cli-skill {
+    padding: 30px 28px 32px;
+    border-radius: 22px;
+    background: #f5f5f7;
+  }
+  .cli-skill-name {
+    color: #1671cf;
+    font-size: 12px;
+  }
+  .cli-skill h3 {
+    margin: 12px 0 10px;
+    font-size: 29px;
+    line-height: 1.22;
+    letter-spacing: -0.04em;
+  }
+  .cli-skill p {
+    margin: 0 0 18px;
+    color: var(--sub);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+  .cli-skill ul {
+    margin: 0;
+    padding: 16px 0 0;
+    border-top: 1px solid var(--hair);
+    list-style: none;
+  }
+  .cli-skill li {
+    position: relative;
+    padding: 5px 0 5px 18px;
+    font-size: 12px;
+  }
+  .cli-skill li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #1976d2;
+  }
+  .cli-skill-install {
+    margin-top: 72px;
+  }
+  .cli-install-code {
+    max-width: 800px;
+    margin: 32px auto 0;
+    text-align: left;
+  }
+  @media (max-width: 900px) {
+    .cli-protocol {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 650px) {
+    .cli-skills {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .cli-skill {
+      padding: 24px 22px 26px;
+    }
+    .cli-skill h3 {
+      font-size: 24px;
+    }
+    .cli-skill-install {
+      margin-top: 52px;
+    }
+    .dls-code pre {
+      padding-right: 20px;
+      padding-top: 52px;
+    }
+  }
+</style>
