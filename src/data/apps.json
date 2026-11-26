@@ -1,86 +1,62 @@
-[
-  {
-    "id": "deadliner",
-    "name": "Deadliner",
-    "short": "Deadline 不会自己消失，但至少可以安排得明明白白。",
-    "description": "原生体验的多端待办日历，覆盖 Android、iOS 与 HarmonyOS，支持任务管理与 AI 助手。",
-    "url": "/deadliner",
-    "category": "效率工具",
-    "platform": "Android · iOS · HarmonyOS",
-    "kind": "独立开发",
-    "mark": "D",
-    "image": "deadliner"
-  },
-  {
-    "id": "hypermodifier",
-    "name": "HyperModifier",
-    "short": "给 HyperOS 再拧几颗体验上的小螺丝。",
-    "description": "面向 HyperOS 的 LSPosed 模块，调整通知与控制中心材质、圆角、媒体卡片，以及应用浮动导航。",
-    "url": "https://github.com/AritxOnly/HyperModifier",
-    "category": "系统定制",
-    "platform": "Android · LSPosed",
-    "kind": "独立项目",
-    "mark": "H",
-    "image": "/res/projects/hypermodifier.png"
-  },
-  {
-    "id": "f1info",
-    "name": "F1Info",
-    "short": "比赛几点开始？下一站跑哪儿？打开就知道。",
-    "description": "非官方 F1 信息应用：赛程、积分榜、比赛结果、Live 动态与桌面小组件。",
-    "url": "https://github.com/AritxOnly/F1Info",
-    "category": "赛车",
-    "platform": "Android 13+",
-    "kind": "独立项目",
-    "mark": "F1",
-    "image": "/res/projects/f1info.png"
-  },
-  {
-    "id": "ableton",
-    "name": "Ableton Live 主题编辑器",
-    "short": "做音乐之前，先给工作台换件喜欢的衣服。",
-    "description": "与 Future Tomorrow 合作开发的 Qt 主题编辑器，用于编辑和生成 Ableton Live 12 主题，目前处于 Alpha 阶段。",
-    "url": "https://github.com/AritxOnly/Qt-AbletonLive_ThemeEditor",
-    "category": "音乐工具",
-    "platform": "Qt · Ableton Live 12",
-    "kind": "合作项目 · Alpha",
-    "mark": "♫",
-    "image": "/res/apps/ableton-live-theme-editor.JPG"
-  },
-  {
-    "id": "video2music",
-    "name": "Video2Music",
-    "short": "让画面找到合拍的背景音乐。",
-    "description": "自主配乐智能体研究：以分层规划、受限搜索与显式评价，为长视频组织语义、节奏与乐理一致的配乐。",
-    "url": "https://github.com/AritxOnly/Video2Music",
-    "category": "智能体",
-    "platform": "Python · 多模态",
-    "kind": "独立研究",
-    "mark": "V2M",
-    "image": ""
-  },
-  {
-    "id": "hyperpiliplus",
-    "name": "Hyper-PiliPlus",
-    "short": "在开源播放器上，继续折腾一点自己的偏好。",
-    "description": "基于 PiliPlus 的 Bilibili 第三方客户端分支，使用 Flutter 开发。原项目与上游贡献者信息见仓库。",
-    "url": "https://github.com/AritxOnly/Hyper-PiliPlus",
-    "category": "开源改造",
-    "platform": "Flutter",
-    "kind": "基于 PiliPlus",
-    "mark": "P+",
-    "image": ""
-  },
-  {
-    "id": "hypermusiccover",
-    "name": "HyperMusicCover",
-    "short": "正在听的专辑，也可以成为锁屏的主角。",
-    "description": "基于 zyl6932/HyperMusicCover 的开源分支：在 HyperOS 4 播放音乐时，将专辑封面用于锁屏壁纸并缩小时间显示。",
-    "url": "https://github.com/AritxOnly/HyperMusicCover",
-    "category": "开源改造",
-    "platform": "HyperOS 4 · LSPosed",
-    "kind": "开源分支",
-    "mark": "♫",
-    "image": ""
-  }
-]
+{
+  "featured": [
+    {
+      "id": "deadliner",
+      "name": "Deadliner",
+      "description": "在手机和平板上管理待办、日程与习惯，也可以用 AI 助手把想法整理成任务。",
+      "platform": "Android · iOS · HarmonyOS",
+      "website": "/deadliner",
+      "repository": null
+    },
+    {
+      "id": "bdfun",
+      "name": "bdFun",
+      "description": "轻快简洁的第三方哔哩哔哩客户端，采用贴近 HyperOS 的界面设计。",
+      "platform": "Android",
+      "website": "/bdfun",
+      "repository": "https://github.com/QxTeak/bdFun"
+    },
+    {
+      "id": "overtone",
+      "name": "弦外",
+      "description": "基于 MeloX 独立维护的第三方网易云音乐播放器，支持逐字歌词和沉浸式播放界面。",
+      "platform": "iOS · iPadOS · macOS",
+      "website": "/overtone",
+      "repository": "https://github.com/AritxOnly/MeloX-Overtone"
+    },
+    {
+      "id": "f1info",
+      "name": "F1Info",
+      "description": "非官方 F1 信息应用，提供赛程、车手与车队积分榜、比赛动态和桌面小组件。",
+      "platform": "Android",
+      "website": "/f1info",
+      "repository": "https://github.com/AritxOnly/F1Info"
+    }
+  ],
+  "secondary": [
+    {
+      "id": "hypermodifier",
+      "name": "HyperModifier",
+      "description": "为 HyperOS 定制通知、控制中心和浮动导航的 LSPosed 模块。",
+      "repository": "https://github.com/AritxOnly/HyperModifier"
+    },
+    {
+      "id": "hyperpiliplus",
+      "name": "HyperPiliPlus",
+      "description": "基于 PiliPlus 的哔哩哔哩客户端分支，适配 HyperOS 风格的界面与交互。",
+      "repository": "https://github.com/AritxOnly/Hyper-PiliPlus"
+    },
+    {
+      "id": "ableton",
+      "name": "Ableton Live 主题编辑器",
+      "description": "与 Future Tomorrow 合作开发的 Qt 工具，用于编辑和生成 Ableton Live 12 主题。",
+      "repository": "https://github.com/AritxOnly/Qt-AbletonLive_ThemeEditor"
+    },
+    {
+      "id": "video2music",
+      "name": "Video2Music",
+      "description": "为长视频自动规划配乐的智能体研究，结合画面语义、节奏与乐理。",
+      "repository": "https://github.com/AritxOnly/Video2Music"
+    }
+  ]
+}

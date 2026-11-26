@@ -1,0 +1,656 @@
+---
+import { Image } from 'astro:assets'
+import ProductShowcase from '~/components/products/ProductShowcase.astro'
+import heroHome from '~/assets/products/overtone/overtone-hero-home.png'
+import heroLyrics from '~/assets/products/overtone/overtone-hero-lyrics.png'
+import heroIPad from '~/assets/products/overtone/overtone-hero-ipad.png'
+import pagerHome from '~/assets/products/overtone/overtone-pager-home.png'
+import pagerGlass from '~/assets/products/overtone/overtone-pager-glass.png'
+import pagerLibrary from '~/assets/products/overtone/overtone-pager-library.png'
+import pagerSongs from '~/assets/products/overtone/overtone-pager-songs.png'
+import pagerLibraryOptions from '~/assets/products/overtone/overtone-pager-library-options.png'
+import pagerArtist from '~/assets/products/overtone/overtone-pager-artist.png'
+import pagerPlaying from '~/assets/products/overtone/overtone-pager-playing.png'
+import IconMagnifyingGlass from '~/assets/products/overtone/symbols/magnifyingglass.svg'
+import IconPlay from '~/assets/products/overtone/symbols/play.svg'
+import IconWaveform from '~/assets/products/overtone/symbols/waveform.svg'
+import IconCharacterBubble from '~/assets/products/overtone/symbols/character.bubble.svg'
+import IconExpand from '~/assets/products/overtone/symbols/square.arrowtriangle.4.outward.svg'
+import IconDownload from '~/assets/products/overtone/symbols/square.and.arrow.down.svg'
+import IconICloud from '~/assets/products/overtone/symbols/icloud.svg'
+import IconMicrophone from '~/assets/products/overtone/symbols/microphone.svg'
+import IconPaintbrush from '~/assets/products/overtone/symbols/paintbrush.svg'
+import IconIPadAndIPhone from '~/assets/products/overtone/symbols/ipad.landscape.and.iphone.svg'
+import IconMacBook from '~/assets/products/overtone/symbols/macbook.gen2.svg'
+import IconAppleWatch from '~/assets/products/overtone/symbols/applewatch.svg'
+
+const repository = 'https://github.com/AritxOnly/MeloX-Overtone'
+const upstream = { label: 'MeloX 官网', href: 'https://melox.luoxe.cn/' }
+const hero = [
+  { src: heroHome, alt: '弦外在展开的 iPhone Duo 上展示精选推荐和新碟' },
+  { src: heroIPad, alt: '弦外 iPad 发现页的分类、精选歌单和底部播放器' },
+  { src: heroLyrics, alt: '弦外 iPhone 17 播放页的同步歌词和中文翻译' },
+]
+
+const interfaceChanges = [
+  {
+    image: pagerHome,
+    alt: '主页的每日推荐和雷达播放列表',
+    description: '全新重构的主页，带给你纯粹的音乐推荐体验',
+  },
+  {
+    image: pagerGlass,
+    alt: '发现页的液态玻璃分类栏和迷你播放器',
+    description: '从原生出发，优化的液态玻璃设计与组件覆盖',
+  },
+  {
+    image: pagerLibrary,
+    alt: '音乐库的分类入口和最近在听',
+    description: '音乐库重排，你热爱的旋律一目了然',
+  },
+  {
+    image: pagerSongs,
+    alt: '歌曲页的字母索引与滑动操作',
+    description: '歌曲页优化，快速找到你心仪的声音',
+  },
+  {
+    image: pagerLibraryOptions,
+    alt: '专辑页的网格、列表和排序选项',
+    description: '丰富的自定义，总有一个属于你的音乐库用法',
+  },
+  {
+    image: pagerArtist,
+    alt: '艺人详情页的大图和歌曲排行',
+    description: '歌手页大图，TA 总能带给你独一无二的心动',
+  },
+  {
+    image: pagerPlaying,
+    alt: '专辑详情中用波形标记正在播放的歌曲',
+    description: '正在播放，一眼就懂。更多细节等你体验',
+  },
+]
+
+const inheritedFeatures = [
+  {
+    title: '发现与搜索',
+    icon: IconMagnifyingGlass,
+    description:
+      '每日推荐、私人漫游、私人雷达、心动模式、热门歌手、编辑精选、分类歌单、排行榜、新歌新碟。搜索覆盖歌曲、专辑、艺人、歌单和播客，并提供搜索联想。',
+  },
+  {
+    title: '播放与队列',
+    icon: IconPlay,
+    description:
+      '迷你播放器、横屏与竖屏播放、队列排序、随机与循环、后台播放、锁屏媒体控制、独立音量、耳机与音频路由、播放状态恢复。',
+  },
+  {
+    title: '混音与音质',
+    icon: IconWaveform,
+    description:
+      '设备端分析节拍的智能自动混音、固定交叉淡化、歌曲速度匹配、10 段图形均衡器，以及标准、高品质、无损等音质档位。',
+  },
+  {
+    title: '歌词与动效',
+    icon: IconCharacterBubble,
+    description:
+      'LRC 逐行、YRC 逐字、伪逐字、翻译和罗马音。支持逐字辉光、按词或按字抬升、错峰入场、长音放大、前奏与间奏倒计时。',
+  },
+  {
+    title: '全屏与系统歌词',
+    icon: IconExpand,
+    description:
+      '全屏天际歌词、EVA 样式和文字 PV，支持歌词跳转和分享。也可使用悬浮歌词、画中画控制、灵动岛、实时活动及通知歌词。',
+  },
+  {
+    title: '下载与离线',
+    icon: IconDownload,
+    description:
+      '支持歌曲多选下载、歌单及专辑批量下载、多档下载音质、下载任务管理、离线播放，以及按播放次数自动缓存。',
+  },
+  {
+    title: '账号与音乐云盘',
+    icon: IconICloud,
+    description:
+      '通过网易云音乐网页登录，同步收藏、播放记录与听歌时长。可管理歌单，也能在音乐云盘查看、上传和删除歌曲。',
+  },
+  {
+    title: '一起听、评论与播客',
+    icon: IconMicrophone,
+    description:
+      '一起听、听歌识曲、网易云私信、分享到私信或动态、歌曲评论与回复。播客支持精选推荐、分类浏览、订阅和节目播放。',
+  },
+  {
+    title: '主题与个性化',
+    icon: IconPaintbrush,
+    description:
+      '浅色和深色主题、流动光影、模糊封面背景、重拍暗角、屏幕常亮、首次启动引导和自动检查更新。',
+  },
+  {
+    title: 'iPhone 与 iPad',
+    icon: IconIPadAndIPhone,
+    description:
+      'SwiftUI 原生界面，iPhone 上可以在封面、歌词和队列之间切换，iPad 播放时可以并排显示封面、歌词与播放控件。',
+  },
+  {
+    title: 'Mac 原生播放器',
+    icon: IconMacBook,
+    description:
+      '侧边栏、多栏浏览与常驻播放器。支持沉浸播放、侧栏歌词、续播队列、宽屏歌单，以及私信、云盘、下载和账号管理。',
+  },
+  {
+    title: 'Apple Watch（开发中）',
+    icon: IconAppleWatch,
+    description:
+      '独立登录或与 iPhone 同步账号，可搜索歌曲、查看每日推荐与歌单、独立播放、管理队列，并查看逐字、翻译或罗马音歌词。',
+  },
+]
+---
+
+<ProductShowcase
+  theme="overtone"
+  name="弦外"
+  headline="听你心中的那首歌"
+  description="基于 MeloX 独立维护的第三方网易云音乐，希望用体验，让好旋律走进你心里"
+  icon="/res/projects/overtone-icon.webp"
+  repository={repository}
+  hero={hero}
+  downloads={[
+    {
+      title: 'iPhone 与 iPad',
+      description:
+        '需要 iOS 或 iPadOS 26 及以上。发布页提供未签名的 IPA，安装前需要自行签名。',
+      href: `${repository}/releases/latest`,
+      action: '查看 IPA 下载',
+    },
+    {
+      title: 'Mac',
+      description: '需要 macOS 15 或更高版本，可按仓库说明从源码构建。',
+      href: `${repository}#readme`,
+      action: '查看构建说明',
+    },
+  ]}
+  credits="弦外（Overtone）是 MeloX 的独立开源分支，与网易云音乐无隶属关系。感谢 MeloX 上游作者与贡献者。"
+  upstream={upstream}
+>
+  <Fragment slot="features">
+    <section class="interface-section" id="features" aria-labelledby="interface-title">
+      <div class="section-inner interface-layout">
+        <div class="interface-copy">
+          <header class="section-heading interface-heading">
+            <h2 id="interface-title" data-fill-title>
+              <span class="title-line"
+                >把<span class="title-accent title-apple">Apple Music</span>的体验，</span
+              >
+              <span class="title-line"
+                >用<span class="title-accent title-netease">网易云</span>的曲库，</span
+              >
+              <span class="title-line"
+                >带来<span class="title-accent title-overtone">弦外</span></span
+              >
+            </h2>
+            <p>快速预览，看看我们与 MeloX 有什么改进</p>
+          </header>
+          <div class="pager-controls" hidden>
+            <button
+              class="pager-step"
+              type="button"
+              data-pager-prev
+              aria-label="上一页"
+              aria-controls="interface-pager-track"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 14 6-6 6 6"></path>
+              </svg>
+            </button>
+            <div class="pager-pages" role="group" aria-label="选择界面改动">
+              {
+                interfaceChanges.map(({ alt }, index) => (
+                  <button
+                    class="pager-page"
+                    type="button"
+                    aria-label={alt}
+                    aria-current={index === 0 ? 'true' : undefined}
+                    aria-controls="interface-pager-track"
+                  />
+                ))
+              }
+            </div>
+            <button
+              class="pager-step"
+              type="button"
+              data-pager-next
+              aria-label="下一页"
+              aria-controls="interface-pager-track"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="m6 10 6 6 6-6"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <ol id="interface-pager-track" class="pager-track" aria-label="弦外界面改动">
+          {
+            interfaceChanges.map(({ image, alt, description }) => (
+              <li class="pager-slide">
+                <figure>
+                  <Image src={image} width={920} format="webp" quality={85} alt={alt} />
+                  <figcaption>{description}</figcaption>
+                </figure>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </section>
+
+    <section class="inherited-section" id="melox-features" aria-labelledby="melox-title">
+      <div class="section-inner">
+        <header class="section-heading">
+          <h2 id="melox-title">MeloX 有的，我们都有</h2>
+          <p>从找歌、听歌到离线管理，弦外沿用 MeloX 的核心功能。</p>
+        </header>
+        <ul class="inherited-grid" role="list">
+          {
+            inheritedFeatures.map(({ title, description, icon: Icon }) => (
+              <li>
+                <Icon class="feature-icon" width={26} height={26} aria-hidden="true" />
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="feature-note">
+          功能参考 <a href={upstream.href}>MeloX 官网</a
+          >。上游的个性化选项包括自定义首页、标签栏和音乐库。弦外重新编排了这些界面，具体选项和下载能力以设备和安装版本为准。
+        </p>
+        <p class="feature-note">
+          文字 PV 模板与动效来自
+          <a href="https://github.com/DanteAlighieri13210914/pv-tool">PV Tool</a
+          >，使用其非商业许可。 自动混音采用基于 <a
+            href="https://github.com/mjhydri/BeatNet">BeatNet</a
+          > 转换的模型，模型采用 CC BY 4.0 许可。
+        </p>
+      </div>
+    </section>
+  </Fragment>
+
+  <section class="faq-section" slot="faq" id="faq" aria-labelledby="faq-title">
+    <div class="section-inner faq-layout">
+      <h2 id="faq-title">常见问题</h2>
+      <div class="questions">
+        <details>
+          <summary>可以用自己的网易云音乐账号登录吗？</summary>
+          <p>
+            可以，通过网易云音乐的网页登录。歌曲能否完整播放和可选音质取决于账号权益、曲目版权与服务地区。
+          </p>
+        </details>
+        <details>
+          <summary>Apple Watch 版怎么获取？</summary>
+          <p>
+            手表端随 iOS 的未签名 IPA 一同发布，目前仍在开发中。可在 <a
+              href={`${repository}/releases`}>发布页</a
+            >查看对应版本的说明。
+          </p>
+        </details>
+        <details>
+          <summary>弦外与 MeloX 是什么关系？</summary>
+          <p>
+            弦外基于 MeloX 独立维护。想看弦外的更新或反馈问题，可以前往 <a
+              href={repository}>弦外仓库</a
+            >或 <a href={`${repository}/issues`}>Issues</a>。
+          </p>
+        </details>
+      </div>
+    </div>
+  </section>
+</ProductShowcase>
+
+<script>
+  const title = document.querySelector('[data-fill-title]')
+
+  if (title && 'IntersectionObserver' in window) {
+    new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio >= 0.85) {
+          title.classList.add('is-visible')
+        } else if (
+          entry.boundingClientRect.top >= (entry.rootBounds?.bottom ?? window.innerHeight)
+        ) {
+          title.classList.remove('is-visible')
+        }
+      },
+      { threshold: [0, 0.85], rootMargin: '0px 0px -90px 0px' },
+    ).observe(title)
+  } else {
+    title?.classList.add('is-visible')
+  }
+
+  const slides = [...document.querySelectorAll<HTMLElement>('.pager-slide')]
+  const controls = document.querySelector<HTMLElement>('.pager-controls')
+  const previous = controls?.querySelector<HTMLButtonElement>('[data-pager-prev]')
+  const next = controls?.querySelector<HTMLButtonElement>('[data-pager-next]')
+  const pages = controls?.querySelectorAll<HTMLButtonElement>('.pager-page')
+
+  if (controls && previous && next && pages?.length && 'IntersectionObserver' in window) {
+    let activeIndex = 0
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const showPage = (index: number) =>
+      slides[index]?.scrollIntoView({
+        block: 'start',
+        behavior: reducedMotion.matches ? 'instant' : 'smooth',
+      })
+
+    previous.addEventListener('click', () => showPage(activeIndex - 1))
+    next.addEventListener('click', () => showPage(activeIndex + 1))
+    pages.forEach((page, index) => page.addEventListener('click', () => showPage(index)))
+
+    previous.disabled = true
+    controls.hidden = false
+
+    let pagerObserver: IntersectionObserver | undefined
+    const observePager = () => {
+      pagerObserver?.disconnect()
+      const viewportHeight = document.documentElement.clientHeight
+      const middle = Math.floor(viewportHeight / 2)
+      // Track the slide crossing the viewport center, even when two slides are visible.
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.find((entry) => entry.isIntersecting)
+          if (!visible) return
+
+          activeIndex = slides.indexOf(visible.target as HTMLElement)
+          previous.disabled = activeIndex === 0
+          next.disabled = activeIndex === slides.length - 1
+          pages.forEach((page, position) => {
+            if (position === activeIndex) page.setAttribute('aria-current', 'true')
+            else page.removeAttribute('aria-current')
+          })
+        },
+        { rootMargin: `-${middle}px 0px -${viewportHeight - middle - 1}px 0px` },
+      )
+      slides.forEach((slide) => observer.observe(slide))
+      pagerObserver = observer
+    }
+    window.addEventListener('resize', observePager)
+    observePager()
+  }
+</script>
+
+<style>
+  .section-inner {
+    width: min(1108px, calc(100% - clamp(36px, 8vw, 116px)));
+    margin-inline: auto;
+    padding-block: clamp(60px, 8vw, 110px);
+  }
+  .section-heading {
+    margin-bottom: clamp(25px, 4vw, 44px);
+  }
+  h2 {
+    font-size: clamp(2.1rem, 4.5vw, 4.1rem);
+    font-weight: 800;
+    line-height: 1.13;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  h3 {
+    font-size: clamp(1.15rem, 1.9vw, 1.45rem);
+    line-height: 1.35;
+  }
+  .section-heading > p,
+  .inherited-grid p {
+    margin-top: 10px;
+    color: var(--muted);
+  }
+  .interface-section,
+  .faq-section {
+    background: var(--paper);
+  }
+  .interface-layout {
+    --page-height: calc(100svh - var(--nav-height));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    column-gap: clamp(26px, 5vw, 70px);
+    padding-block: 0;
+  }
+  .interface-copy {
+    position: sticky;
+    top: var(--nav-height);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: var(--page-height);
+  }
+  .interface-heading {
+    margin: 0;
+  }
+  .interface-heading h2 {
+    font-size: clamp(1.6rem, 3.05vw, 3.3rem);
+  }
+  .interface-heading > p {
+    max-width: 36rem;
+    margin-top: 20px;
+  }
+  .title-apple {
+    --fill-color: #2360cb;
+    --fill-delay: 0ms;
+  }
+  .title-netease {
+    --fill-color: #c12943;
+    --fill-delay: 560ms;
+  }
+  .title-overtone {
+    --fill-color: #7043b2;
+    --fill-delay: 1120ms;
+  }
+  .title-line {
+    display: block;
+    white-space: nowrap;
+  }
+  .title-accent {
+    display: inline-block;
+  }
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .title-accent {
+      background-image:
+        linear-gradient(var(--fill-color), var(--fill-color)),
+        linear-gradient(var(--foreground), var(--foreground));
+      background-size:
+        0% 100%,
+        100% 100%;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .is-visible .title-accent {
+      animation: title-fill 520ms ease-out var(--fill-delay) forwards;
+    }
+    @keyframes title-fill {
+      to {
+        background-size:
+          100% 100%,
+          100% 100%;
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce), (forced-colors: active) {
+    .title-accent,
+    .is-visible .title-accent {
+      animation: none;
+      background: none;
+      color: var(--fill-color);
+    }
+  }
+  .pager-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pager-slide {
+    display: grid;
+    align-content: center;
+    min-height: var(--page-height);
+  }
+  .pager-slide img {
+    --image-height: min(740px, calc(var(--page-height) - 92px));
+    width: min(100%, calc(var(--image-height) * 1529 / 2940));
+    height: auto;
+    aspect-ratio: 1529 / 2940;
+    margin-inline: auto;
+  }
+  .pager-slide figcaption {
+    margin-top: 8px;
+    text-align: center;
+  }
+  .pager-controls:not([hidden]),
+  .pager-pages {
+    display: flex;
+    align-items: center;
+  }
+  .pager-controls {
+    justify-content: space-between;
+    width: fit-content;
+    gap: 9px;
+    margin-top: 24px;
+  }
+  .pager-controls button {
+    min-block-size: 40px;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+  }
+  .pager-controls button:focus-visible,
+  .pager-track:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 3px;
+  }
+  .pager-step {
+    display: grid;
+    width: 38px;
+    place-items: center;
+    padding: 0;
+  }
+  .pager-step:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+  .pager-page {
+    display: grid;
+    place-items: center;
+    width: clamp(23px, 6vw, 28px);
+    padding: 0;
+  }
+  .pager-page::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #aaa;
+  }
+  .pager-page[aria-current='true']::before {
+    background: var(--foreground);
+  }
+  .inherited-section {
+    --foreground: #171622;
+    --muted: #575568;
+    background: #f4effb;
+    color: var(--foreground);
+  }
+  .inherited-grid {
+    display: grid;
+    gap: clamp(12px, 2vw, 22px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .inherited-grid li {
+    padding: clamp(18px, 2.5vw, 28px);
+    border-radius: 22px;
+    background: #fff;
+  }
+  .feature-icon {
+    display: block;
+    margin-bottom: 13px;
+    color: #7043b2;
+  }
+  .feature-note {
+    margin-top: 14px;
+    max-width: 58rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .faq-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+    gap: 24px 48px;
+    align-items: start;
+  }
+  .questions details {
+    border-bottom: 1px solid #ddd;
+  }
+  .questions details:first-child {
+    border-top: 1px solid #ddd;
+  }
+  summary {
+    cursor: pointer;
+    padding-block: 14px;
+    font-weight: 750;
+  }
+  summary:focus-visible {
+    outline: 2px solid var(--foreground);
+    outline-offset: 3px;
+  }
+  details p {
+    padding: 0 0 16px;
+    color: var(--muted);
+  }
+  @media (max-width: 900px) {
+    .inherited-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 650px) {
+    .interface-layout,
+    .inherited-grid,
+    .faq-layout {
+      grid-template-columns: 1fr;
+    }
+    .interface-copy {
+      position: static;
+      min-height: 0;
+      padding-block: 55px 12px;
+    }
+  }
+  @media (max-width: 390px) {
+    .pager-controls {
+      gap: 4px;
+    }
+  }
+</style>

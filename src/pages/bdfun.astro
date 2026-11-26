@@ -1,0 +1,66 @@
+---
+import ProductShowcase from '~/components/products/ProductShowcase.astro'
+import BdFunFeatures from '~/components/products/BdFunFeatures.astro'
+import BdFunProjectInfo from '~/components/products/BdFunProjectInfo.astro'
+import home from '~/assets/products/bdfun/hero-home.webp'
+import films from '~/assets/products/bdfun/hero-films.webp'
+import video from '~/assets/products/bdfun/hero-video.webp'
+
+const repository = 'https://github.com/QxTeak/bdFun'
+const homeShot = { src: home, alt: 'bdFun 深色模式下的首页推荐' }
+const filmsShot = { src: films, alt: 'bdFun 深色模式下的影视轮播和电影榜' }
+const videoShot = { src: video, alt: 'bdFun 深色模式下的播放器、弹幕和视频详情' }
+---
+
+<ProductShowcase
+  theme="bdfun"
+  name="bdFun"
+  wordmark="bdFun"
+  headline="轻快流畅的视频体验。"
+  description="第三方哔哩哔哩 Android 客户端。刷推荐、追动态、发弹幕，日常看视频更顺手。"
+  icon="/res/projects/bdfun-icon.png"
+  repository={repository}
+  hero={[homeShot, filmsShot, videoShot]}
+  downloads={[
+    {
+      title: 'Android',
+      description:
+        '需要 Android 13 或更高版本。安装包和更新说明见项目的 GitHub Releases。',
+      href: `${repository}/releases/latest`,
+      action: '查看 Android 下载',
+    },
+  ]}
+  credits="由 QxTeak 与 bdFun 贡献者共同开发。bdFun 是第三方开源项目，与哔哩哔哩无隶属关系。页面字体使用 MiSans。"
+>
+  <link
+    slot="head"
+    rel="stylesheet"
+    href="https://cdn-font.hyperos.mi.com/font/css?family=MiSans:300,650:Chinese_Simplify,Latin&display=swap"
+  />
+  <BdFunFeatures slot="features" />
+  <BdFunProjectInfo slot="faq" repository={repository} />
+</ProductShowcase>
+
+<style is:global>
+  .product.bdfun {
+    font-family:
+      MiSans, 'MiSans VF', system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-weight: 300;
+  }
+  .product.bdfun
+    :is(
+      h1,
+      h2,
+      h3,
+      strong,
+      summary,
+      .brand,
+      .site-nav nav,
+      .button,
+      .backdrop-word,
+      .section-label,
+      .contributor-avatar
+    ) {
+    font-weight: 650;
+  }
+</style>

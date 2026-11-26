@@ -1,65 +1,284 @@
 ---
+import { getImage } from 'astro:assets'
+import deadlinerBackground from '~/assets/deadliner/brand-background.png'
+import deadlinerForeground from '~/assets/deadliner/brand-foreground.png'
 import apps from '~/data/apps.json'
-import { Image } from 'astro:assets'
-import deadlinerPoster from '~/assets/deadliner/home-poster.png'
+
 interface Props {
-  featured?: boolean
+  illustrated?: boolean
 }
-const { featured = false } = Astro.props
-const selected = featured ? apps.slice(0, 3) : apps
+
+const { illustrated = false } = Astro.props
+const [background, foreground] = await Promise.all(
+  [deadlinerBackground, deadlinerForeground].map((src) => getImage({ src, width: 288 })),
+)
+const overtoneIcon = '/res/projects/overtone-icon.webp'
+const icons: Record<string, { background?: string; foreground: string }> = {
+  deadliner: { background: background.src, foreground: foreground.src },
+  bdfun: {
+    background: '/res/projects/bdfun-icon-background.webp',
+    foreground: '/res/projects/bdfun-icon-foreground.webp',
+  },
+  overtone: { foreground: overtoneIcon },
+  f1info: { foreground: '/res/projects/f1info-icon.svg' },
+}
+const covers: Partial<Record<string, { src: string; color: string }>> = {
+  deadliner: { src: '/res/projects/deadliner-cover.webp', color: '#779feb' },
+  bdfun: { src: '/res/projects/bdfun-cover.webp', color: '#ea77a7' },
+  overtone: { src: '/res/projects/overtone-cover.webp', color: '#a2a6b0' },
+  f1info: { src: '/res/projects/f1info-cover.webp', color: '#bd4757' },
+}
 ---
 
-<div class="work-list">
+<div
+  class:list={['project-grid', { 'project-grid-illustrated': illustrated }]}
+  style={`--project-icon-mask: url(${overtoneIcon})`}
+>
   {
-    selected.map((app, index) => (
-      <article class="work-row" id={app.id}>
-        <div class="work-copy">
-          <>
-            <p class="eyebrow">
-              {String(index + 1).padStart(2, '0')} / {app.category}
-            </p>
-            <h3>
-              <a href={app.url}>{app.name}</a>
-            </h3>
-            <p class="work-line">{app.short}</p>
-            <p class="work-description">{app.description}</p>
-            <div class="work-meta">
-              <>
-                <span>{app.platform}</span>
-                <span>{app.kind}</span>
-              </>
-            </div>
-            <a class="md-button tonal" href={app.url}>
-              {app.url.startsWith('/') ? '去看看' : '到 GitHub 看看'}{' '}
-              <span aria-hidden="true">↗</span>
-            </a>
-          </>
-        </div>
-        <a
-          href={app.url}
-          class:list={['work-art', `art-${app.id}`, { 'work-symbol': !app.image }]}
-          aria-label={`查看 ${app.name}`}
+    apps.featured.map((app, index) => {
+      const cover = illustrated ? covers[app.id] : undefined
+
+      return (
+        <article
+          class:list={['project-card', { 'project-card-illustrated': cover }]}
+          id={app.id}
+          style={cover && `--project-color: ${cover.color}`}
         >
-          {app.image === 'deadliner' ? (
-            <Image
-              src={deadlinerPoster}
-              alt="Deadliner 多端界面"
-              widths={[480, 800, 1200]}
-              sizes="(max-width:700px) 100vw, 55vw"
-              format="webp"
-              loading="lazy"
-            />
-          ) : app.image ? (
+          {cover && (
             <img
-              src={app.image}
-              alt={`${app.name}${app.id === 'hypermodifier' ? '应用图标' : '实际界面'}`}
-              loading="lazy"
+              class="project-cover"
+              src={cover.src}
+              alt=""
+              width="1200"
+              height="540"
+              loading={index < 2 ? 'eager' : 'lazy'}
+              decoding="async"
             />
-          ) : (
-            <span aria-hidden="true">{app.mark}</span>
           )}
-        </a>
-      </article>
-    ))
+          <div class="project-heading">
+            <span
+              class:list={[
+                'project-icon',
+                {
+                  'project-icon-masked': app.id !== 'overtone',
+                  'project-icon-adaptive': app.id === 'bdfun',
+                },
+              ]}
+              aria-hidden="true"
+            >
+              {icons[app.id].background && (
+                <img
+                  src={icons[app.id].background}
+                  alt=""
+                  width="72"
+                  height="72"
+                  loading="lazy"
+                />
+              )}
+              <img
+                class="project-icon-foreground"
+                src={icons[app.id].foreground}
+                alt=""
+                width="72"
+                height="72"
+                loading="lazy"
+              />
+            </span>
+            <div>
+              <h3>{app.name}</h3>
+              <p>{app.platform}</p>
+            </div>
+          </div>
+          <p class="project-description">{app.description}</p>
+          <div class="project-actions">
+            {app.website ? (
+              <a
+                class="md-button tonal"
+                href={app.website}
+                aria-label={`访问 ${app.name} 官网`}
+              >
+                访问官网 <span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              <span class="project-site-status">官网筹备中</span>
+            )}
+            {app.repository && (
+              <a
+                class:list={['md-button', cover ? 'project-repository' : 'tonal']}
+                href={app.repository}
+                aria-label={`${app.name} 的 GitHub 仓库`}
+              >
+                GitHub <span aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        </article>
+      )
+    })
   }
 </div>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: clamp(20px, 3vw, 32px);
+    border-radius: 28px;
+    background: var(--md-surface-container);
+  }
+  .project-heading {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .project-icon {
+    display: grid;
+    flex: none;
+    width: 72px;
+    height: 72px;
+  }
+  .project-icon-masked {
+    mask: var(--project-icon-mask) center / contain no-repeat;
+  }
+  .project-icon img {
+    grid-area: 1 / 1;
+    margin: 0;
+  }
+  /* The central 72dp of the 108dp adaptive icon is the visible area. */
+  .project-icon-adaptive img {
+    transform: scale(1.5);
+  }
+  .project-icon-adaptive .project-icon-foreground {
+    scale: 1.1;
+  }
+  .project-heading h3 {
+    font-family: var(--font-ui);
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+  }
+  .project-heading p {
+    margin-top: 4px;
+    color: var(--md-on-surface-variant);
+    font-size: 13px;
+  }
+  .project-description {
+    color: var(--md-on-surface-variant);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    margin-top: auto;
+  }
+  .project-actions a.md-button {
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 16px;
+  }
+  .project-site-status {
+    color: var(--md-on-surface-variant);
+    font-size: 13px;
+  }
+  .project-grid-illustrated {
+    gap: 14px;
+  }
+  .project-card-illustrated {
+    position: relative;
+    isolation: isolate;
+    gap: 10px;
+    padding: clamp(15px, 2vw, 22px);
+    border-radius: 24px;
+    background: color-mix(
+      in srgb,
+      var(--project-color) 12%,
+      var(--md-surface-container-low)
+    );
+  }
+  .project-cover {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: inherit;
+    object-fit: cover;
+    object-position: 60% center;
+    mask-image: linear-gradient(
+      to right,
+      transparent 34%,
+      #0002 64%,
+      #0009 80%,
+      #000 97%
+    );
+    pointer-events: none;
+  }
+  .project-card-illustrated .project-heading {
+    gap: 11px;
+  }
+  .project-card-illustrated .project-icon {
+    width: 46px;
+    height: 46px;
+  }
+  .project-card-illustrated .project-icon img {
+    width: 100%;
+    height: 100%;
+  }
+  .project-card-illustrated .project-heading h3 {
+    font-size: clamp(21px, 2vw, 26px);
+  }
+  .project-card-illustrated .project-heading p {
+    margin-top: 2px;
+    font-size: 12px;
+  }
+  .project-card-illustrated .project-description {
+    max-width: 68%;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .project-card-illustrated .project-actions {
+    gap: 4px 6px;
+  }
+  .project-card-illustrated .project-actions a {
+    padding-inline: 13px;
+    font-size: 13px;
+  }
+  .project-card-illustrated .project-actions a:focus-visible {
+    outline: 2px solid var(--md-primary);
+    outline-offset: 2px;
+  }
+  .project-card-illustrated .project-actions .tonal {
+    background: color-mix(
+      in srgb,
+      var(--project-color) 26%,
+      var(--md-surface-container-high)
+    );
+    color: var(--md-on-surface);
+  }
+  .project-card-illustrated .project-actions .project-repository {
+    color: var(--md-on-surface-variant);
+  }
+  .project-card-illustrated .project-actions .project-repository:hover,
+  .project-card-illustrated .project-actions .project-repository:focus-visible {
+    background: var(--md-surface-container-high);
+  }
+  @media (max-width: 640px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+    .project-card-illustrated .project-description {
+      max-width: 73%;
+    }
+  }
+</style>

@@ -1,0 +1,301 @@
+---
+import contributors from '~/data/bdfun-contributors.json'
+
+interface Props {
+  repository: string
+}
+
+const { repository } = Astro.props
+---
+
+<section class="team" id="team" aria-labelledby="team-title">
+  <div class="inner">
+    <header class="team-heading">
+      <h2 id="team-title">项目团队。</h2>
+      <div class="team-controls" data-team-controls hidden>
+        <button
+          type="button"
+          data-team-prev
+          aria-label="向前滚动贡献者"
+          aria-controls="team-contributors"
+        >
+          <span aria-hidden="true">‹</span>
+        </button>
+        <button
+          type="button"
+          data-team-next
+          aria-label="向后滚动贡献者"
+          aria-controls="team-contributors"
+        >
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+    </header>
+    <ul
+      class="contributors"
+      id="team-contributors"
+      role="list"
+      tabindex="0"
+      aria-label="bdFun 贡献者"
+    >
+      {
+        contributors.map(({ name, detail, href, avatar }) => {
+          const Card = href ? 'a' : 'div'
+          return (
+            <li>
+              <Card class="contributor" href={href}>
+                <span class="contributor-avatar" aria-hidden="true">
+                  {name.slice(0, 2)}
+                  {avatar && (
+                    <img
+                      src={avatar}
+                      alt=""
+                      width="96"
+                      height="96"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
+                </span>
+                <strong>{name}</strong>
+                <span class="contributor-detail">{detail ?? '贡献者'}</span>
+              </Card>
+            </li>
+          )
+        })
+      }
+    </ul>
+    <a class="contribution-history" href={`${repository}/graphs/contributors`}
+      >查看 GitHub 贡献记录</a
+    >
+  </div>
+</section>
+
+<section class="faq" id="faq" aria-labelledby="faq-title">
+  <div class="inner">
+    <h2 id="faq-title">常见问题。</h2>
+    <div class="question-list">
+      <details>
+        <summary>bdFun 支持哪些设备？</summary>
+        <p>需要 Android 13 或更高版本。小米超级岛等系统联动取决于设备和系统版本。</p>
+      </details>
+      <details>
+        <summary>可以使用我的哔哩哔哩账号吗？</summary>
+        <p>可以通过二维码登录哔哩哔哩账号，使用关注、收藏和动态等账号功能。</p>
+      </details>
+      <details>
+        <summary>bdFun 是官方客户端吗？</summary>
+        <p>
+          bdFun
+          是独立开发的第三方客户端，与哔哩哔哩无隶属关系。内容、清晰度和可用权限由哔哩哔哩服务与账号权益决定。
+        </p>
+      </details>
+      <details>
+        <summary>在哪里看源码、反馈问题？</summary>
+        <p>
+          项目以 GPL-3.0 开源，可以在 <a href={repository}>GitHub 仓库</a>查看源码，或在 <a
+            href={`${repository}/issues`}>Issues</a
+          > 提交复现步骤与建议。
+        </p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<script>
+  const contributors = document.getElementById('team-contributors')
+  const controls = document.querySelector<HTMLElement>('[data-team-controls]')
+  const previous = controls?.querySelector<HTMLButtonElement>('[data-team-prev]')
+  const next = controls?.querySelector<HTMLButtonElement>('[data-team-next]')
+
+  if (contributors && controls && previous && next) {
+    const syncControls = () => {
+      const maxOffset = contributors.scrollWidth - contributors.clientWidth
+      controls.hidden = maxOffset <= 1
+      previous.disabled = contributors.scrollLeft <= 1
+      next.disabled = contributors.scrollLeft >= maxOffset - 1
+    }
+    const scroll = (direction: number) => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      contributors.scrollBy({
+        left: direction * contributors.clientWidth * 0.8,
+        behavior: reduceMotion ? 'auto' : 'smooth',
+      })
+    }
+    previous.addEventListener('click', () => scroll(-1))
+    next.addEventListener('click', () => scroll(1))
+    contributors.addEventListener('scroll', syncControls, { passive: true })
+    new ResizeObserver(syncControls).observe(contributors)
+    syncControls()
+  }
+</script>
+
+<style>
+  .team,
+  .faq {
+    color: #241d25;
+    background: #fff;
+  }
+  .team {
+    background: linear-gradient(180deg, #fff, #fcf6fa);
+  }
+  .inner {
+    width: min(1108px, calc(100% - clamp(36px, 7vw, 104px)));
+    margin-inline: auto;
+    padding-block: clamp(54px, 8vw, 96px);
+  }
+  h2 {
+    font-size: clamp(2.12rem, 4.5vw, 3.5rem);
+    letter-spacing: -0.044em;
+    line-height: 1.14;
+  }
+  .team-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .team-controls:not([hidden]) {
+    display: flex;
+    gap: 8px;
+  }
+  .team-controls button {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #e2dbe0;
+    border-radius: 50%;
+    background: #fff;
+    color: #4c3546;
+    font: inherit;
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .team-controls button:hover:not(:disabled) {
+    background: #f4edf2;
+  }
+  .team-controls button:disabled {
+    color: #968995;
+    cursor: default;
+  }
+  .contributors {
+    padding: 6px 5px 14px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(138px, 1fr);
+    gap: clamp(12px, 1.6vw, 20px);
+    list-style: none;
+    margin: clamp(20px, 3.5vw, 40px) -5px 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: #b393aa transparent;
+  }
+  .contributors li {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+  .contributor {
+    height: 100%;
+    display: grid;
+    align-content: start;
+    justify-items: center;
+    text-align: center;
+    gap: 5px;
+    padding: clamp(18px, 2.9vw, 32px) 8px;
+    border-radius: 20px;
+    background: #f4edf2;
+    text-decoration: none;
+  }
+  a.contributor:hover strong {
+    text-decoration: underline;
+  }
+  .contributor-avatar {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: clamp(64px, 8vw, 96px);
+    aspect-ratio: 1;
+    margin-bottom: 8px;
+    border-radius: 50%;
+    overflow: hidden;
+    color: #67435b;
+    background: #e8dae4;
+    font-size: 1.25rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .contributor-avatar img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .contributor strong {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    overflow-wrap: anywhere;
+  }
+  .contributor-detail,
+  .contribution-history {
+    color: #635963;
+    font-size: 0.875rem;
+  }
+  .contribution-history {
+    display: inline-block;
+    margin-top: 18px;
+  }
+  .contributors:focus-visible,
+  .team-controls button:focus-visible {
+    outline: 2px solid #8d3766;
+    outline-offset: 3px;
+  }
+  .question-list {
+    max-width: 780px;
+    margin-top: clamp(22px, 4vw, 40px);
+    border-bottom: 1px solid #e2dbe0;
+  }
+  details {
+    border-top: 1px solid #e2dbe0;
+  }
+  summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 16px;
+    font-size: 1.075rem;
+    font-weight: 750;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  summary::after {
+    content: '';
+    flex: none;
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid #635963;
+    border-bottom: 2px solid #635963;
+    transform: translateY(-2px) rotate(45deg);
+    margin-right: 5px;
+  }
+  details[open] summary::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+  summary:focus-visible {
+    outline: 2px solid #8d3766;
+    outline-offset: 3px;
+  }
+  details p {
+    padding-bottom: 16px;
+    color: #635963;
+  }
+</style>

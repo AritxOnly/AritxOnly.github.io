@@ -1,0 +1,345 @@
+---
+import series from '~/assets/products/bdfun/series.webp'
+import feed from '~/assets/products/bdfun/feed.webp'
+import profile from '~/assets/products/bdfun/profile.webp'
+import video from '~/assets/products/bdfun/video.webp'
+import settings from '~/assets/products/bdfun/settings.webp'
+
+const everyday = [
+  {
+    title: '刷推荐，也找新内容。',
+    detail:
+      '推荐、直播、热门、番剧和影视都能从首页进入。栏目可以按习惯开关和排序，找特定视频或 UP 主时也能直接搜索。',
+    image: series,
+    alt: 'bdFun 番剧页的最近追番和热门动画榜',
+  },
+  {
+    title: '关注的 UP 主，一处看。',
+    detail:
+      '动态支持在全部和视频之间切换，也可以按关注的人浏览。喜欢的内容可以转发，评论区也能回复楼中楼。',
+    image: feed,
+    alt: 'bdFun 的动态过滤和关注账号更新',
+  },
+  {
+    title: '把想看的留到有空。',
+    detail:
+      '把视频加入稍后再看，打开列表就能连续播放。历史记录按内容分类，找回看过的视频更直接。',
+    image: profile,
+    alt: 'bdFun 个人页的稍后再看、历史记录、收藏和离线缓存入口',
+  },
+]
+
+const playback = [
+  {
+    title: '空降助手，跳过烦恼',
+    detail: '播放到社区标记的赞助片段时，播放器会提示你一键跳过，接着看正片。',
+  },
+  {
+    title: '换个窗口，继续听',
+    detail: '支持画中画和后台播放，也能进入「听视频」界面，让内容在切换应用后继续播。',
+  },
+  {
+    title: '弹幕和播放节奏自己调',
+    detail: '调节播放倍速与默认清晰度，按偏好设置弹幕。全屏时也支持手势切换。',
+  },
+]
+---
+
+<section class="feature-section" id="features" aria-labelledby="browse-title">
+  <div class="inner">
+    <header class="section-heading">
+      <p class="section-label">发现与互动</p>
+      <h2 id="browse-title">想看的，随手找到。</h2>
+      <p>从刷推荐、看动态到整理观看列表，常用的操作都在熟悉的位置。</p>
+    </header>
+    <div class="everyday-grid">
+      {
+        everyday.map(({ title, detail, image, alt }) => (
+          <article>
+            <figure class="screenshot-panel">
+              <img
+                src={image.src}
+                width={image.width}
+                height={image.height}
+                alt={alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+            <h3>{title}</h3>
+            <p>{detail}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<section class="feature-section playback" id="playback" aria-labelledby="playback-title">
+  <div class="inner split">
+    <div>
+      <header class="section-heading">
+        <p class="section-label">视频、弹幕与后台播放</p>
+        <h2 id="playback-title">看得尽兴。<br />也听得自在。</h2>
+        <p>倍速、弹幕、追更与后台收听，都能在同一套播放器里完成。</p>
+      </header>
+      <div class="detail-list">
+        {
+          playback.map(({ title, detail }) => (
+            <article>
+              <>
+                <h3>{title}</h3>
+                <p>{detail}</p>
+              </>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+    <figure class="playback-visual">
+      <img
+        src={video.src}
+        width={video.width}
+        height={video.height}
+        alt="bdFun 视频播放中的弹幕、简介和评论入口"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  </div>
+</section>
+
+<section class="feature-section interface" id="design" aria-labelledby="design-title">
+  <div class="inner">
+    <header class="section-heading centered">
+      <p class="section-label">HyperOS4 风格设计</p>
+      <h2 id="design-title">澎湃美学，一手掌握。</h2>
+    </header>
+    <div class="design-panel split">
+      <figure class="design-visual">
+        <img
+          src={settings.src}
+          width={settings.width}
+          height={settings.height}
+          alt="bdFun 的界面风格和主题设置"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+      <div class="detail-list">
+        <article>
+          <h3>柔光玻璃</h3>
+          <p>
+            沿用 <span class="note-reference"
+              ><a href="/deadliner">Deadliner</a><sup
+                ><a href="#teakui-note" aria-label="查看 TeakUI 柔光玻璃技术说明">*</a
+                ></sup
+              ></span
+            > 自研的柔光玻璃渲染管线 TeakUI，让悬浮底栏透出内容的色彩。顶部渐进模糊随滚动自然过渡，保留清晰的阅读层次。
+          </p>
+        </article>
+        <article>
+          <h3>一镜到底</h3>
+          <p>从内容卡片进入详情，用连续转场保留原来的位置感。</p>
+        </article>
+        <article>
+          <h3>三种界面风格</h3>
+          <p>
+            可以切换 HyperOS
+            4、哔哩哔哩和经典界面，再根据偏好设置主题、色彩风格与显示效果。
+          </p>
+        </article>
+      </div>
+    </div>
+    <p class="design-note" id="teakui-note" tabindex="-1">
+      <span aria-hidden="true">*</span> TeakUI 基于 Deadliner、HyperPiliPlus 所自研的柔光玻璃管线衍生而来，独立于
+      miuix-glass 的实现。自研柔光玻璃管线参考了 AndroidLiquidGlass(Apache 2.0) 与 miuix-blur
+      的折射与模糊材质渲染。
+    </p>
+  </div>
+</section>
+
+<section
+  class="feature-section architecture"
+  id="architecture"
+  aria-labelledby="architecture-title"
+>
+  <div class="inner">
+    <header class="section-heading centered">
+      <p class="section-label">开源技术</p>
+      <h2 id="architecture-title">顺手，从里面做起。</h2>
+      <p>
+        bdFun 用 Kotlin 和 Jetpack Compose
+        构建。界面组件、弹幕绘制与视频播放由各自的模块负责。
+      </p>
+    </header>
+    <div class="architecture-grid">
+      <article>
+        <h3>TeakUI</h3><p>统一处理顶部栏、玻璃材质、浮动导航和页面转场。</p>
+      </article>
+      <article>
+        <h3>弹幕引擎</h3><p>
+          处理弹幕解析、轨道计算与渲染，基于 BiliPai 中使用的 DanmakuRenderEngine。
+        </p>
+      </article>
+      <article>
+        <h3>Media3 / ExoPlayer</h3><p>
+          提供视频播放核心，支撑倍速、画中画和后台播放体验。
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-section {
+    background: #fff;
+    color: #241d25;
+    --section-muted: #635963;
+    --section-line: #e2dbe0;
+  }
+  .inner {
+    width: min(1108px, calc(100% - clamp(36px, 7vw, 104px)));
+    margin-inline: auto;
+    padding-block: clamp(64px, 8vw, 112px);
+  }
+  .section-heading {
+    max-width: 650px;
+    margin-bottom: clamp(24px, 4vw, 48px);
+  }
+  .section-heading.centered {
+    text-align: center;
+    margin-inline: auto;
+  }
+  .section-label {
+    margin-bottom: 14px;
+    color: var(--section-muted);
+    font-size: 0.875rem;
+    font-weight: 750;
+  }
+  h2 {
+    font-size: clamp(2.12rem, 4.5vw, 3.75rem);
+    line-height: 1.14;
+    letter-spacing: -0.044em;
+    font-weight: 780;
+    text-wrap: balance;
+  }
+  h3 {
+    font-size: clamp(1.125rem, 1.7vw, 1.4rem);
+    line-height: 1.4;
+  }
+  .section-heading > p:last-child,
+  article p {
+    margin-top: 10px;
+    color: var(--section-muted);
+  }
+  .everyday-grid,
+  .architecture-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 3vw, 32px);
+  }
+  .screenshot-panel {
+    display: grid;
+    align-items: start;
+    justify-items: center;
+    aspect-ratio: 1.05;
+    padding: clamp(14px, 3vw, 32px);
+    overflow: hidden;
+    margin-bottom: 18px;
+    border-radius: 24px;
+    background: #f6eaf2;
+  }
+  .everyday-grid article:nth-child(2) figure {
+    background: #f8e9eb;
+  }
+  .everyday-grid article:nth-child(3) figure {
+    background: #f1edf6;
+  }
+  .screenshot-panel img {
+    width: 74%;
+    max-width: 228px;
+    filter: drop-shadow(0 12px 17px #391e3533);
+  }
+  .playback {
+    color: #fcf6fb;
+    --section-muted: #dccddb;
+    --section-line: #ffffff32;
+    background: radial-gradient(ellipse at 75% 70%, #4d2340, transparent 65%), #140f1a;
+  }
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(24px, 7vw, 90px);
+    align-items: center;
+  }
+  .detail-list article {
+    border-top: 1px solid var(--section-line);
+    padding-block: 15px;
+  }
+  .detail-list article p {
+    margin-top: 4px;
+  }
+  .playback-visual,
+  .design-visual {
+    display: grid;
+    justify-items: center;
+  }
+  .playback-visual img {
+    width: min(78%, 292px);
+    filter: drop-shadow(0 20px 40px #0008);
+  }
+  .design-panel {
+    border-radius: clamp(20px, 4vw, 42px);
+    padding: clamp(22px, 5vw, 58px);
+    background: #fbf1f6;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+  .note-reference {
+    white-space: nowrap;
+  }
+  .note-reference sup {
+    margin-inline-start: 2px;
+  }
+  .note-reference sup a {
+    text-decoration: none;
+  }
+  .design-note {
+    margin: 16px auto 0;
+    max-width: 68rem;
+    color: var(--section-muted);
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+  .design-visual img {
+    width: min(80%, 234px);
+    filter: drop-shadow(0 12px 20px #42253e32);
+  }
+  .architecture {
+    background: #f6f3f7;
+  }
+  .architecture-grid article {
+    padding: clamp(16px, 3vw, 30px);
+    border-radius: 20px;
+    background: #fff;
+  }
+  @media (max-width: 700px) {
+    .split,
+    .everyday-grid,
+    .architecture-grid {
+      grid-template-columns: 1fr;
+    }
+    .everyday-grid {
+      row-gap: 32px;
+    }
+    .screenshot-panel {
+      aspect-ratio: 1.36;
+    }
+    .screenshot-panel img {
+      width: min(55%, 210px);
+    }
+    .design-panel .detail-list {
+      grid-row: 1;
+    }
+  }
+</style>

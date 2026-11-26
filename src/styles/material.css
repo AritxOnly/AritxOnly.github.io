@@ -692,87 +692,6 @@ a.button {
 .portrait-panel .tag-music {
   align-self: start;
 }
-.work-list {
-  display: grid;
-  gap: 24px;
-}
-.work-row {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  min-width: 0;
-  overflow: hidden;
-  border-radius: 32px;
-  background: var(--md-surface-container-low);
-  border: 1px solid var(--md-outline-variant);
-}
-.work-copy {
-  padding: 36px;
-  align-self: center;
-}
-.work-copy h3 {
-  font-size: clamp(24px, 2.5vw, 32px);
-  font-weight: 600;
-  line-height: 1.35;
-  margin: 14px 0;
-  overflow-wrap: anywhere;
-}
-.work-line {
-  font-size: 16px;
-  margin-bottom: 12px;
-}
-.work-description {
-  font-size: 14px;
-  line-height: 1.85;
-  color: var(--md-on-surface-variant);
-}
-.work-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 16px;
-  color: var(--md-on-surface-variant);
-  font-size: 11px;
-  margin: 20px 0;
-}
-.work-art {
-  min-width: 0;
-  min-height: 320px;
-  display: grid;
-  place-items: center;
-  background: var(--md-secondary-container);
-  padding: 24px;
-  overflow: hidden;
-}
-.work-art img {
-  width: 100%;
-  max-height: 360px;
-  object-fit: contain;
-  border: 0;
-  border-radius: 16px;
-  transition: transform 0.4s;
-}
-.work-art:hover img {
-  transform: scale(1.025);
-}
-.art-deadliner {
-  background: #151515;
-  padding: 0;
-}
-.art-deadliner img {
-  border-radius: 0;
-}
-.art-hypermodifier img {
-  width: 160px;
-}
-.art-f1info img {
-  height: 360px;
-  width: auto;
-  max-width: 100%;
-}
-.work-symbol {
-  font-size: 72px;
-  font-weight: 650;
-  color: var(--md-on-secondary-container);
-}
 .journey-link {
   display: flex;
   align-items: center;
@@ -1009,9 +928,6 @@ a.button {
   .friends-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .work-copy {
-    padding: 28px;
-  }
   .intro {
     padding: 32px;
     gap: 28px;
@@ -1034,19 +950,9 @@ a.button {
   .nav-original-logo {
     width: 58px;
   }
-  .work-row,
   .about-intro,
   .personal-notes {
     grid-template-columns: 1fr;
-  }
-  .work-art {
-    min-height: 230px;
-  }
-  .work-copy {
-    padding: 24px;
-  }
-  .work-art img {
-    max-height: 280px;
   }
   .about-intro {
     gap: 0;
@@ -1521,41 +1427,6 @@ a.button {
 .scene-reading a:hover {
   transform: translateX(4px);
 }
-.work-row {
-  border-radius: 36px 12px 36px 12px;
-}
-.work-art {
-  position: relative;
-  isolation: isolate;
-}
-.work-art:not(.art-deadliner):before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  border: 35px solid color-mix(in srgb, var(--md-surface) 35%, transparent);
-  transform: translate(20%, -15%);
-}
-.art-hypermodifier {
-  background: var(--md-primary-container);
-}
-.art-hypermodifier img {
-  width: 170px;
-  transform: rotate(-8deg);
-  filter: drop-shadow(0 18px 20px #0002);
-}
-.art-hypermodifier:hover img {
-  transform: rotate(-3deg) scale(1.04);
-}
-.art-f1info {
-  background: var(--md-tertiary-container);
-}
-.art-f1info img {
-  transform: rotate(4deg);
-  box-shadow: 8px 12px 25px #0002;
-}
 .friend-card {
   border-radius: 32px 12px 32px 12px;
   transition:
@@ -1726,10 +1597,6 @@ a.button {
 }
 
 /* Tonal surfaces define cards; shape accents are reserved for distinct roles. */
-.work-row {
-  border: 0;
-  border-radius: 36px;
-}
 .friend-card {
   border: 0;
   border-radius: 28px;

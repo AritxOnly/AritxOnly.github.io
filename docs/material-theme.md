@@ -24,10 +24,9 @@ MCU 0.4 的部分 ESM 导入省略扩展名，所以 Astro 的 Vite SSR 配置�
 
 首页 `StoryView.astro` 以五幕展示个人介绍、应用、博客、音乐、经历与朋友，每幕 10 秒。章节按钮支持左右方向键；手动选幕后暂停，播放按钮可恢复。鼠标停留、内容获得焦点、标签页隐藏或故事区域离开视口时暂缓计时；系统减少动态效果时默认暂停。下方正文仍可正常滚动，禁用 JS 时保留第一幕与完整内容。
 
-`apps.json` 为共享项目目录，首页精选前三项，`/app` 展示完整七项。作品信息核对自各 GitHub 仓库，开源分支单独标注；没有伪造应用界面。
+`apps.json` 为共享项目目录。首页和 `/app` 共用四张主要项目卡，`/app` 另列四个副项目。主要项目的 `website` 填入网址后，卡片会显示官网链接。
 
-- HyperModifier 图标来自 `AritxOnly/HyperModifier` 的 `design/settings-icons/hypermodifier-launcher.png`。
-- F1Info 实机截图来自 `AritxOnly/F1Info` 的 `docs/screenshots/home-settings-icon-056.png`。
+- 主要项目使用各应用的启动图标。
 - 原有 `/logo-trimmed.webp` 用于首页 banner；顶栏按用户截图恢复为最初的 a. 字标与音唯名称。
 - `journey.ts` 集中维护经历，日期与角色依据用户提供的简历 v3.1，公开展示为简要介绍。简历原文件、手机号及内部业务指标未复制到站点。
 - `/friends` 保留原友链、关系备注与社交入口，邮箱统一为 mailto；`/music` 使用已有真实封面与歌曲链接。

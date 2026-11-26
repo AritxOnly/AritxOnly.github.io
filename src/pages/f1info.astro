@@ -1,0 +1,573 @@
+---
+import ProductLayout from '~/components/products/ProductLayout.astro'
+import home from '~/assets/products/f1info/home.webp'
+import schedule from '~/assets/products/f1info/schedule.webp'
+import standings from '~/assets/products/f1info/standings.webp'
+import live from '~/assets/products/f1info/live.webp'
+
+const repository = 'https://github.com/AritxOnly/F1Info'
+const releases = `${repository}/releases/latest`
+const icon = '/res/projects/f1info-icon.svg'
+const description =
+  'F1Info 是一款非官方、开源的 Android F1 信息应用。查看赛程、积分和比赛动态，关注喜欢的车手与车队。'
+const homeAlt = 'F1Info 我的关注首页，显示 Max Verstappen 的排名、胜场和积分'
+const features = [
+  {
+    id: 'schedule',
+    title: '比赛赛程',
+    detail:
+      '查看每个比赛周末的赛道、当地开赛时间和正赛倒计时，把想看的场次导入系统日历。',
+    image: schedule,
+    alt: 'F1Info 比赛赛程页，显示卡塔尔站的赛道轮廓和正赛倒计时',
+  },
+  {
+    id: 'standings',
+    title: '积分榜',
+    detail: '切换车手榜和车队榜，关注喜欢的车手与车队，在首页查看他们的赛季表现。',
+    image: standings,
+    alt: 'F1Info 车手积分榜，显示领跑者 Andrea Kimi Antonelli 和赛季排名',
+  },
+  {
+    id: 'live',
+    title: 'Live 围场',
+    detail:
+      '按场次查看排名和车手差距，回看历史比赛。赛中实时数据需要 OpenF1 Sponsor 授权。',
+    image: live,
+    alt: 'F1Info Live 围场，显示拉斯维加斯站的历史正赛排名和车手差距',
+  },
+]
+---
+
+<ProductLayout
+  name="F1Info"
+  title="你的比赛周末"
+  description={description}
+  icon={icon}
+  image={home.src}
+>
+  <div class="race-page">
+    <header class="race-nav">
+      <div class="wrap nav-inner">
+        <a href="#main" class="brand"
+          ><img src={icon} alt="" width="36" height="36" />F1Info</a
+        >
+        <nav aria-label="官网导航">
+          <a href="#race-tools">功能</a>
+          <a href={repository}>GitHub</a>
+          <a href="#download" class="button">下载</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="race-hero" aria-labelledby="race-heading">
+        <div class="wrap hero-inner">
+          <div class="hero-copy">
+            <p class="context">非官方 F1 信息应用</p>
+            <h1 id="race-heading">你的比赛<span>周末</span></h1>
+            <p class="overview">
+              发车前看赛程，冲线后查战绩。把你关注的车手和车队放在首页。
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#download">下载 F1Info</a>
+              <a class="button outline" href="#race-tools">探索功能</a>
+            </div>
+            <p class="requirements">Android 13 或更高版本</p>
+          </div>
+          <div class="hero-visual">
+            <div class="hero-phones">
+              <img
+                class="hero-secondary"
+                src={schedule.src}
+                width={schedule.width}
+                height={schedule.height}
+                alt=""
+                decoding="async"
+                fetchpriority="low"
+              />
+              <a
+                class="hero-primary"
+                href={home.src}
+                data-screenshot
+                aria-label="查看我的关注首页大图"
+              >
+                <img
+                  src={home.src}
+                  width={home.width}
+                  height={home.height}
+                  alt={homeAlt}
+                  fetchpriority="high"
+                  decoding="async"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap race-tools" id="race-tools" aria-labelledby="tools-title">
+        <h2 id="tools-title">从赛前到冲线</h2>
+        <div class="feature-list">
+          {
+            features.map(({ id, title, detail, image, alt }) => (
+              <article class="race-feature" id={id}>
+                <div class="feature-copy">
+                  <h3>{title}</h3>
+                  <p>{detail}</p>
+                </div>
+                <a
+                  class="feature-preview"
+                  href={image.src}
+                  data-screenshot
+                  aria-label={`查看${title}大图`}
+                >
+                  <img
+                    src={image.src}
+                    width={image.width}
+                    height={image.height}
+                    alt={alt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="install" id="download" aria-labelledby="install-title">
+        <div class="wrap install-inner">
+          <div>
+            <h2 id="install-title">下载 F1Info</h2>
+            <p>
+              适用于 Android 13 或更高版本。安装包、更新说明与校验文件可在 GitHub Releases
+              查看。
+            </p>
+          </div>
+          <a class="button" href={releases}>查看 Android 下载</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="wrap footer">
+      <p>F1Info 为非官方开源项目，与 Formula 1 及各车队无隶属关系。</p>
+      <nav aria-label="项目链接">
+        <a href="/app">所有应用</a><a href={repository}>源代码</a>
+      </nav>
+    </footer>
+
+    <dialog class="screenshot-dialog" aria-label="实机截图大图">
+      <form method="dialog">
+        <button class="button outline" autofocus>关闭</button>
+      </form>
+      <img alt="" />
+    </dialog>
+  </div>
+</ProductLayout>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('.screenshot-dialog')
+  const preview = dialog?.querySelector('img')
+
+  if (dialog && preview && typeof dialog.showModal === 'function') {
+    document.querySelectorAll<HTMLAnchorElement>('[data-screenshot]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+
+        event.preventDefault()
+        preview.src = link.href
+        preview.alt = link.querySelector('img')?.alt ?? ''
+        dialog.showModal()
+      })
+    })
+  }
+</script>
+
+<style>
+  .race-page {
+    --text: #fbf8fa;
+    --muted: #b8b4bf;
+    --red: #ff5169;
+    --line: #faf6ff20;
+    color: var(--text);
+    background: #0e0e13;
+  }
+  .wrap {
+    width: min(1200px, calc(100% - clamp(36px, 8.5vw, 136px)));
+    margin-inline: auto;
+  }
+  .race-nav {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    border-bottom: 1px solid var(--line);
+    background: #0e0e13ed;
+    backdrop-filter: blur(18px);
+  }
+  .nav-inner,
+  .brand,
+  .race-nav nav {
+    display: flex;
+    align-items: center;
+  }
+  .nav-inner {
+    min-height: 67px;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .brand {
+    gap: 9px;
+    font-size: 1.35rem;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: -0.04em;
+  }
+  .brand img {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .brand,
+  .race-nav nav a {
+    text-decoration: none;
+  }
+  .race-nav nav {
+    gap: clamp(16px, 2.8vw, 34px);
+    font-size: 0.875rem;
+    font-weight: 750;
+  }
+  .race-nav nav a:hover:not(.button),
+  .footer a:hover {
+    color: var(--red);
+  }
+  .button {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 19px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: var(--red);
+    color: #20080e;
+    font: inherit;
+    font-weight: 800;
+    line-height: 1.3;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+  .button:hover {
+    background: #ff8192;
+  }
+  .button:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 4px;
+  }
+  .race-nav .button {
+    min-height: 40px;
+    padding-inline: 15px;
+  }
+  .button.outline {
+    color: var(--text);
+    background: transparent;
+    border-color: #fff5;
+  }
+  .button.outline:hover {
+    background: #fff2;
+  }
+  .race-hero {
+    overflow: clip;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse at 78% 30%, #6a1b31 0%, transparent 58%),
+      radial-gradient(ellipse at 56% 89%, #18203e, transparent 54%), #121017;
+  }
+  .hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+    align-items: center;
+    gap: clamp(16px, 4vw, 56px);
+  }
+  .hero-copy {
+    z-index: 1;
+    padding-block: 60px;
+  }
+  .context {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #f0c8d1;
+    font-size: 0.875rem;
+    font-weight: 750;
+    letter-spacing: 0.08em;
+  }
+  .context::before {
+    content: '';
+    width: 19px;
+    height: 4px;
+    background: var(--red);
+    transform: skewX(-28deg);
+  }
+  h1,
+  h2,
+  h3 {
+    font-weight: 800;
+    line-height: 1.13;
+    letter-spacing: -0.045em;
+  }
+  h1 {
+    margin-block: 20px 22px;
+    font-size: clamp(3.75rem, 7.2vw, 7.25rem);
+    line-height: 1.02;
+  }
+  h1 span {
+    display: block;
+    color: var(--red);
+  }
+  .overview {
+    max-width: 21em;
+    color: #e2dce6;
+    font-size: clamp(1.05rem, 1.65vw, 1.25rem);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .requirements {
+    margin-top: 14px;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .hero-visual {
+    --phone-width: clamp(190px, 20vw, 278px);
+    position: relative;
+    display: grid;
+    place-items: center;
+    isolation: isolate;
+    padding-block: clamp(48px, 5vw, 76px);
+  }
+  .hero-visual::before,
+  .hero-visual::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    inset: 10% -34% 11% -9%;
+    border: 1px solid #ff718c51;
+    border-radius: 8rem 0 0 9rem;
+    transform: skewX(-25deg);
+    pointer-events: none;
+  }
+  .hero-visual::after {
+    inset: 14% -36% 15% -5%;
+    border-color: #ff718c2c;
+  }
+  .hero-phones {
+    position: relative;
+    width: calc(var(--phone-width) * 1.73);
+  }
+  .hero-primary,
+  .hero-secondary {
+    display: block;
+    filter: drop-shadow(0 16px 20px #080611ad);
+  }
+  .hero-primary {
+    position: relative;
+    width: var(--phone-width);
+    border-radius: 15%;
+    transform: rotate(-8deg);
+  }
+  .hero-primary,
+  .feature-preview {
+    cursor: zoom-in;
+  }
+  .hero-secondary {
+    position: absolute;
+    top: 9%;
+    right: 0;
+    width: calc(var(--phone-width) * 0.86);
+    transform: rotate(12deg);
+  }
+  .hero-primary img {
+    width: 100%;
+  }
+  .race-tools {
+    padding-block: clamp(56px, 7vw, 98px) clamp(36px, 5vw, 65px);
+  }
+  .race-tools > h2 {
+    margin-bottom: clamp(22px, 3vw, 34px);
+  }
+  h2 {
+    font-size: clamp(2.15rem, 4.4vw, 4rem);
+    text-wrap: balance;
+  }
+  .feature-copy p,
+  .install p {
+    color: var(--muted);
+  }
+  .race-feature {
+    --accent: #ff677b;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(24px, 6vw, 86px);
+    padding: clamp(26px, 4vw, 54px) clamp(0px, 5vw, 72px);
+    border-top: 1px solid var(--line);
+  }
+  #standings {
+    --accent: #65ddc9;
+  }
+  #live {
+    --accent: #ff93a0;
+  }
+  .feature-copy {
+    max-width: 24em;
+    margin-inline: auto;
+  }
+  h3 {
+    color: var(--accent);
+    font-size: clamp(1.4rem, 3.6vw, 3.25rem);
+  }
+  .feature-copy p,
+  .install p {
+    margin-top: 12px;
+  }
+  .feature-preview {
+    display: block;
+    width: min(100%, 242px);
+    margin-inline: auto;
+    border-radius: 15%;
+  }
+  .feature-preview img {
+    width: 100%;
+    filter: drop-shadow(0 12px 16px #0008);
+    transition: transform 160ms ease;
+  }
+  .feature-preview:hover img {
+    transform: translateY(-3px);
+  }
+  .install {
+    background: linear-gradient(110deg, #20121d, #37131f);
+    border-block: 1px solid var(--line);
+  }
+  .install-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 22px 35px;
+    padding-block: clamp(36px, 6vw, 76px);
+  }
+  .footer,
+  .footer nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .footer {
+    justify-content: space-between;
+    gap: 16px 30px;
+    padding-block: 28px;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+  .footer nav {
+    gap: 16px;
+  }
+  .screenshot-dialog {
+    position: fixed;
+    max-width: calc(100% - 16px);
+    max-height: calc(100% - 16px);
+    padding: 12px;
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    margin: auto;
+    inset: 0;
+    overflow: auto;
+  }
+  .screenshot-dialog::backdrop {
+    background: #08080de6;
+  }
+  .screenshot-dialog form {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 12px;
+  }
+  .screenshot-dialog img {
+    width: auto;
+    max-height: calc(100dvh - 104px);
+    margin-inline: auto;
+    object-fit: contain;
+  }
+  @media (max-width: 800px) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+    .hero-copy {
+      padding-block: 39px 15px;
+    }
+    h1 {
+      font-size: clamp(3.15rem, 11vw, 5.8rem);
+    }
+    .hero-visual {
+      --phone-width: clamp(142px, 44vw, 238px);
+      padding-block: 24px 36px;
+    }
+    .hero-visual::before {
+      inset-inline-start: 0;
+    }
+    .hero-visual::after {
+      inset-inline-start: 5%;
+    }
+    .race-feature {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(14px, 4vw, 28px);
+      padding-inline: 0;
+    }
+    .feature-copy {
+      margin: 0;
+    }
+  }
+  @media (min-width: 801px) {
+    .race-tools {
+      padding-block: clamp(16px, 3svh, 30px);
+    }
+    .race-tools > h2 {
+      margin-bottom: 18px;
+    }
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 4vw, 56px);
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .race-feature {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 18px;
+      padding: 0;
+      border: 0;
+    }
+    .feature-copy {
+      flex: 1;
+      margin-inline: 0;
+    }
+    .feature-copy h3 {
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+    }
+    .feature-preview {
+      width: min(100%, clamp(62px, (100svh - 345px) / 2.1, 212px));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .button,
+    .feature-preview img {
+      transition: none;
+    }
+  }
+</style>

@@ -104,7 +104,6 @@ body {
 .site-main
   :is(
     .post-card-title,
-    .work-copy h3,
     .project-copy h3,
     .friend-card h3,
     .track-card h3,
@@ -123,9 +122,6 @@ body {
 .post-card-description {
   font-size: 15px;
   line-height: 1.95;
-}
-.work-copy h3 {
-  letter-spacing: -0.045em;
 }
 .personal-notes h2 {
   font-size: 21px;
@@ -146,8 +142,6 @@ body {
     .portrait-caption,
     .portrait-tag,
     .story-tab-number,
-    .work-index,
-    .work-meta,
     .gantt-axis,
     .gantt-label small,
     .journey-chart-heading > span,
