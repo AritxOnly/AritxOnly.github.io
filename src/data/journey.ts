@@ -7,7 +7,7 @@ export const journey = [
     title: 'Meshy AI · Product Engineering',
     role: '全栈实习生',
     description:
-      '后端、前端，什么需求都接，有的时候也会读读推理框架。',
+      '后端、前端，什么需求都接，有的时候也会读读 Agent 框架。',
   },
   {
     start: '2026-03',
