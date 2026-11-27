@@ -32,12 +32,13 @@
     },
     {
         "name": "巧巧",
-        "site": "https://www.xiaohongshu.com/user/profile/6490e459000000000f005b9b",
+        "site": "https://qiao411.github.io",
         "avatar": "/friends/qiao.webp",
-        "bio": "南京大学大三在读|生命科学",
-        "tags": ["生命科学"],
+        "bio": "",
+        "tags": ["互联网", "CSM"],
         "social": {
-            "xiaohongshu": "https://www.xiaohongshu.com/user/profile/6490e459000000000f005b9b"
+            "xiaohongshu": "https://www.xiaohongshu.com/user/profile/6490e459000000000f005b9b",
+            "github": "https://github.com/qiao411"
         },
         "note": "站主的女朋友❤️",
         "reciprocal": false,

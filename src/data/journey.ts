@@ -1,6 +1,15 @@
 // Dates and roles transcribed from the user's resume v3.1; descriptions condensed for the personal site.
 export const journey = [
   {
+    start: '2026-11',
+    period: '2026.11 — 至今',
+    kind: '实习',
+    title: 'Meshy AI · Product Engineering',
+    role: '全栈实习生',
+    description:
+      '后端、前端，什么需求都接，有的时候也会读读推理框架。',
+  },
+  {
     start: '2026-03',
     period: '2026.03 — 至今',
     kind: '项目',
